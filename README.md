@@ -41,7 +41,7 @@ from sport_activities_features.plot_data import PlotData
 
 #read TCX file
 tcx_file = TCXFile()
-activity = tcx_file.read_one_file("/home/maks/Dokumenti/Software/sport-activities-features/Datasets/Cyclist/1.tcx")
+activity = tcx_file.read_one_file("path_to_the_file")
 
 #detect hills in data
 Hill = HillIdentification(activity['altitudes'], 30)
@@ -67,11 +67,14 @@ from sport_activities_features.tcx_manipulation import TCXFile
 #read TCX file
 tcx_file = TCXFile()
 
-integral_metrics = tcx_file.extract_integral_metrics("/home/maks/Dokumenti/Software/sport-activities-features/Datasets/Cyclist/3.tcx")
+integral_metrics = tcx_file.extract_integral_metrics("path_to_the_file")
 
 print(integral_metrics)
 
 ```
+## Datasets
+
+Datasets are available on the following links: [DATASET1](http://iztok-jr-fister.eu/static/publications/Sport5.zip), [DATASET2](http://iztok-jr-fister.eu/static/css/datasets/Sport.zip)
 
 ## Licence
 
