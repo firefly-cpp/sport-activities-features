@@ -6,9 +6,9 @@ authors = ["iztokf <iztokf@iztok-jr-fister.eu>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-python-tcxparser = "^1.1.0"
 matplotlib = "^3.3.3"
 geopy = "^2.0.0"
+tcxreader = "^0.3.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
