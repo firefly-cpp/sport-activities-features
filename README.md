@@ -29,6 +29,13 @@ Proposed software supports the extraction of following topographic features from
 - Extraction of topographic features (number of hills, average altitude of identified hills, total distance of identified hills, climbing ratio, average ascent of hills) ([see example](examples/hill_data_extraction.py))
 - Plotting the identified hills ([see example](examples/draw_map_with_identified_hills.py)) 
 - Calculation of training loads (Bannister TRIMP, Lucia TRIMP) ([see example](examples/integral_metrics_extraction.py))
+- Parsing of Historical weather data from an external service
+
+## Historical weather data
+Weather data parsed is collected from the [Visual Crossing Weather API](https://www.visualcrossing.com/). 
+This is an external unaffiliated service and the user must register and use the API key provided from the service. 
+The service has a free tier (1000 Weather reports / day) but is otherwise operating on a pay as you go model.
+For the pricing and terms of use please read the [official documentation](https://www.visualcrossing.com/weather-data-editions) of the API provider.
 
 ## CODE EXAMPLES:
 

@@ -33,26 +33,28 @@ class TCXFile(object):
         Note:
             In the case of missing value in raw data, we assign None
                 """
-        tcx2 = TCXReader().read(filename)
+        tcx = TCXReader().read(filename)
 
         # handling missing data - should be improved in original tcxparser
         try:
-            activity_type = tcx2.activity_type
+            activity_type = tcx.activity_type
         except BaseException:
             activity_type = None
 
         positions = []
         altitudes = []
         distances = []
+        timestamps = []
         trackpoint:TCXTrackPoint
-        for trackpoint in tcx2.trackpoints:
+        for trackpoint in tcx.trackpoints:
             positions.append((trackpoint.latitude, trackpoint.longitude))
             altitudes.append(trackpoint.elevation)
             distances.append(trackpoint.distance)
+            timestamps.append(trackpoint.time)
 
 
         try:
-            total_distance = tcx2.distance
+            total_distance = tcx.distance
         except BaseException:
             total_distance = None
         
@@ -61,7 +63,9 @@ class TCXFile(object):
             'positions': positions,
             'altitudes': altitudes,
             'distances': distances,
-            'total_distance': total_distance}
+            'total_distance': total_distance,
+            'timestamps':timestamps
+        }
         
         return activity
 
@@ -72,66 +76,66 @@ class TCXFile(object):
                         dictionary:
 
                 """
-        tcx2 = TCXReader().read(filename)
+        tcx = TCXReader().read(filename)
 
         # handling missing data in raw files
         try:
-            activity_type = tcx2.activity_type
+            activity_type = tcx.activity_type
         except BaseException:
             activity_type = None
 
         try:
-            distance = tcx2.distance
+            distance = tcx.distance
         except BaseException:
             distance = None
 
         try:
-            duration = tcx2.duration
+            duration = tcx.duration
         except BaseException:
             duration = None
 
         try:
-            calories = tcx2.calories
+            calories = tcx.calories
         except BaseException:
             calories = None
 
         try:
-            hr_avg = tcx2.hr_avg
+            hr_avg = tcx.hr_avg
         except BaseException:
             hr_avg = None
 
         try:
-            hr_max = tcx2.hr_max
+            hr_max = tcx.hr_max
         except BaseException:
             hr_max = None
 
         try:
-            hr_min = tcx2.hr_min
+            hr_min = tcx.hr_min
         except BaseException:
             hr_min = None
 
         try:
-            altitude_avg = tcx2.altitude_avg
+            altitude_avg = tcx.altitude_avg
         except BaseException:
             altitude_avg = None
 
         try:
-            altitude_max = max(tcx2.trackpoints)
+            altitude_max = max(tcx.trackpoints)
         except BaseException:
             altitude_max = None
 
         try:
-            altitude_min = tcx2.altitude_min
+            altitude_min = tcx.altitude_min
         except BaseException:
             altitude_min = None
 
         try:
-            ascent = tcx2.ascent
+            ascent = tcx.ascent
         except BaseException:
             ascent = None
 
         try:
-            descent = tcx2.descent
+            descent = tcx.descent
         except BaseException:
             descent = None
 
