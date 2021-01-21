@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "sport-activities-features"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
-authors = ["iztokf <iztokf@iztok-jr-fister.eu>"]
+authors = ["iztokf <iztokf@fedoraproject.org>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.6"
 matplotlib = "^3.3.3"
 geopy = "^2.0.0"
 tcxreader = "^0.3.0"

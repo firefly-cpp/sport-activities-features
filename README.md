@@ -21,7 +21,9 @@ Proposed software supports the extraction of following topographic features from
 
 ## Installation
 
-    
+```sh
+pip install sport-activities-features
+```
 
 ## Full Features
 
