@@ -45,6 +45,8 @@ class IntervalIdentification(object):
             if total_power < 0:
                 total_power = 0
 
+            raise NotImplementedError
+
     # Returning all found intervals
     def return_intervals(self):
         raise NotImplementedError
