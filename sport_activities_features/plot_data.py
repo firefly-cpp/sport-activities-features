@@ -49,6 +49,43 @@ class PlotData(object):
         plt.ylabel('Altitude (m)', fontsize=20)
         plt.show()
 
+    # Drawing the map with the intervals
+    def draw_intervals_in_map(self, timestamp, distance, identified_intervals):
+        fig = plt.figure()
+        ax = plt.axes()
+        x_points = []
+        y_points = []
+        colors = []
+
+        points = self.get_positions_of_hills(identified_intervals)  # Getting positions of intervals
+
+        # Appending points to lists
+        for i in range(len(points)):
+            time = (timestamp[i] - timestamp[0]).total_seconds()  # Calculation of time between the current and the starting point
+
+            x_points.append(float(time))  # Appending the time to the list
+
+            # If the current is in the list, it belongs to an interval
+            if i > 0 and i in points:
+                y_points.append(1)
+
+                # If both current and previous point belong to an interval, they are represented with red
+                if y_points[i - 1] == y_points[i]:
+                    plt.plot([x_points[i - 1], x_points[i]], [y_points[i - 1], y_points[i]], c="red", linewidth=3)
+            else:
+                y_points.append(0)
+
+                # If both current and previous point don't belong to an interval, they are represented with blue
+                if y_points[i - 1] == y_points[i]:
+                    plt.plot([x_points[i - 1], x_points[i]], [y_points[i - 1], y_points[i]], c="blue", linewidth=3)
+
+        plt.xticks(fontsize=14)
+        plt.yticks([0, 1])
+        plt.title('Intervals', fontsize=20)
+        plt.xlabel('Time (s)', fontsize=20)
+        plt.ylabel('Interval', fontsize=20)
+        plt.show()
+
     def draw_basic_map(self, altitude, distance):
         r"""Plot the whole topographic map.
 
