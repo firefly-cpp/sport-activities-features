@@ -1,21 +1,22 @@
+import copy
 import math
 
 class IntervalIdentification(object):
 
-    # To identify intervals, distances, timestamps, altitudes, mass and threshold are needed
-    def __init__(self, distances, timestamps, altitudes, mass, threshold):
+    # To identify intervals, distances, timestamps, altitudes and mass are needed
+    def __init__(self, distances, timestamps, altitudes, mass):
         self.distances = distances
         self.timestamps = timestamps
         self.altitudes = altitudes
         self.mass = mass  # Mass should be given in kilograms
-        self.threshold = threshold  # Threshold should be given in percent (for example 30 % greater strength than average)
 
     # Identifying intervals from given data
     def identify_intervals(self):
         self.intervals = []
-        average_power = 0.0
+        powers = []
+        power_sum = 0.0
 
-        # Loop to go through all segments and to identify intervals
+        # Loop to go through all segments and to calculate the average power
         for i in range(1, len(self.distances)):
             distance = self.distances[i] - self.distances[i - 1]  # Calculating the distance between two measures
             time = (self.timestamps[i] - self.timestamps[i - 1]).total_seconds()  # Calculating time between two measures
@@ -45,8 +46,38 @@ class IntervalIdentification(object):
             if total_power < 0:
                 total_power = 0
 
-            raise NotImplementedError
+            powers.append(total_power)
+            power_sum += total_power
+
+        # Calculation of the average power
+        average_power = power_sum / len(self.distances)
+
+        interval = []
+        counter = 0
+
+        # Identifying the intervals
+        for i in range(len(self.distances) - 1):
+            # If the power is greater than the average power, the interval is recognized
+            if powers[i] > average_power:
+                interval.append(i)
+            else:
+                # If interval is not empty, it is appended to the list of all intervals
+                if interval:
+                    interval_flag = False
+
+                    for j in range(200):
+                        if powers[i + j] > average_power:
+                            interval_flag = True
+                            interval.append(i)
+                            break
+
+                        if i >= len(self.distances) - 200:
+                            break
+
+                    if interval_flag == False:
+                        self.intervals.append(copy.deepcopy(interval))
+                        interval.clear()
 
     # Returning all found intervals
     def return_intervals(self):
-        raise NotImplementedError
+        return self.intervals

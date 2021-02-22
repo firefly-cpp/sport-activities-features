@@ -49,6 +49,32 @@ class PlotData(object):
         plt.ylabel('Altitude (m)', fontsize=20)
         plt.show()
 
+    # Drawing the map with the intervals
+    def draw_intervals_in_map(self, timestamp, distance, identified_intervals):
+        fig = plt.figure()
+        ax = plt.axes()
+        x_points = []
+        y_points = []
+
+        points = self.get_positions_of_hills(identified_intervals)
+        for i in range(len(distance)):
+            time = (timestamp[i] - timestamp[0]).total_seconds()  # Calculation of time
+
+            x_points.append(float(time))
+
+            if i in points:
+                y_points.append(1)
+            else:
+                y_points.append(0)
+
+        plt.scatter(x_points, y_points, marker=" ")
+        plt.plot(x_points, y_points)
+        plt.xticks(fontsize=14)
+        plt.title('Detected intervals', fontsize=20)
+        plt.xlabel('Time (s)', fontsize=20)
+        plt.ylabel('Interval', fontsize=20)
+        plt.show()
+
     def draw_basic_map(self, altitude, distance):
         r"""Plot the whole topographic map.
 
