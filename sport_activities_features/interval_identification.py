@@ -65,15 +65,17 @@ class IntervalIdentification(object):
                 if interval:
                     interval_flag = False
 
+                    # Checking 200 measures in advance (if the interval continues)
                     for j in range(200):
-                        if powers[i + j] > average_power:
-                            interval_flag = True
-                            interval.append(i)
+                        try:
+                            if powers[i + j] > average_power:  # If the interval continues in advance, it is added as one interval
+                                interval_flag = True
+                                interval.append(i)
+                                break
+                        except:
                             break
 
-                        if i >= len(self.distances) - 200:
-                            break
-
+                    # If the interval is over, it is added to the list of all intervals
                     if interval_flag == False:
                         self.intervals.append(copy.deepcopy(interval))
                         interval.clear()

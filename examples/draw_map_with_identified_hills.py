@@ -8,7 +8,7 @@ from sport_activities_features.plot_data import PlotData
 
 #read TCX file
 tcx_file = TCXFile()
-activity_type, positions, altitudes, distances, total_distance, timestamps = tcx_file.read_one_file("../datasets/15.tcx").values()
+activity_type, positions, altitudes, distances, total_distance, timestamps = tcx_file.read_one_file("path_to_the_data").values()
 
 #detect hills in data
 Hill = HillIdentification(altitudes, 30)
