@@ -9,7 +9,7 @@ from sport_activities_features.interval_identification import IntervalIdentifica
 
 # Retrieving all TCX files in a directory
 tcx_file = TCXFile()
-all_files = tcx_file.read_directory("../datasets/")
+all_files = tcx_file.read_directory("path_to_the_folder")
     
 # Extracting the data of all files
 activities = []
@@ -44,4 +44,4 @@ for file in all_files:
 
 # Extracting the data in CSV format
 data_extraction = DataExtraction(activities)
-data_extraction.extract_data("test")
+data_extraction.extract_data("name_of_the_csv_file")
