@@ -45,12 +45,14 @@ class TCXFile(object):
         altitudes = []
         distances = []
         timestamps = []
+        heartrates = []
         trackpoint:TCXTrackPoint
         for trackpoint in tcx.trackpoints:
             positions.append((trackpoint.latitude, trackpoint.longitude))
             altitudes.append(trackpoint.elevation)
             distances.append(trackpoint.distance)
             timestamps.append(trackpoint.time)
+            heartrates.append(trackpoint.hr_value)
 
 
         try:
@@ -64,7 +66,8 @@ class TCXFile(object):
             'altitudes': altitudes,
             'distances': distances,
             'total_distance': total_distance,
-            'timestamps':timestamps
+            'timestamps': timestamps,
+            'heartrates': heartrates
         }
         
         return activity
