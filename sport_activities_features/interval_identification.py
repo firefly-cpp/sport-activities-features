@@ -101,17 +101,53 @@ class IntervalIdentificationByPower(object):
             else:
                 i += 1       
 
+    # Returning a dictionary with interval statistics
+    def calculate_interval_statistics(self):
+        number_of_intervals = len(self.intervals)  # Number of intervals
+
+        list_duration = [(self.timestamps[item[-1]] + self.timestamps[item[0]]).total_seconds() for item in self.intervals]  # Time of every interval in list
+        min_duration_interval = min(list_duration)  # Minimum duration of an interval
+        max_duration_interval = max(list_duration)  # Maximum duration of an interval
+        avg_duration_interval = sum(list_duration) / len(list_duration)  # Average duration of an interval
+
+        list_distance = [self.distances[item[-1]] + self.distances[item[0]] for item in self.intervals]  # Distance of every interval in list
+        min_distance_interval = min(list_distance)  # Minimum distance of an interval
+        max_distance_interval = max(list_distance)  # Maximum distance of an interval
+        avg_distance_interval = sum(list_distance) / len(list_distance)  # Average distance of an interval
+
+        list_heartrate = [self.heartrates[item[-1]] + self.heartrates[item[0]] for item in self.intervals]  # Heart rate of every interval in list
+        min_heartrate_interval = min(list_heartrate)  # Minimum heart rate of an interval
+        max_heartrate_interval = max(list_heartrate)  # Maximum heart rate of an interval
+        avg_heartrate_interval = sum(list_heartrate) / len(list_heartrate)  # Average heart rate of an interval
+
+        # Building a dictionary
+        data = {
+            "min_duration": min_duration_interval,
+            "max_duration": max_duration_interval,
+            "avg_duration": avg_duration_interval,
+            "min_distance": min_distance_interval,
+            "max_distance": max_distance_interval,
+            "avg_distance": avg_distance_interval,
+            "min_heartrate": min_heartrate_interval,
+            "max_heartrate": max_heartrate_interval,
+            "avg_heartrate": avg_heartrate_interval,
+        }
+
+        return data
+
     # Returning all found intervals
     def return_intervals(self):
         return self.intervals
 
 
+
 class IntervalIdentificationByHeartrate(object):
     # To identify intervals, timestamps, altitudes and heart rates are needed
-    def __init__(self, timestamps, altitudes, heartrates, minimum_time=30):
+    def __init__(self, distances, timestamps, altitudes, heartrates, minimum_time=30):
+        self.distances = distances
         self.timestamps = timestamps
         self.altitudes = altitudes
-        self.heartrates = heartrates #[0 if x is None else x for x in heartrates]
+        self.heartrates = heartrates
         self.minimum_time = minimum_time
 
     # Identifying intervals from given data
@@ -139,7 +175,10 @@ class IntervalIdentificationByHeartrate(object):
                         j += 1
             i += 1
 
-        average_heartrate = sum_heartrate / len(self.heartrates)  # Calculating the average heartrate
+        try:
+            average_heartrate = sum_heartrate / len(self.heartrates)  # Calculating the average heartrate
+        except:
+            return
 
         # Identifying the intervals by heart rate
         # An interval is identified, when a segment's heart rate is greater than the average heart rate
@@ -188,6 +227,47 @@ class IntervalIdentificationByHeartrate(object):
                 number_of_intervals -= 1
             else:
                 i += 1
+
+    # Returning a dictionary with interval statistics
+    def calculate_interval_statistics(self):
+        number_of_intervals = len(self.intervals)  # Number of intervals
+
+        list_duration = []
+        for item in self.intervals:
+            list_duration.append(self.timestamps[item[-1]].timestamp() + self.timestamps[item[0]].timestamp())
+
+        if not list_duration:
+            return
+
+        min_duration_interval = min(list_duration)  # Minimum duration of an interval
+        max_duration_interval = max(list_duration)  # Maximum duration of an interval
+        avg_duration_interval = sum(list_duration) / len(list_duration)  # Average duration of an interval
+
+        list_distance = [self.distances[item[-1]] + self.distances[item[0]] for item in self.intervals]  # Distance of every interval in list
+        min_distance_interval = min(list_distance)  # Minimum distance of an interval
+        max_distance_interval = max(list_distance)  # Maximum distance of an interval
+        avg_distance_interval = sum(list_distance) / len(list_distance)  # Average distance of an interval
+
+        list_heartrate = [self.heartrates[item[-1]] + self.heartrates[item[0]] for item in self.intervals]  # Heart rate of every interval in list
+        min_heartrate_interval = min(list_heartrate)  # Minimum heart rate of an interval
+        max_heartrate_interval = max(list_heartrate)  # Maximum heart rate of an interval
+        avg_heartrate_interval = sum(list_heartrate) / len(list_heartrate)  # Average heart rate of an interval
+
+        # Building a dictionary
+        data = {
+            "number_of_intervals": number_of_intervals,
+            "min_duration_interval": min_duration_interval,
+            "max_duration_interval": max_duration_interval,
+            "avg_duration_interval": avg_duration_interval,
+            "min_distance_interval": min_distance_interval,
+            "max_distance_interval": max_distance_interval,
+            "avg_distance_interval": avg_distance_interval,
+            "min_heartrate_interval": min_heartrate_interval,
+            "max_heartrate_interval": max_heartrate_interval,
+            "avg_heartrate_interval": avg_heartrate_interval,
+        }
+
+        return data
 
     # Returning all found intervals
     def return_intervals(self):
