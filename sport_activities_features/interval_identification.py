@@ -1,14 +1,14 @@
 import copy
 import math
 
-class IntervalIdentification(object):
-
+class IntervalIdentificationByPower(object):
     # To identify intervals, distances, timestamps, altitudes and mass are needed
-    def __init__(self, distances, timestamps, altitudes, mass):
+    def __init__(self, distances, timestamps, altitudes, mass, minimum_time=30):
         self.distances = distances
         self.timestamps = timestamps
         self.altitudes = altitudes
         self.mass = mass  # Mass should be given in kilograms
+        self.minimum_time = minimum_time
 
     # Identifying intervals from given data
     def identify_intervals(self):
@@ -20,6 +20,10 @@ class IntervalIdentification(object):
         for i in range(1, len(self.distances)):
             distance = self.distances[i] - self.distances[i - 1]  # Calculating the distance between two measures
             time = (self.timestamps[i] - self.timestamps[i - 1]).total_seconds()  # Calculating time between two measures
+            if time == 0:
+                powers.append(0)
+                continue
+
             speed = distance / time  # Calculating the average speed between two measures
             altitude_change = self.altitudes[i] - self.altitudes[i - 1]  # Calculating the change of altitude between two measures
 
@@ -52,10 +56,9 @@ class IntervalIdentification(object):
         # Calculation of the average power
         average_power = power_sum / len(self.distances)
 
+        # Identifying the intervals by power
+        # An interval is identified, when a segment's power is greater than the average power
         interval = []
-        counter = 0
-
-        # Identifying the intervals
         for i in range(len(self.distances) - 1):
             # If the power is greater than the average power, the interval is recognized
             if powers[i] > average_power:
@@ -63,22 +66,128 @@ class IntervalIdentification(object):
             else:
                 # If interval is not empty, it is appended to the list of all intervals
                 if interval:
-                    interval_flag = False
+                    self.intervals.append(copy.deepcopy(interval))
+                    interval.clear()
 
-                    # Checking 200 measures in advance (if the interval continues)
-                    for j in range(200):
-                        try:
-                            if powers[i + j] > average_power:  # If the interval continues in advance, it is added as one interval
-                                interval_flag = True
-                                interval.append(i)
-                                break
-                        except:
+        # Combining intervals according to the time between them
+        # Combining according to power can be very problematic, since there is no good way of knowing
+        # when two or more intervals could be merged into a common interval
+        i = 1
+        number_of_intervals = len(self.intervals) - 1
+        while i < number_of_intervals:
+            last_element = self.intervals[i - 1][-1]  # Retrieving the last index in the previous interval
+            first_element = self.intervals[i][0]  # Retrieving the first index in the current interval
+
+            # If time between two intervals is less than 30 seconds, the two intervals are combined
+            if (self.timestamps[first_element] - self.timestamps[last_element]).total_seconds() < 30:
+                self.intervals[i - 1].extend(list(range(last_element + 1, first_element)))  # Indexes between the two intervals have to be added to an interval
+                self.intervals[i - 1].extend(self.intervals[i])  # Current interval is added to the previous one
+                self.intervals.remove(self.intervals[i])  # Current interval is removed from the list
+                number_of_intervals -= 1
+            else:
+                i += 1
+
+        # Removing intervals that are too short (shorter than minimum_time, given as an argument)
+        i = 0
+        number_of_intervals = len(self.intervals) - 1
+        while i < number_of_intervals:
+            first_element = self.intervals[i][0]  # Retrieving the first index
+            last_element = self.intervals[i][-1]  # Retrieving the last index
+
+            # If an interval is shorter than self.minimum_time seconds, it is removed
+            if (self.timestamps[last_element] - self.timestamps[first_element]).total_seconds() < self.minimum_time:
+                self.intervals.remove(self.intervals[i])  # Current interval is removed from the list
+                number_of_intervals -= 1
+            else:
+                i += 1       
+
+    # Returning all found intervals
+    def return_intervals(self):
+        return self.intervals
+
+
+class IntervalIdentificationByHeartrate(object):
+    # To identify intervals, timestamps, altitudes and heart rates are needed
+    def __init__(self, timestamps, altitudes, heartrates, minimum_time=30):
+        self.timestamps = timestamps
+        self.altitudes = altitudes
+        self.heartrates = heartrates #[0 if x is None else x for x in heartrates]
+        self.minimum_time = minimum_time
+
+    # Identifying intervals from given data
+    def identify_intervals(self):
+        self.intervals = []
+        sum_heartrate = 0
+
+        # Calculating the sum and searching for None values
+        i = 0
+        while i < len(self.heartrates):
+            # If the value is number, it is added to sum
+            if isinstance(self.heartrates[i], int):
+                sum_heartrate += self.heartrates[i]
+            else:
+                j = i + 1
+                while True:
+                    if isinstance(self.heartrates[j], int):
+                        if (self.timestamps[j] - self.timestamps[i - 1]).total_seconds() > 10:  # If more than 10 seconds pass withoud a heart rate, the intervals cannot be identified
+                            raise ValueError("Input heart rates are not complete, thus intervals cannot be identified.")
+                        else:
+                            sum_heartrate += self.heartrates[j] + self.heartrates[i - 1] / 2
+                            i = j - 1
                             break
+                    else:
+                        j += 1
+            i += 1
 
-                    # If the interval is over, it is added to the list of all intervals
-                    if interval_flag == False:
-                        self.intervals.append(copy.deepcopy(interval))
-                        interval.clear()
+        average_heartrate = sum_heartrate / len(self.heartrates)  # Calculating the average heartrate
+
+        # Identifying the intervals by heart rate
+        # An interval is identified, when a segment's heart rate is greater than the average heart rate
+        interval = []
+        for i in range(len(self.heartrates)):
+            # If the heart rate at i is greater than the average heart rate, it belongs to an interval
+            if isinstance(self.heartrates[i], int) and self.heartrates[i] > average_heartrate:
+                interval.append(i)
+            else:
+                if interval:
+                    self.intervals.append(copy.deepcopy(interval))
+                    interval.clear()
+
+        # Combining intervals according to the heart rate between them
+        i = 1
+        number_of_intervals = len(self.intervals) - 1
+        while i < number_of_intervals:
+            last_element = self.intervals[i - 1][-1]  # Retrieving the last index in the previous interval
+            first_element = self.intervals[i][0]  # Retrieving the first index in the current interval
+            average_heartrate_between = 0
+            
+            try:
+                average_heartrate_between = sum(self.heartrates[last_element + 1 : first_element]) / len(self.heartrates[last_element + 1 : first_element])  # Calculating the average heart rate between two intervals
+            except:
+                pass
+
+            # If average heart rate between two intervals is less than 10, the two intervals are combined
+            if average_heartrate - average_heartrate_between < 10:
+                self.intervals[i - 1].extend(list(range(last_element + 1, first_element)))  # Indexes between the two intervals have to be added to an interval
+                self.intervals[i - 1].extend(self.intervals[i])  # Current interval is added to the previous one
+                self.intervals.remove(self.intervals[i])  # Current interval is removed from the list
+                number_of_intervals -= 1
+            else:
+                i += 1
+
+        # Removing intervals that are too short (shorter than minimum_time, given as an argument)
+        i = 0
+        number_of_intervals = len(self.intervals) - 1
+        while i < number_of_intervals:
+            first_element = self.intervals[i][0]  # Retrieving the first index
+            last_element = self.intervals[i][-1]  # Retrieving the last index
+
+            # If an interval is shorter than self.minimum_time seconds, it is removed
+            if (self.timestamps[last_element] - self.timestamps[first_element]).total_seconds() < self.minimum_time:
+                self.intervals.remove(self.intervals[i])  # Current interval is removed from the list
+                number_of_intervals -= 1
+            else:
+                i += 1
 
     # Returning all found intervals
     def return_intervals(self):

@@ -23,6 +23,13 @@ class PlotData(object):
                 points.append(identified_hills[i][j])
         return points
 
+    def get_positions_of_intervals(self, identified_intervals):
+        points = []
+        for i in range(len(identified_intervals)):
+            for j in range(len(identified_intervals[i])):
+                points.append(identified_intervals[i][j])
+        return points        
+
     def draw_hills_in_map(self, altitude, distance, identified_hills):
         r"""Plot all hills identified in data on topographic map.
 
@@ -51,16 +58,16 @@ class PlotData(object):
 
     # Drawing the map with the intervals
     def draw_intervals_in_map(self, timestamp, distance, identified_intervals):
-        fig = plt.figure()
+        fig = plt.figure("Intervals")
         ax = plt.axes()
         x_points = []
         y_points = []
         colors = []
 
-        points = self.get_positions_of_hills(identified_intervals)  # Getting positions of intervals
+        points = self.get_positions_of_intervals(identified_intervals)  # Getting positions of intervals
 
         # Appending points to lists
-        for i in range(len(points)):
+        for i in range(len(timestamp)):
             time = (timestamp[i] - timestamp[0]).total_seconds()  # Calculation of time between the current and the starting point
 
             x_points.append(float(time))  # Appending the time to the list
@@ -79,8 +86,9 @@ class PlotData(object):
                 if y_points[i - 1] == y_points[i]:
                     plt.plot([x_points[i - 1], x_points[i]], [y_points[i - 1], y_points[i]], c="blue", linewidth=3)
 
+        # Setting the parameters of the plot
         plt.xticks(fontsize=14)
-        plt.yticks([0, 1])
+        plt.yticks([0, 1], ["No", "Yes"])
         plt.title('Intervals', fontsize=20)
         plt.xlabel('Time (s)', fontsize=20)
         plt.ylabel('Interval', fontsize=20)
