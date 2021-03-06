@@ -4,7 +4,7 @@ import os
 
 class TCXFile(object):
     r"""Working with TCX files
-        """
+    """
 
     def __init__(self):
         self.all_files = []
@@ -12,10 +12,9 @@ class TCXFile(object):
     def read_directory(self, directory_name):
         r"""Find all tcx files in a directory.
 
-                Returns:
-                        str: Array of strings
-
-                """
+        Returns:
+            str: Array of strings
+        """
 
         files = os.listdir(directory_name)
         all_files1 = [i for i in files if i.endswith('.tcx')]
@@ -27,12 +26,12 @@ class TCXFile(object):
     def read_one_file(self, filename):
         r"""Parse one TCX file.
 
-                Returns:
-                        dictionary:
+        Returns:
+            dictionary:
 
         Note:
             In the case of missing value in raw data, we assign None
-                """
+        """
         tcx = TCXReader().read(filename)
 
         # handling missing data - should be improved in original tcxparser
@@ -75,10 +74,9 @@ class TCXFile(object):
     def extract_integral_metrics(self, filename):
         r"""Parse one TCX file and extract integral metrics.
 
-                Returns:
-                        dictionary:
-
-                """
+        Returns:
+            dictionary:
+        """
         tcx = TCXReader().read(filename)
 
         # handling missing data in raw files

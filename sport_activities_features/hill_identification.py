@@ -5,11 +5,10 @@ from .classes import StoredSegments
 class HillIdentification(object):
     r"""Identification of Hills from TCX file.
 
-        Attributes:
-                altitudes: An array of altitude values extracted from TCX file
-                ascent_threshold (float): Parameter that defines the hill (hill >= ascent_threshold)
-
-        """
+    Attributes:
+        altitudes: An array of altitude values extracted from TCX file
+        ascent_threshold (float): Parameter that defines the hill (hill >= ascent_threshold)
+    """
 
     def __init__(self, altitudes, ascent_threshold):
         self.altitudes = altitudes
@@ -19,10 +18,10 @@ class HillIdentification(object):
     def return_hill(self, ascent_threshold):
         r"""Return
 
-                Returns:
-                        bool:
+        Returns:
+            bool:
 
-                """
+        """
         if ascent_threshold >= 30:
             return True
         else:
@@ -31,9 +30,9 @@ class HillIdentification(object):
     def identify_hills(self):
         r"""Algorithm for the identification of hills from data.
 
-                Note:
-                        * :Algorithm is still in its preliminary stage.
-                """
+        Note:
+            * :Algorithm is still in its preliminary stage.
+        """
         differences = []
         for i in range(1, len(self.altitudes)):
             differences.append(self.altitudes[i] - self.altitudes[i - 1])
@@ -87,10 +86,9 @@ class HillIdentification(object):
     def return_hills(self):
         r"""Return identified hills.
 
-                Returns:
-                        str: Array of identified hills.
-
-                """
+        Returns:
+            str: Array of identified hills.
+        """
         hills = []
         for i in range(len(self.identified_hills)):
             hills.append(self.identified_hills[i].segment)

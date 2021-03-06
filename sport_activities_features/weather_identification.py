@@ -32,10 +32,11 @@ class Weather:
 
 class WeatherIdentification(object):
     r"""Identification of Weather data from TCX file.
-        Attributes:
-                altitudes: An array of altitude values extracted from TCX file
-                ascent_threshold (float): Parameter that defines the hill (hill >= ascent_threshold)
-        """
+    
+    Attributes:
+        altitudes: An array of altitude values extracted from TCX file
+        ascent_threshold (float): Parameter that defines the hill (hill >= ascent_threshold)
+    """
 
     def __init__(self, locations, timestamps, vc_api_key, unit_group="metric"):
         """

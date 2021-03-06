@@ -7,16 +7,14 @@ plt.style.use('seaborn-whitegrid')
 
 class PlotData(object):
     r"""Plotting the extracted data.
-
-        """
+    """
 
     def get_positions_of_hills(self, identified_hills):
         r"""Return positions of identified hills.
 
-                Returns:
-                        str: Array
-
-                """
+        Returns:
+            str: Array
+        """
         points = []
         for i in range(len(identified_hills)):
             for j in range(len(identified_hills[i])):
@@ -32,8 +30,7 @@ class PlotData(object):
 
     def draw_hills_in_map(self, altitude, distance, identified_hills):
         r"""Plot all hills identified in data on topographic map.
-
-                """
+        """
         fig = plt.figure()
         ax = plt.axes()
         tocke = []
@@ -96,8 +93,7 @@ class PlotData(object):
 
     def draw_basic_map(self, altitude, distance):
         r"""Plot the whole topographic map.
-
-                """
+        """
         fig = plt.figure()
         ax = plt.axes()
         tocke = []
