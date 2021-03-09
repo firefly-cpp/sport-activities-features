@@ -5,10 +5,9 @@ import geopy.distance
 class TopographicFeatures(object):
     r"""Implementation of feature extraction from topographic maps.
 
-        Attributes:
-                identified_hills: Identified hills are now passed to this class.
-
-        """
+    Attributes:
+        identified_hills: Identified hills are now passed to this class.
+    """
 
     def __init__(self, identified_hills):
         self.identified_hills = identified_hills
@@ -17,19 +16,17 @@ class TopographicFeatures(object):
     def num_of_hills(self):
         r"""FEATURE: Number of identified hills in sport activity.
 
-                Returns:
-                        int: number of hills
-
-                """
+        Returns:
+            int: number of hills
+        """
         return len(self.identified_hills)
 
     def avg_altitude_of_hills(self, alts):
         r"""FEATURE: The average altitude of all identified hills in sport activity.
 
-                Returns:
-                        float: average altitude
-
-                """
+        Returns:
+            float: average altitude
+        """
         all_values = []
         for i in range(len(self.identified_hills)):
             alt_points = []
@@ -45,10 +42,9 @@ class TopographicFeatures(object):
     def distance_of_hills(self, positions):
         r"""FEATURE: Total distance of all identified hills in sport activity.
 
-                Returns:
-                        float: distance of hills
-
-                """
+        Returns:
+            float: distance of hills
+        """
         total_distance = 0.0
         for i in range(len(self.identified_hills)):
             current = self.identified_hills[i]
@@ -67,10 +63,9 @@ class TopographicFeatures(object):
     def share_of_hills(self, hills_dist, total_dist):
         r"""FEATURE: Share of hills in sport activity (percentage)
 
-                Returns:
-                        float: share of hills
-
-                """
+        Returns:
+            float: share of hills
+        """
         if total_dist == 0:
             return 0
         else:
@@ -79,10 +74,9 @@ class TopographicFeatures(object):
     def avg_ascent_of_hills(self, alts):
         r"""FEATURE: Average ascent of all hills in sport activity.
 
-                Returns:
-                        float: average ascent
-
-                """
+        Returns:
+            float: average ascent
+        """
         all_values = []
         for i in range(len(self.identified_hills)):
             ascents = []
@@ -101,10 +95,9 @@ class TopographicFeatures(object):
     def ascent(self, altitude_data):
         r"""Implementation of ascent calculation (should be improved)
 
-                Returns:
-                        float: total ascent
-
-                """
+        Returns:
+            float: total ascent
+        """
         total_ascent = 0.0
         for i in range(len(altitude_data) - 1):
             diff = altitude_data[i + 1] - altitude_data[i]
@@ -115,10 +108,9 @@ class TopographicFeatures(object):
     def descent(self, altitude_data):
         r"""Implementation of descent calculation (should be improved)
 
-                Returns:
-                        float: total descent
-
-                """
+        Returns:
+            float: total descent
+        """
         total_descent = 0.0
         for i in range(len(altitude_data) - 1):
             diff = altitude_data[i + 1] - altitude_data[i]
