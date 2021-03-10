@@ -16,7 +16,8 @@ Proposed software supports the extraction of following topographic features from
 - average altitude of identified hills,
 - total distance of identified hills,
 - climbing ratio (total distance of identified hills vs. total distance),
-- average ascent of hills.
+- average ascent of hills
+- and many others.
 
 
 ## Installation
