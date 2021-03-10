@@ -1,3 +1,4 @@
+import os
 import sys
 sys.path.append('../')
 
@@ -14,7 +15,7 @@ all_files = tcx_file.read_directory("path_to_the_folder")
 # Extracting the data of all files
 activities = []
 for file in all_files:
-    activity = { "ID" : file.split("/", -1)[-1].split(".", 1)[0]}
+    activity = { "ID" : os.path.splitext(os.path.split(file)[-1])[0] }
     activity.update(tcx_file.read_one_file(file))
     activity.update(tcx_file.extract_integral_metrics(file))
 
