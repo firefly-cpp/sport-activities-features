@@ -19,7 +19,7 @@ class TCXFile(object):
         files = os.listdir(directory_name)
         all_files1 = [i for i in files if i.endswith('.tcx')]
         for j in range(len(all_files1)):
-            file = directory_name + all_files1[j]
+            file = os.path.join(directory_name, all_files1[j])
             self.all_files.append(file)
         return self.all_files
 

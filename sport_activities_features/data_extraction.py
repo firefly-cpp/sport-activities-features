@@ -6,7 +6,7 @@ class DataExtraction(object):
 
     # Writing each activity data as CSV
     def extract_data(self, path):
-        with open(path + ".csv", mode="w") as csv_file:
+        with open(path + ".csv" if not path.endswith('.csv') else path, mode="w", newline='') as csv_file:
             fieldnames = ["id", "duration", "distance", "calories", "number_of_hills", "distance_between_hills", "number_of_intervals",
                           "average_interval_duration", "longest_interval", "activity_type"]
             csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
