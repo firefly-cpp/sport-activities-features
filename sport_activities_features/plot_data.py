@@ -22,6 +22,11 @@ class PlotData(object):
         return points
 
     def get_positions_of_intervals(self, identified_intervals):
+        r"""Return positions of identified intervals.
+
+        Returns:
+            str: Array
+        """
         points = []
         for i in range(len(identified_intervals)):
             for j in range(len(identified_intervals[i])):
@@ -55,6 +60,8 @@ class PlotData(object):
 
     # Drawing the map with the intervals
     def draw_intervals_in_map(self, timestamp, distance, identified_intervals):
+        r"""Plot all intervals identified in data on topographic map.
+        """
         fig = plt.figure("Intervals")
         ax = plt.axes()
         x_points = []
