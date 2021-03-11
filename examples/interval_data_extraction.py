@@ -14,6 +14,6 @@ Intervals.identify_intervals()
 all_intervals = Intervals.return_intervals()
 
 # Identifying the intervals in the activity by heart rate
-Intervals = IntervalIdentificationByHeartrate(activity["timestamps"], activity["altitudes"], activity["heartrates"])
+Intervals = IntervalIdentificationByHeartrate(activity["distances"], activity["timestamps"], activity["altitudes"], activity["heartrates"])
 Intervals.identify_intervals()
 all_intervals = Intervals.return_intervals()

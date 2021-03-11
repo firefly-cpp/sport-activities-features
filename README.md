@@ -31,6 +31,8 @@ pip install sport-activities-features
 - Extraction of integral metrics (total distance, total duration, calories) ([see example](examples/integral_metrics_extraction.py))
 - Extraction of topographic features (number of hills, average altitude of identified hills, total distance of identified hills, climbing ratio, average ascent of hills) ([see example](examples/hill_data_extraction.py))
 - Plotting the identified hills ([see example](examples/draw_map_with_identified_hills.py)) 
+- Extraction of intervals (number of intervals, maximum/minimum/average duration of intervals, maximum/minimum/average distance of intervals, maximum/minimum/average heart rate during intervals)
+- Plotting the identified intervals ([see example](examples/draw_map_with_identified_intervals.py)) 
 - Calculation of training loads (Bannister TRIMP, Lucia TRIMP) ([see example](examples/integral_metrics_extraction.py))
 - Parsing of Historical weather data from an external service
 
@@ -65,6 +67,29 @@ avg_altitude = Top.avg_altitude_of_hills(activity['altitudes'])
 avg_ascent = Top.avg_ascent_of_hills(activity['altitudes'])
 distance_hills = Top.distance_of_hills(activity['positions'])
 hills_share = Top.share_of_hills(distance_hills, activity['total_distance'])
+```
+
+### Extraction of intervals
+```python
+import sys
+sys.path.append('../')
+
+from sport_activities_features.interval_identification import IntervalIdentificationByPower, IntervalIdentificationByHeartrate
+from sport_activities_features.tcx_manipulation import TCXFile
+
+# Reading the TCX file
+tcx_file = TCXFile()
+activity = tcx_file.read_one_file("path_to_the_data")
+
+# Identifying the intervals in the activity by power
+Intervals = IntervalIdentificationByPower(activity["distances"], activity["timestamps"], activity["altitudes"], 70)
+Intervals.identify_intervals()
+all_intervals = Intervals.return_intervals()
+
+# Identifying the intervals in the activity by heart rate
+Intervals = IntervalIdentificationByHeartrate(activity["timestamps"], activity["altitudes"], activity["heartrates"])
+Intervals.identify_intervals()
+all_intervals = Intervals.return_intervals()
 ```
 
 ### Extraction of integral metrics

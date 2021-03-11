@@ -105,32 +105,25 @@ class IntervalIdentificationByPower(object):
     def calculate_interval_statistics(self):
         number_of_intervals = len(self.intervals)  # Number of intervals
 
-        list_duration = [(self.timestamps[item[-1]] + self.timestamps[item[0]]).total_seconds() for item in self.intervals]  # Time of every interval in list
+        list_duration = [(self.timestamps[item[-1]] - self.timestamps[item[0]]).total_seconds() for item in self.intervals]  # Time of every interval in list
         min_duration_interval = min(list_duration)  # Minimum duration of an interval
         max_duration_interval = max(list_duration)  # Maximum duration of an interval
         avg_duration_interval = sum(list_duration) / len(list_duration)  # Average duration of an interval
 
-        list_distance = [self.distances[item[-1]] + self.distances[item[0]] for item in self.intervals]  # Distance of every interval in list
+        list_distance = [self.distances[item[-1]] - self.distances[item[0]] for item in self.intervals]  # Distance of every interval in list
         min_distance_interval = min(list_distance)  # Minimum distance of an interval
         max_distance_interval = max(list_distance)  # Maximum distance of an interval
         avg_distance_interval = sum(list_distance) / len(list_distance)  # Average distance of an interval
 
-        list_heartrate = [self.heartrates[item[-1]] + self.heartrates[item[0]] for item in self.intervals]  # Heart rate of every interval in list
-        min_heartrate_interval = min(list_heartrate)  # Minimum heart rate of an interval
-        max_heartrate_interval = max(list_heartrate)  # Maximum heart rate of an interval
-        avg_heartrate_interval = sum(list_heartrate) / len(list_heartrate)  # Average heart rate of an interval
-
         # Building a dictionary
         data = {
+            "number_of_intervals": number_of_intervals,
             "min_duration": min_duration_interval,
             "max_duration": max_duration_interval,
             "avg_duration": avg_duration_interval,
             "min_distance": min_distance_interval,
             "max_distance": max_distance_interval,
             "avg_distance": avg_distance_interval,
-            "min_heartrate": min_heartrate_interval,
-            "max_heartrate": max_heartrate_interval,
-            "avg_heartrate": avg_heartrate_interval,
         }
 
         return data
@@ -239,16 +232,17 @@ class IntervalIdentificationByHeartrate(object):
         if not list_duration:
             return
 
+        list_duration = [(self.timestamps[item[-1]] - self.timestamps[item[0]]).total_seconds() for item in self.intervals]  # Time of every interval in list
         min_duration_interval = min(list_duration)  # Minimum duration of an interval
         max_duration_interval = max(list_duration)  # Maximum duration of an interval
         avg_duration_interval = sum(list_duration) / len(list_duration)  # Average duration of an interval
 
-        list_distance = [self.distances[item[-1]] + self.distances[item[0]] for item in self.intervals]  # Distance of every interval in list
+        list_distance = [self.distances[item[-1]] - self.distances[item[0]] for item in self.intervals]  # Distance of every interval in list
         min_distance_interval = min(list_distance)  # Minimum distance of an interval
         max_distance_interval = max(list_distance)  # Maximum distance of an interval
         avg_distance_interval = sum(list_distance) / len(list_distance)  # Average distance of an interval
 
-        list_heartrate = [self.heartrates[item[-1]] + self.heartrates[item[0]] for item in self.intervals]  # Heart rate of every interval in list
+        list_heartrate = [sum(self.heartrates[item[0] : item[-1] + 1]) / len(self.heartrates[item[0] : item[-1] + 1]) for item in self.intervals]  # Heart rate of every interval in list
         min_heartrate_interval = min(list_heartrate)  # Minimum heart rate of an interval
         max_heartrate_interval = max(list_heartrate)  # Maximum heart rate of an interval
         avg_heartrate_interval = sum(list_heartrate) / len(list_heartrate)  # Average heart rate of an interval
