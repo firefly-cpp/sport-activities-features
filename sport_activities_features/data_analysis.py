@@ -51,3 +51,15 @@ class DataAnalysis(object):
         pipeline_optimizer = PipelineOptimizer(data=data, classifiers=classifiers, feature_selection_algorithms=feature_selection_algorithms, feature_transform_algorithms=feature_transform_algorithms, imputer=imputer)
         pipeline = pipeline_optimizer.run_v1(fitness_name, population_size, number_of_evaluations, optimization_algorithm)
         return pipeline
+
+    @staticmethod
+    def load_pipeline(file_name):
+        r"""Load a NiaAML's pipeline from a binary file.
+
+        Note:
+            See NiaAML's documentation for more details on the use of the Pipeline class.
+
+        Arguments:
+            file_name (string): Path to a binary pipeline file.
+        """
+        return Pipeline.load(file_name)
