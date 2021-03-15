@@ -46,11 +46,13 @@ class PlotData(object):
             tocke.append(float(altitude[j]))
             tocke2.append(float(distance[j]))
 
-            if j in points:
-                ax.plot(tocke2[j], tocke[j], 'o', color='r', markersize=2)
+            if j == 0:
+                continue
 
+            if (j - 1) in points and j in points:
+                plt.plot([tocke2[j - 1], tocke2[j]], [tocke[j - 1], tocke[j]], color='r', markersize=5)
             else:
-                ax.plot(tocke2[j], tocke[j], 'o', color='b', markersize=2)
+                plt.plot([tocke2[j - 1], tocke2[j]], [tocke[j - 1], tocke[j]], color='b', markersize=5)
 
         plt.xticks(fontsize=14)
         plt.title('Detected hills', fontsize=20)
