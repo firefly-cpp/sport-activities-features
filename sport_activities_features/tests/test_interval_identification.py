@@ -11,41 +11,41 @@ class TestHillIdentification(TestCase):
         self.activity = tcx_file.read_one_file(filename)
 
         # Identifying the intervals in the activity by power
-        IntervalsPower = IntervalIdentificationByPower(activity["distances"], activity["timestamps"], activity["altitudes"], 70)
+        IntervalsPower = IntervalIdentificationByPower(self.activity["distances"], self.activity["timestamps"], self.activity["altitudes"], 70)
         IntervalsPower.identify_intervals()
         self.statistics_power = IntervalsPower.calculate_interval_statistics()
 
         # Identifying the intervals in the activity by heart rate
-        IntervalsHeartrate = IntervalIdentificationByHeartrate(activity["timestamps"], activity["altitudes"], activity["heartrates"])
+        IntervalsHeartrate = IntervalIdentificationByHeartrate(self.activity["distances"], self.activity["timestamps"], self.activity["altitudes"], self.activity["heartrates"])
         IntervalsHeartrate.identify_intervals()
         self.statistics_heartrate = IntervalsHeartrate.calculate_interval_statistics()
 
     def test_num_intervals_correct(self):
         self.assertEqual(self.statistics_power["number_of_intervals"], 19)
-        self.assertEqual(self.statistics_heartrate["number_of_intervals"], )
+        self.assertEqual(self.statistics_heartrate["number_of_intervals"], 4)
 
     def test_min_duration_correct(self):
-        self.assertAlmostEqual(self.statistics_power["min_duration_interval"], 1.0, places=1)
+        self.assertAlmostEqual(self.statistics_power["min_duration"], 1.0, places=1)
         self.assertAlmostEqual(self.statistics_heartrate["min_duration_interval"], 134.0, places=1)
 
     def test_max_duration_correct(self):
-        self.assertAlmostEqual(self.statistics_power["max_duration_interval"], 207.0, places=1)
+        self.assertAlmostEqual(self.statistics_power["max_duration"], 207.0, places=1)
         self.assertAlmostEqual(self.statistics_heartrate["max_duration_interval"], 2191.0, places=1)
 
     def test_avg_duration_correct(self):
-        self.assertAlmostEqual(self.statistics_power["avg_duration_interval"], 84.2, places=1)
+        self.assertAlmostEqual(self.statistics_power["avg_duration"], 84.2, places=1)
         self.assertAlmostEqual(self.statistics_heartrate["avg_duration_interval"], 829.75, places=2)
 
     def test_min_distance_correct(self):
-        self.assertAlmostEqual(self.statistics_power["min_distance_interval"], 6.8496, places=4)
-        self.assertAlmostEqual(self.statistics_heartrate["min_distance_interval"], 794,83, places=2)
+        self.assertAlmostEqual(self.statistics_power["min_distance"], 6.8496, places=4)
+        self.assertAlmostEqual(self.statistics_heartrate["min_distance_interval"], 794.83, places=2)
 
     def test_max_distance_correct(self):
-        self.assertAlmostEqual(self.statistics_power["max_distance_interval"], 1259.6, places=1)
+        self.assertAlmostEqual(self.statistics_power["max_distance"], 1259.6, places=1)
         self.assertAlmostEqual(self.statistics_heartrate["max_distance_interval"], 13855.4, places=1)
 
     def test_avg_distance_correct(self):
-        self.assertAlmostEqual(self.statistics_power["avg_distance_interval"], 479.67, places=2)
+        self.assertAlmostEqual(self.statistics_power["avg_distance"], 479.67, places=2)
         self.assertAlmostEqual(self.statistics_heartrate["avg_distance_interval"], 5454.8875, places=4)
 
     def test_min_heartrate_correct(self):
