@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.2](https://github.com/firefly-cpp/sport-activities-features/tree/0.1.2) (2021-03-18)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.1.1...0.1.2)
+
+**Merged pull requests:**
+
+- Small improvements [\#13](https://github.com/firefly-cpp/sport-activities-features/pull/13) ([luckyLukac](https://github.com/luckyLukac))
+- Added DataAnalysis feature [\#12](https://github.com/firefly-cpp/sport-activities-features/pull/12) ([lukapecnik](https://github.com/lukapecnik))
+- Added test\_interval\_identification and minor bugfixes [\#11](https://github.com/firefly-cpp/sport-activities-features/pull/11) ([luckyLukac](https://github.com/luckyLukac))
+- Potential code fixes and improvements [\#10](https://github.com/firefly-cpp/sport-activities-features/pull/10) ([lukapecnik](https://github.com/lukapecnik))
+- update readme [\#9](https://github.com/firefly-cpp/sport-activities-features/pull/9) ([rhododendrom](https://github.com/rhododendrom))
+- Update plot\_data.py [\#8](https://github.com/firefly-cpp/sport-activities-features/pull/8) ([rhododendrom](https://github.com/rhododendrom))
+
 ## [0.1.1](https://github.com/firefly-cpp/sport-activities-features/tree/0.1.1) (2021-03-09)
 
 [Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0e7d0249683b640de049b9ea7de0e6c68389e059...0.1.1)
