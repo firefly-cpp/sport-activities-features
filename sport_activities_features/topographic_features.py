@@ -123,3 +123,11 @@ class TopographicFeatures(object):
         coords_2 = (lat2, lon2)
 
         return geopy.distance.geodesic(coords_1, coords_2).km
+
+    # Calculation of the hill gradient in percent
+    def calculate_hill_gradient(self, lat1, lat2, lon1, lon2, height1, height2):
+        distance = 1000 * calculate_distance(lat1, lat2, lon1, lon2)  # Calculation of distance between given coordinates in meters
+        height_change = height2 - height1  # Calculation of height change in meters
+        
+        gradient =  100 * height_change / distance  # Calculation of the gradient in percent
+        return gradient
