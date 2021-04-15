@@ -1,5 +1,16 @@
 # sport-activities-features --- A minimalistic toolbox for extracting features from sport activity files written in Python
 
+---
+
+[![PyPI Version](https://img.shields.io/pypi/v/sport-activities-features.svg)](https://pypi.python.org/pypi/sport-activities-features)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/sport-activities-features.svg)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/sport-activities-features.svg)
+[![GitHub license](https://img.shields.io/github/license/firefly-cpp/sport-activities-features.svg)](https://github.com/firefly-cpp/sport-activities-features/blob/master/LICENSE)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/w/firefly-cpp/sport-activities-features.svg)
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/firefly-cpp/sport-activities-features.svg)](http://isitmaintained.com/project/firefly-cpp/sport-activities-features "Average time to resolve an issue")
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/firefly-cpp/sport-activities-features.svg)](http://isitmaintained.com/project/firefly-cpp/sport-activities-features "Percentage of issues still open")
+![GitHub contributors](https://img.shields.io/github/contributors/firefly-cpp/sport-activities-features.svg)
+
 ## Objective
 Data analysis of sport activities that were monitored by the use of [sport trackers is popular](http://iztok-jr-fister.eu/static/publications/42.pdf).
 Many interesting utilizations of data are available, e.g. large-scale data mining of sport activities files for the [automatic sport training sessions generation](http://iztok-jr-fister.eu/static/publications/189.pdf).
