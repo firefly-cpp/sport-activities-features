@@ -22,8 +22,20 @@ Proposed software supports the extraction of following topographic features from
 
 ## Installation
 
+### pip3
+
+Install sport-activities-features with pip3:
+
 ```sh
-pip install sport-activities-features
+pip3 install sport-activities-features
+```
+
+### Fedora Linux
+
+To install sport-activities-features on Fedora, use:
+
+```sh
+$ dnf install python3-sport-activities-features
 ```
 
 ## Full Features
