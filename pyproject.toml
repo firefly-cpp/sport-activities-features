@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "sport-activities-features"
 version = "0.1.2"
-description = ""
+description = "A minimalistic toolbox for extracting features from sport activity files"
 authors = ["iztokf <iztokf@fedoraproject.org>"]
 
 [tool.poetry.dependencies]
@@ -15,6 +15,8 @@ niaaml = "^1.1.1"
 [tool.poetry.dev-dependencies]
 Sphinx = "^3.5.1"
 sphinx-rtd-theme = "^0.5.1"
+coveralls = "^2.2.0"
+pytest = "^3.4.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
