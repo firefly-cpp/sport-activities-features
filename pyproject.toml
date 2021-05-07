@@ -11,6 +11,7 @@ geopy = "^2.0.0"
 tcxreader = "^0.3.0"
 requests = "^2.25.1"
 niaaml = "^1.1.1"
+overpy = "^0.6"
 
 [tool.poetry.dev-dependencies]
 Sphinx = "^3.5.1"
