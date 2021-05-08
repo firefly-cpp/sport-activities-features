@@ -28,6 +28,8 @@ Proposed software supports the extraction of following topographic features from
 - total distance of identified hills,
 - climbing ratio (total distance of identified hills vs. total distance),
 - average ascent of hills
+- total ascent
+- total descent
 - and many others.
 
 
@@ -52,11 +54,12 @@ $ dnf install python3-sport-activities-features
 ## Full Features
 
 - Extraction of integral metrics (total distance, total duration, calories) ([see example](examples/integral_metrics_extraction.py))
-- Extraction of topographic features (number of hills, average altitude of identified hills, total distance of identified hills, climbing ratio, average ascent of hills) ([see example](examples/hill_data_extraction.py))
+- Extraction of topographic features (number of hills, average altitude of identified hills, total distance of identified hills, climbing ratio, average ascent of hills, total ascent, total descent) ([see example](examples/hill_data_extraction.py))
 - Plotting the identified hills ([see example](examples/draw_map_with_identified_hills.py)) 
 - Extraction of intervals (number of intervals, maximum/minimum/average duration of intervals, maximum/minimum/average distance of intervals, maximum/minimum/average heart rate during intervals)
 - Plotting the identified intervals ([see example](examples/draw_map_with_identified_intervals.py)) 
 - Calculation of training loads (Bannister TRIMP, Lucia TRIMP) ([see example](examples/integral_metrics_extraction.py))
+- Compatible with TCX activity files and [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API) nodes
 - Parsing of Historical weather data from an external service
 
 ## Historical weather data
@@ -64,6 +67,13 @@ Weather data parsed is collected from the [Visual Crossing Weather API](https://
 This is an external unaffiliated service and the user must register and use the API key provided from the service. 
 The service has a free tier (1000 Weather reports / day) but is otherwise operating on a pay as you go model.
 For the pricing and terms of use please read the [official documentation](https://www.visualcrossing.com/weather-data-editions) of the API provider.
+
+## Overpass API & Open Elevation API integration
+Without performed activities we can use the [OpenStreetMap](https://www.openstreetmap.org/) for identification of hills,
+total ascent and descent. This is done using the [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API)
+which is a read-only API that allows querying of OSM map data. In addition to that altitude data is retrieved by using the
+[Open-Elevation API](https://open-elevation.com/) which is a open-source and free alternative to the Google Elevation API.
+Both of the solutions can be used by using free publicly acessible APIs ([Overpass](https://wiki.openstreetmap.org/wiki/Overpass_API), [Open-Elevation](https://open-elevation.com/#public-api)) or can be self hosted on a server or as a Docker container ([Overpass](https://wiki.openstreetmap.org/wiki/Overpass_API/Installation), [Open-Elevation](https://github.com/Jorl17/open-elevation/blob/master/docs/host-your-own.md)).
 
 ## CODE EXAMPLES:
 
@@ -130,6 +140,55 @@ integral_metrics = tcx_file.extract_integral_metrics("path_to_the_file")
 print(integral_metrics)
 
 ```
+
+### Weather data extraction
+```python
+from sport_activities_features.weather_identification import WeatherIdentification
+from sport_activities_features.tcx_manipulation import TCXFile
+
+#read TCX file
+tcx_file = TCXFile()
+tcx_data = tcx_file.read_one_file("path_to_the_file")
+
+#configure visual crossing api key
+visual_crossing_api_key = "API_KEY" # https://www.visualcrossing.com/weather-api
+
+#return weather objects
+weather = WeatherIdentification(tcx_data['positions'], tcx_data['timestamps'], visual_crossing_api_key)
+weatherlist = weather.get_weather()
+```
+
+### Using with Overpass queried Open Street Map nodes
+```python
+import overpy
+from sport_activities_features.overpy_node_manipulation import OverpyNodesReader
+
+# External service Overpass API (https://wiki.openstreetmap.org/wiki/Overpass_API) (can be self hosted)
+overpass_api = "https://lz4.overpass-api.de/api/interpreter"
+
+# External service Open Elevation API (https://api.open-elevation.com/api/v1/lookup) (can be self hosted)
+open_elevation_api = "https://api.open-elevation.com/api/v1/lookup"
+
+# OSM Way (https://wiki.openstreetmap.org/wiki/Way)
+open_street_map_way = 164477980
+
+overpass_api = overpy.Overpass(url=overpass_api)
+
+# Get an example Overpass way
+q = f"""(way({open_street_map_way});<;);out geom;"""
+query = overpass_api.query(q)
+
+# Get nodes of an Overpass way
+nodes = query.ways[0].get_nodes(resolve_missing=True)
+
+# Extract basic data from nodes (you can later on use Hill Identification and Hill Data Extraction on them)
+overpy_reader = OverpyNodesReader(open_elevation_api=open_elevation_api)
+# Returns {
+#         'positions': positions, 'altitudes': altitudes, 'distances': distances, 'total_distance': total_distance
+#         }
+data = overpy_reader.read_nodes(nodes)
+```
+
 ## Datasets
 
 Datasets are available on the following links: [DATASET1](http://iztok-jr-fister.eu/static/publications/Sport5.zip), [DATASET2](http://iztok-jr-fister.eu/static/css/datasets/Sport.zip)
