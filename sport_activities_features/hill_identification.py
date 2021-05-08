@@ -14,6 +14,8 @@ class HillIdentification(object):
         self.altitudes = altitudes
         self.ascent_threshold = ascent_threshold
         self.identified_hills = []
+        self.total_ascent = 0
+        self.total_descent= 0
 
     def return_hill(self, ascent_threshold):
         r"""Return
@@ -28,15 +30,16 @@ class HillIdentification(object):
             return False
 
     def identify_hills(self):
-        r"""Algorithm for the identification of hills from data.
-
+        r"""Algorithm for the identification of hills, total ascent and descent from data.
         Note:
             * :Algorithm is still in its preliminary stage.
         """
         differences = []
         for i in range(1, len(self.altitudes)):
             differences.append(self.altitudes[i] - self.altitudes[i - 1])
-        
+        self.total_ascent = sum(x for x in differences if x>0)
+        self.total_descent = sum(-x for x in differences if x<0)
+
         BEST_SEGMENT = []
         BEST_SEGMENT_ASCENT = 0.0
 
