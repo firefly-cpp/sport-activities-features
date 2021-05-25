@@ -1,3 +1,7 @@
+"""
+This example presents how to use interval identification based by power and by heart rate.
+"""
+
 import sys
 sys.path.append('../')
 

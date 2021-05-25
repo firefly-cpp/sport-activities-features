@@ -2,16 +2,36 @@ import copy
 import math
 
 class IntervalIdentificationByPower(object):
-    # To identify intervals, distances, timestamps, altitudes and mass are needed
+    r""" Interval identification based on power.
+
+    Date:
+        2021
+
+    Author:
+        Luka Lukač
+    
+    License:
+        MIT
+    
+    Attributes:
+        None
+    """
+
     def __init__(self, distances, timestamps, altitudes, mass, minimum_time=30):
+        r"""Initialize instance.
+        """
         self.distances = distances
         self.timestamps = timestamps
         self.altitudes = altitudes
         self.mass = mass  # Mass should be given in kilograms
         self.minimum_time = minimum_time
 
-    # Identifying intervals from given data
     def identify_intervals(self):
+        r"""Identifying intervals from given data.
+
+        Returns:
+            None
+        """
         self.intervals = []
         powers = []
         power_sum = 0.0
@@ -101,8 +121,12 @@ class IntervalIdentificationByPower(object):
             else:
                 i += 1       
 
-    # Returning a dictionary with interval statistics
     def calculate_interval_statistics(self):
+        r"""Returning a dictionary with interval statistics.
+
+        Returns:
+            dict
+        """
         number_of_intervals = len(self.intervals)  # Number of intervals
 
         list_duration = [(self.timestamps[item[-1]] - self.timestamps[item[0]]).total_seconds() for item in self.intervals]  # Time of every interval in list
@@ -128,23 +152,47 @@ class IntervalIdentificationByPower(object):
 
         return data
 
-    # Returning all found intervals
     def return_intervals(self):
+        r"""Returning all found intervals.
+
+        Returns:
+            list
+        """
         return self.intervals
 
 
 
 class IntervalIdentificationByHeartrate(object):
-    # To identify intervals, timestamps, altitudes and heart rates are needed
+    r""" Interval identification based on power.
+
+    Date:
+        2021
+
+    Author:
+        Luka Lukač
+    
+    License:
+        MIT
+    
+    Attributes:
+        None
+    """
+
     def __init__(self, distances, timestamps, altitudes, heartrates, minimum_time=30):
+        r"""Initialize instance.
+        """
         self.distances = distances
         self.timestamps = timestamps
         self.altitudes = altitudes
         self.heartrates = heartrates
         self.minimum_time = minimum_time
 
-    # Identifying intervals from given data
     def identify_intervals(self):
+        r"""Identifying intervals from given data.
+
+        Returns:
+            None
+        """
         self.intervals = []
         sum_heartrate = 0
 
@@ -223,6 +271,11 @@ class IntervalIdentificationByHeartrate(object):
 
     # Returning a dictionary with interval statistics
     def calculate_interval_statistics(self):
+        r"""Returning a dictionary with interval statistics.
+
+        Returns:
+            dict
+        """
         number_of_intervals = len(self.intervals)  # Number of intervals
 
         list_duration = []
@@ -263,6 +316,10 @@ class IntervalIdentificationByHeartrate(object):
 
         return data
 
-    # Returning all found intervals
     def return_intervals(self):
+        r"""Returning all found intervals.
+
+        Returns:
+            list
+        """
         return self.intervals

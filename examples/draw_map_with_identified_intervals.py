@@ -1,3 +1,7 @@
+"""
+This example presents how to draw a map with identified intervals.
+"""
+
 import sys
 sys.path.append('../')
 

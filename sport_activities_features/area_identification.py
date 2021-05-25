@@ -1,6 +1,21 @@
 import numpy as np
 
 class AreaIdentifiaction(object):
+    r"""Area identification based by coordinates.
+    
+    Date:
+        2021
+
+    Author:
+        Luka Lukač
+
+    License:
+        MIT
+    
+    Attributes:
+        None
+    """
+
     def __init__(self, positions, distances, area_coordinates) -> None:
         """ Initialization of the object.
             return: None
@@ -27,7 +42,7 @@ class AreaIdentifiaction(object):
             return False
 
     def identify_distance_in_area(self) -> float:
-        """ Identifying the distance (in meters) of the activity inside the specified area
+        """ Identifying the distance (in meters) of the activity inside the specified area.
             return: float
         """
         distance_in_area = 0.0
