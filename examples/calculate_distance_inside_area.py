@@ -1,3 +1,7 @@
+"""
+This example presents how to calculate distance inside the area given with coordinates.
+"""
+
 import numpy as np
 import sys
 sys.path.append('../')
