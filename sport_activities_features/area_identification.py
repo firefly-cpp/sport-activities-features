@@ -1,6 +1,7 @@
 import numpy as np
+from numpy.lib.function_base import average
 
-class AreaIdentifiaction(object):
+class AreaIdentification(object):
     r"""Area identification based by coordinates.
     
     Date:
@@ -16,12 +17,14 @@ class AreaIdentifiaction(object):
         None
     """
 
-    def __init__(self, positions, distances, area_coordinates) -> None:
+    def __init__(self, positions, distances, timestamps, heartrates, area_coordinates) -> None:
         """ Initialization of the object.
             return: None
         """
         self.positions = np.array(positions)
         self.distances = np.array(distances)
+        self.timestamps = np.array(timestamps)
+        self.heartrates = np.array(heartrates)
         self.area_coordinates = np.array(area_coordinates)
 
     def is_equal(self, value1, value2) -> bool:
@@ -64,11 +67,11 @@ class AreaIdentifiaction(object):
         
         return False
 
-    def identify_distance_in_area(self) -> float:
-        """ Identifying the distance (in meters) of the activity inside the specified area.
-            return: float
+    def identify_points_in_area(self) -> None:
+        """ Identifying the measure points of the activity inside the specified area.
+            return: None
         """
-        distance_in_area = 0.0
+        self.points_in_area = np.array([])
 
         # Checking whether coordinates are inside the given area.
         for i in np.arange(1, np.shape(self.positions)[0]):
@@ -82,6 +85,35 @@ class AreaIdentifiaction(object):
 
             # If the number of intersections is odd, the point is inside the given area.
             if number_of_intersections % 2 == 1:
-                distance_in_area += self.distances[i] - self.distances[i - 1]  # If the point is inside area, distance is added
+                self.points_in_area = np.append(self.points_in_area, int(i))
 
-        return distance_in_area
+        self.points_in_area = self.points_in_area.astype('int32')
+
+    def extract_data_in_area(self) -> dict:
+        """ Extracting the data of the identified points in area.
+            return: dict
+        """
+        distance = 0.0
+        time = 0.0
+        max_speed = 0.0
+        heartrates = np.array([])
+
+        # Extracting the data from the identified points.
+        for i in self.points_in_area:
+            cur_distance = self.distances[i] - self.distances[i - 1]
+            cur_time = (self.timestamps[i] - self.timestamps[i - 1]).seconds
+            distance += cur_distance
+            time += cur_time
+            heartrates = np.append(heartrates, self.heartrates[i])
+            if cur_distance / cur_time > max_speed:
+                max_speed = cur_distance / cur_time
+
+        return {
+            'distance': distance,
+            'time': time,
+            'max_speed': max_speed,
+            'avg_speed': distance / time,
+            'min_heartrate': np.min(heartrates),
+            'max_heartrate': np.max(heartrates),
+            'avg_heartrate': np.sum(heartrates) / np.size(heartrates),
+        }

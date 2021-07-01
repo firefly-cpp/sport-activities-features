@@ -61,6 +61,7 @@ $ dnf install python3-sport-activities-features
 - Calculation of training loads (Bannister TRIMP, Lucia TRIMP) ([see example](examples/integral_metrics_extraction.py))
 - Compatible with TCX activity files and [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API) nodes
 - Parsing of Historical weather data from an external service
+- Extraction of integral metrics of the activity inside area given with coordinates (distance, heartrate, speed) ([see example](examples/extract_data_inside_area.py))
 
 ## Historical weather data
 Weather data parsed is collected from the [Visual Crossing Weather API](https://www.visualcrossing.com/). 
@@ -187,6 +188,36 @@ overpy_reader = OverpyNodesReader(open_elevation_api=open_elevation_api)
 #         'positions': positions, 'altitudes': altitudes, 'distances': distances, 'total_distance': total_distance
 #         }
 data = overpy_reader.read_nodes(nodes)
+```
+
+### Extraction of data inside area
+```python
+import numpy as np
+import sys
+sys.path.append('../')
+
+from sport_activities_features.area_identification import AreaIdentification
+from sport_activities_features.tcx_manipulation import TCXFile
+
+# Reading the TCX file.
+tcx_file = TCXFile()
+activity = tcx_file.read_one_file('path_to_the_data')
+
+# Converting the read data to arrays.
+positions = np.array([*activity['positions']])
+distances = np.array([*activity['distances']])
+timestamps = np.array([*activity['timestamps']])
+heartrates = np.array([*activity['heartrates']])
+
+# Area coordinates should be given in clockwise orientation in the form of 3D array (number_of_hulls, hull_coordinates, 2).
+# Holes in area are permitted.
+area_coordinates = np.array([[[10, 10], [10, 50], [50, 50], [50, 10]],
+                             [[19, 19], [19, 21], [21, 21], [21, 19]]])
+
+# Extracting the data inside the given area.
+area = AreaIdentification(positions, distances, timestamps, heartrates, area_coordinates)
+area.identify_points_in_area()
+area_data = area.extract_data_in_area()
 ```
 
 ## Datasets
