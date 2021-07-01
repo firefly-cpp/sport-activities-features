@@ -1,6 +1,6 @@
 import numpy as np
 
-class AreaIdentifiaction(object):
+class AreaIdentification(object):
     r"""Area identification based by coordinates.
     
     Date:

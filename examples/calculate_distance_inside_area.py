@@ -6,7 +6,7 @@ import numpy as np
 import sys
 sys.path.append('../')
 
-from sport_activities_features.area_identification import AreaIdentifiaction
+from sport_activities_features.area_identification import AreaIdentification
 from sport_activities_features.tcx_manipulation import TCXFile
 
 # Reading the TCX file
@@ -19,5 +19,5 @@ distances = np.array([*activity['distances']])
 area_coordinates = np.array([[[10, 10], [10, 50], [50, 50], [50, 10]], [[19, 19], [19, 21], [21, 21], [21, 19]]])
 
 # Identifying the distance inside the given area
-area = AreaIdentifiaction(positions, distances, area_coordinates)
+area = AreaIdentification(positions, distances, area_coordinates)
 distance_in_area = area.identify_distance_in_area()
