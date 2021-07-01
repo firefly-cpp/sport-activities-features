@@ -61,6 +61,7 @@ $ dnf install python3-sport-activities-features
 - Calculation of training loads (Bannister TRIMP, Lucia TRIMP) ([see example](examples/integral_metrics_extraction.py))
 - Compatible with TCX activity files and [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API) nodes
 - Parsing of Historical weather data from an external service
+- Extraction of integral metrics of the activity inside area given with coordinates (total distance) ([see example](examples/calculate_distance_inside_area.py))
 
 ## Historical weather data
 Weather data parsed is collected from the [Visual Crossing Weather API](https://www.visualcrossing.com/). 
