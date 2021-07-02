@@ -104,7 +104,8 @@ class AreaIdentification(object):
             cur_time = (self.timestamps[i] - self.timestamps[i - 1]).seconds
             distance += cur_distance
             time += cur_time
-            heartrates = np.append(heartrates, self.heartrates[i])
+            if self.heartrates[i]: 
+                heartrates = np.append(heartrates, self.heartrates[i])
             if cur_distance / cur_time > max_speed:
                 max_speed = cur_distance / cur_time
 
