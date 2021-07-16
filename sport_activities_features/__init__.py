@@ -1,6 +1,7 @@
 from sport_activities_features.classes import StoredSegments
 from sport_activities_features.data_analysis import DataAnalysis
 from sport_activities_features.data_extraction import DataExtraction
+from sport_activities_features.data_extraction_from_csv import DataExtractionFromCSV
 from sport_activities_features.hill_identification import HillIdentification
 from sport_activities_features.interval_identification import IntervalIdentificationByHeartrate, IntervalIdentificationByPower
 from sport_activities_features.plot_data import PlotData
@@ -13,6 +14,7 @@ __all__ = [
     'StoredSegments',
     'DataAnalysis',
     'DataExtraction',
+    'DataExtractionFromCSV',
     'HillIdentification',
     'IntervalIdentificationByHeartrate',
     'IntervalIdentificationByPower',
