@@ -232,3 +232,7 @@ This package is distributed under the MIT License. This license can be found onl
 ## Disclaimer
 
 This framework is provided as-is, and there are no guarantees that it fits your purposes or that it is bug-free. Use it at your own risk!
+
+## Cite us
+
+Fister Jr. I., Lukač L., Rajšp A., Fister I., Pečnik L., Fister D. A Minimalistic Toolbox for Extracting Features from Sport Activity Files. In: INES 2021, 2021.
