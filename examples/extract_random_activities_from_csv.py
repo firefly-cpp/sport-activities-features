@@ -1,5 +1,6 @@
 import sys
-sys.path.append('../')
+
+sys.path.append("../")
 
 from sport_activities_features.data_extraction_from_csv import DataExtractionFromCSV
 
@@ -12,7 +13,6 @@ print(activities["activity_type"].value_counts())
 # Selection of a certain number of random activities
 random_activities = data_extraction_from_csv.select_random_activities(3)
 print(random_activities)
-
 
 
 # Extract data to list of dataframes from all CSV files in the folder

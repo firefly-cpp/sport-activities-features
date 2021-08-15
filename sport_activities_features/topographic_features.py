@@ -49,12 +49,16 @@ class TopographicFeatures(object):
         for i in range(len(self.identified_hills)):
             current = self.identified_hills[i]
             distance = 0.0
-            if(len(positions) < 5):
+            if len(positions) < 5:
                 total_distance = 0.0
             else:
                 for j in range(len(current) - 1):
                     distance = distance + self.calculate_distance(
-                        positions[i][0], positions[i + 1][0], positions[i][1], positions[i + 1][1])
+                        positions[i][0],
+                        positions[i + 1][0],
+                        positions[i][1],
+                        positions[i + 1][1],
+                    )
 
             total_distance = total_distance + distance
 
@@ -126,8 +130,12 @@ class TopographicFeatures(object):
 
     # Calculation of the hill gradient in percent
     def calculate_hill_gradient(self, lat1, lat2, lon1, lon2, height1, height2):
-        distance = 1000 * self.calculate_distance(lat1, lat2, lon1, lon2)  # Calculation of distance between given coordinates in meters
+        distance = 1000 * self.calculate_distance(
+            lat1, lat2, lon1, lon2
+        )  # Calculation of distance between given coordinates in meters
         height_change = height2 - height1  # Calculation of height change in meters
-        
-        gradient =  100 * height_change / distance  # Calculation of the gradient in percent
+
+        gradient = (
+            100 * height_change / distance
+        )  # Calculation of the gradient in percent
         return gradient

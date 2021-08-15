@@ -2,9 +2,10 @@ import os
 from unittest import TestCase
 from sport_activities_features import DataExtractionFromCSV
 
+
 class TestDataExtraction(TestCase):
     def setUp(self):
-        filename = os.path.join(os.path.dirname(__file__), "data", 'test_data.csv')
+        filename = os.path.join(os.path.dirname(__file__), "data", "test_data.csv")
         data_extraction_from_csv = DataExtractionFromCSV()
         self.activities = data_extraction_from_csv.from_file(filename)
         self.rand_activities = data_extraction_from_csv.select_random_activities(4)
