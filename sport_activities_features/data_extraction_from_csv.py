@@ -8,9 +8,15 @@ class DataExtractionFromCSV(object):
 
     # Extract data from CSV file to dataframe
     def from_file(self, path):
-        with open(path + ".csv" if not (path.endswith('.csv') or path.endswith('.txt')) else path) as csv_file:
+        with open(
+            path + ".csv"
+            if not (path.endswith(".csv") or path.endswith(".txt"))
+            else path
+        ) as csv_file:
             try:
-                self.activities = pd.read_csv(csv_file, index_col=0, sep=",", decimal=".")
+                self.activities = pd.read_csv(
+                    csv_file, index_col=0, sep=",", decimal="."
+                )
                 return self.activities
             except:
                 print("Incorrect structure of file " + str(csv_file.name))
@@ -36,5 +42,7 @@ class DataExtractionFromCSV(object):
         elif len(self.activities) >= number:
             return self.activities.sample(number, replace=False)
         else:
-            print("The number of activities is lower than the size of the desired sample")
+            print(
+                "The number of activities is lower than the size of the desired sample"
+            )
             return self.activities

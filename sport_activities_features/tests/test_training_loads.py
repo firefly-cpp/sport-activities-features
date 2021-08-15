@@ -1,6 +1,7 @@
 from unittest import TestCase
 from sport_activities_features.training_loads import BanisterTRIMP
 
+
 class BanisterTRIMPTestCase(TestCase):
     def setUp(self):
         self.__banister = BanisterTRIMP(33.44, 165.22)
