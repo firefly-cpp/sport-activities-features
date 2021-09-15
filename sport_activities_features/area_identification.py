@@ -1,5 +1,6 @@
+import geotiler
 import numpy as np
-from numpy.lib.function_base import average
+import matplotlib.pyplot as plt
 
 class AreaIdentification(object):
     r"""Area identification based by coordinates.
@@ -62,9 +63,7 @@ class AreaIdentification(object):
         # If the intersection point is in the middle of the line segment, the intersection is counted.
         if Ua > 0 and Ua < 1 and Ub > 0 and Ub < 1:
             return True
-        elif self.is_equal(Ua, 0):
-            return True
-        
+
         return False
 
     def identify_points_in_area(self) -> None:
@@ -72,9 +71,11 @@ class AreaIdentification(object):
             return: None
         """
         self.points_in_area = np.array([])
+        self.points_outside_area = np.array([])
+
 
         # Checking whether coordinates are inside the given area.
-        for i in np.arange(1, np.shape(self.positions)[0]):
+        for i in np.arange(np.shape(self.positions)[0]):
             number_of_intersections = 0
 
             # If the ray intersects with the area even times, the point is not inside area.
@@ -86,8 +87,11 @@ class AreaIdentification(object):
             # If the number of intersections is odd, the point is inside the given area.
             if number_of_intersections % 2 == 1:
                 self.points_in_area = np.append(self.points_in_area, int(i))
+            else:
+                self.points_outside_area = np.append(self.points_outside_area, int(i))
 
         self.points_in_area = self.points_in_area.astype('int32')
+        self.points_outside_area = self.points_outside_area.astype('int32')
 
     def extract_data_in_area(self) -> dict:
         """ Extracting the data of the identified points in area.
@@ -100,21 +104,106 @@ class AreaIdentification(object):
 
         # Extracting the data from the identified points.
         for i in self.points_in_area:
-            cur_distance = self.distances[i] - self.distances[i - 1]
-            cur_time = (self.timestamps[i] - self.timestamps[i - 1]).seconds
-            distance += cur_distance
-            time += cur_time
-            if self.heartrates[i]: 
-                heartrates = np.append(heartrates, self.heartrates[i])
-            if cur_distance / cur_time > max_speed:
-                max_speed = cur_distance / cur_time
+            try:
+                cur_distance = self.distances[i] - self.distances[i - 1]
+                cur_time = (self.timestamps[i] - self.timestamps[i - 1]).seconds
+                distance += cur_distance
+                time += cur_time
+                if self.heartrates[i]:
+                    heartrates = np.append(heartrates, self.heartrates[i])
+                if cur_time != 0.0 and cur_distance / cur_time > max_speed:
+                    max_speed = cur_distance / cur_time
+            except:
+                pass
+
+        try:
+            avg_speed = distance / time
+        except:
+            avg_speed = 0.0
+        
+        try:
+            min_heartrate = np.min(heartrates)
+            max_heartrate = np.max(heartrates)
+            avg_heartrate = np.sum(heartrates) / np.size(heartrates)
+        except:
+            min_heartrate = None
+            max_heartrate = None
+            avg_heartrate = None
 
         return {
             'distance': distance,
             'time': time,
             'max_speed': max_speed,
-            'avg_speed': distance / time,
-            'min_heartrate': np.min(heartrates),
-            'max_heartrate': np.max(heartrates),
-            'avg_heartrate': np.sum(heartrates) / np.size(heartrates),
+            'avg_speed': avg_speed,
+            'min_heartrate': min_heartrate,
+            'max_heartrate': max_heartrate,
+            'avg_heartrate': avg_heartrate,
         }
+
+    def draw_map(self) -> None:
+        """ Visualization of the exercise.
+            return: None
+        """
+        if np.shape(self.positions)[0] == 0:
+            raise Exception('Dataset is empty or invalid.')
+
+        # Downloading the map.
+        size = 10000
+        coordinates = self.positions.flatten()
+        latitudes = coordinates[::2]
+        longitudes = coordinates[1::2]
+        map = geotiler.Map(extent=(np.min(longitudes), np.min(latitudes), np.max(longitudes), np.max(latitudes)), size=(size, size))
+        image = geotiler.render_map(map)
+
+        # Drawing the map as plot.
+        ax = plt.subplot(111)
+        ax.imshow(image)
+        if np.shape(self.points_in_area)[0] > 0:
+            x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in self.points_in_area))
+            ax.plot(x, y, c='red', label='Inside area')
+        if np.shape(self.points_outside_area)[0] > 0:
+            x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in self.points_outside_area))
+            ax.plot(x, y, c='blue', label='Outside area')
+
+        # Drawing the bounding box of the chosen area.
+        for hull in self.area_coordinates:
+            x, y = zip(*(map.rev_geocode(hull[i - 1][::-1]) for i in np.arange(np.shape(hull)[0] + 1)))
+            ax.plot(x, y, c='black', label='Area border')
+
+        ax.legend()
+        plt.axis('off')
+        plt.xlim((0, size))
+        plt.ylim((size, 0))
+        plt.show()
+
+    @staticmethod
+    def draw_activities_inside_area_on_map(activities, area_coordinates) -> None:
+        """ Drawing all activities inside area on map.
+            return: None
+        """
+        # Downloading the map.
+        size = 10000
+        coordinates = area_coordinates.flatten()
+        latitudes = coordinates[::2]
+        longitudes = coordinates[1::2]
+        map = geotiler.Map(extent=(np.min(longitudes), np.min(latitudes), np.max(longitudes), np.max(latitudes)), size=(size, size))
+        image = geotiler.render_map(map)
+
+        # Drawing the map as plot.
+        ax = plt.subplot(111)
+        ax.imshow(image)
+           
+        for i in np.arange(np.shape(activities)[0]):
+            x, y = zip(*(map.rev_geocode(activities[i].positions[p][::-1]) for p in activities[i].points_in_area))
+            ax.plot(x, y, label='Activity {}'.format(i + 1))
+
+        # Drawing the bounding box of the chosen area.
+        for hull in area_coordinates:
+            x, y = zip(*(map.rev_geocode(hull[i - 1][::-1]) for i in np.arange(np.shape(hull)[0] + 1)))
+            ax.plot(x, y, c='black', label='Area border')
+
+        ax.legend()
+        plt.axis('off')
+        plt.xlim((0, size))
+        plt.ylim((size, 0))
+        plt.show()
