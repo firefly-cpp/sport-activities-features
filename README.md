@@ -221,6 +221,8 @@ area.identify_points_in_area()
 area_data = area.extract_data_in_area()
 ```
 
+![alt tag](https://imgur.com/a/iZbnmfU)
+
 ## Datasets
 
 Datasets are available on the following links: [DATASET1](http://iztok-jr-fister.eu/static/publications/Sport5.zip), [DATASET2](http://iztok-jr-fister.eu/static/css/datasets/Sport.zip)
