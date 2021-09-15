@@ -221,7 +221,7 @@ area.identify_points_in_area()
 area_data = area.extract_data_in_area()
 ```
 
-![alt tag](https://imgur.com/a/iZbnmfU)
+![Area Figure](https://i.imgur.com/Iz8Ga3B.png)
 
 ## Datasets
 
