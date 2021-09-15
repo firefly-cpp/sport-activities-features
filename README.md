@@ -221,6 +221,10 @@ area.identify_points_in_area()
 area_data = area.extract_data_in_area()
 ```
 
+### Example of a visualization of the area detection
+
+![Area Figure](https://i.imgur.com/Iz8Ga3B.png)
+
 ## Datasets
 
 Datasets are available on the following links: [DATASET1](http://iztok-jr-fister.eu/static/publications/Sport5.zip), [DATASET2](http://iztok-jr-fister.eu/static/css/datasets/Sport.zip)
