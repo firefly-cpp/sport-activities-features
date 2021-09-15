@@ -4,7 +4,8 @@ This example presents how to extract data inside the area given with coordinates
 
 import numpy as np
 import sys
-sys.path.append('../')
+
+sys.path.append("../")
 
 from sport_activities_features.area_identification import AreaIdentification
 from sport_activities_features.tcx_manipulation import TCXFile

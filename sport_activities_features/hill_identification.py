@@ -15,7 +15,7 @@ class HillIdentification(object):
         self.ascent_threshold = ascent_threshold
         self.identified_hills = []
         self.total_ascent = 0
-        self.total_descent= 0
+        self.total_descent = 0
 
     def return_hill(self, ascent_threshold):
         r"""Return
@@ -37,8 +37,8 @@ class HillIdentification(object):
         differences = []
         for i in range(1, len(self.altitudes)):
             differences.append(self.altitudes[i] - self.altitudes[i - 1])
-        self.total_ascent = sum(x for x in differences if x>0)
-        self.total_descent = sum(-x for x in differences if x<0)
+        self.total_ascent = sum(x for x in differences if x > 0)
+        self.total_descent = sum(-x for x in differences if x < 0)
 
         BEST_SEGMENT = []
         BEST_SEGMENT_ASCENT = 0.0
@@ -65,8 +65,7 @@ class HillIdentification(object):
                         descent_counter = descent_counter + 1
 
                 if descent_counter == 10:
-                    selected_IDs = selected_IDs[:len(
-                        selected_IDs) - descent_counter]
+                    selected_IDs = selected_IDs[: len(selected_IDs) - descent_counter]
                     break
 
             if self.return_hill(TOTAL_ASCENT):
@@ -75,14 +74,15 @@ class HillIdentification(object):
                     BEST_SEGMENT_ASCENT = TOTAL_ASCENT
                 else:
                     length_of_intersection = len(
-                        set(BEST_SEGMENT).intersection(selected_IDs))
+                        set(BEST_SEGMENT).intersection(selected_IDs)
+                    )
                     calculation = float(
-                        float(length_of_intersection) /
-                        float(
-                            len(BEST_SEGMENT)))
+                        float(length_of_intersection) / float(len(BEST_SEGMENT))
+                    )
                     if calculation < 0.1:
                         self.identified_hills.append(
-                            StoredSegments(BEST_SEGMENT, BEST_SEGMENT_ASCENT))
+                            StoredSegments(BEST_SEGMENT, BEST_SEGMENT_ASCENT)
+                        )
                         BEST_SEGMENT = []
                         BEST_SEGMENT_ASCENT = 0.0
 

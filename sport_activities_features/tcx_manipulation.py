@@ -3,8 +3,7 @@ import os
 
 
 class TCXFile(object):
-    r"""Working with TCX files
-    """
+    r"""Working with TCX files"""
 
     def __init__(self):
         self.all_files = []
@@ -17,7 +16,7 @@ class TCXFile(object):
         """
 
         files = os.listdir(directory_name)
-        all_files1 = [i for i in files if i.endswith('.tcx')]
+        all_files1 = [i for i in files if i.endswith(".tcx")]
         for j in range(len(all_files1)):
             file = os.path.join(directory_name, all_files1[j])
             self.all_files.append(file)
@@ -45,7 +44,7 @@ class TCXFile(object):
         distances = []
         timestamps = []
         heartrates = []
-        trackpoint:TCXTrackPoint
+        trackpoint: TCXTrackPoint
         for trackpoint in tcx.trackpoints:
             positions.append((trackpoint.latitude, trackpoint.longitude))
             altitudes.append(trackpoint.elevation)
@@ -53,22 +52,21 @@ class TCXFile(object):
             timestamps.append(trackpoint.time)
             heartrates.append(trackpoint.hr_value)
 
-
         try:
             total_distance = tcx.distance
         except BaseException:
             total_distance = None
-        
+
         activity = {
-            'activity_type': activity_type,
-            'positions': positions,
-            'altitudes': altitudes,
-            'distances': distances,
-            'total_distance': total_distance,
-            'timestamps': timestamps,
-            'heartrates': heartrates
+            "activity_type": activity_type,
+            "positions": positions,
+            "altitudes": altitudes,
+            "distances": distances,
+            "total_distance": total_distance,
+            "timestamps": timestamps,
+            "heartrates": heartrates,
         }
-        
+
         return activity
 
     def extract_integral_metrics(self, filename):
@@ -141,16 +139,17 @@ class TCXFile(object):
             descent = None
 
         int_metrics = {
-            'activity_type': activity_type,
-            'distance': distance,
-            'duration': duration,
-            'calories': calories,
-            'hr_avg': hr_avg,
-            'hr_max': hr_max,
-            'hr_min': hr_min,
-            'altitude_avg': altitude_avg,
-            'altitude_max': altitude_max,
-            'altitude_min': altitude_min,
-            'ascent': ascent,
-            'descent': descent}
+            "activity_type": activity_type,
+            "distance": distance,
+            "duration": duration,
+            "calories": calories,
+            "hr_avg": hr_avg,
+            "hr_max": hr_max,
+            "hr_min": hr_min,
+            "altitude_avg": altitude_avg,
+            "altitude_max": altitude_max,
+            "altitude_min": altitude_min,
+            "ascent": ascent,
+            "descent": descent,
+        }
         return int_metrics
