@@ -235,6 +235,3 @@ This framework is provided as-is, and there are no guarantees that it fits your 
 ## Cite us
 
 I. Jr. Fister, L. Lukač, A. Rajšp, I. Fister, L. Pečnik and D. Fister, "A minimalistic toolbox for extracting features from sport activity files," 2021 IEEE 25th International Conference on Intelligent Engineering Systems (INES), 2021, pp. 121-126, doi: 10.1109/INES52918.2021.9512927.
-
-L. Lukač, "Extraction and Analysis of Sport Activity Data Inside 
-Certain Area", 7th Student Computer Science Research Conference StuCoSReC, 2021, pp. 47-50, doi: https://doi.org/10.18690/978-961-286-516-0.9
