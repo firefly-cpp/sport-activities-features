@@ -62,6 +62,7 @@ $ dnf install python3-sport-activities-features
 - Compatible with TCX activity files and [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API) nodes
 - Parsing of Historical weather data from an external service
 - Extraction of integral metrics of the activity inside area given with coordinates (distance, heartrate, speed) ([see example](examples/extract_data_inside_area.py))
+- Extraction of activities from CSV file(s) and random selection of a specific number of activities ([see example](examples/extract_random_activities_from_csv.py))
 
 ## Historical weather data
 Weather data parsed is collected from the [Visual Crossing Weather API](https://www.visualcrossing.com/). 

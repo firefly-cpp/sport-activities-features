@@ -1,6 +1,7 @@
 from unittest import TestCase
 from sport_activities_features.classes import StoredSegments
 
+
 class StoredSegmentsTestCase(TestCase):
     def setUp(self):
         self.__stored_segments = StoredSegments([3.5, 5.55, 3.44], 165.22)
