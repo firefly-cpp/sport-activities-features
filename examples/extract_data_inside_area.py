@@ -12,7 +12,7 @@ from sport_activities_features.tcx_manipulation import TCXFile
 
 # Reading the TCX file.
 tcx_file = TCXFile()
-all_files = tcx_file.read_directory("path_to_the_data")
+all_files = tcx_file.read_directory("../datasets")
 
 areas = np.array([])
 progress = 0.0
@@ -30,7 +30,7 @@ for file in all_files:
 
     # Area coordinates should be given in clockwise orientation in the form of 3D array (number_of_hulls, hull_coordinates, 2).
     # Holes in area are permitted.
-    area_coordinates = np.array([[[46.286224, 14.238281], [46.301406, 14.812317], [45.949240, 14.872742], [45.985512, 14.334412]]])
+    area_coordinates = np.array([[[45.530643, 13.706290], [45.570553, 13.744146], [45.554449, 13.789791], [45.534131, 13.751618], [45.543990, 13.735831], [45.524630, 13.742444]]])
 
     # Extracting the data inside the given area.
     area = AreaIdentification(positions, distances, timestamps, heartrates, area_coordinates)
@@ -39,6 +39,7 @@ for file in all_files:
     if area_data['distance'] != 0.0:
         areas = np.append(areas, area)
 
+    area.draw_map()
     progress += 100 / len(all_files)
 
 print('\rProgress: 100 %')
