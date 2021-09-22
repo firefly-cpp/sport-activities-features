@@ -1,4 +1,5 @@
 import geotiler
+import itertools
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -78,7 +79,8 @@ class AreaIdentification(object):
         """
         self.points_in_area = np.array([])
         self.points_outside_area = np.array([])
-
+        currently_in_area = False
+        p1 = None
 
         # Checking whether coordinates are inside the given area.
         for i in np.arange(np.shape(self.positions)[0]):
@@ -97,12 +99,17 @@ class AreaIdentification(object):
 
             # If the number of intersections is odd, the point is inside the given area.
             if number_of_intersections % 2 == 1:
-                self.points_in_area = np.append(self.points_in_area, int(i))
+                if not currently_in_area:
+                    p1 = int(i)
+                    currently_in_area = True
             else:
-                self.points_outside_area = np.append(self.points_outside_area, int(i))
+                if currently_in_area:
+                    self.points_in_area = np.append(self.points_in_area, (p1, int(i) - 1))
+                    p1 = None
+                    currently_in_area = False
 
         self.points_in_area = self.points_in_area.astype('int32')
-        self.points_outside_area = self.points_outside_area.astype('int32')
+        self.points_in_area = np.reshape(self.points_in_area, (-1, 2))
 
     def extract_data_in_area(self) -> dict:
         """Extracting the data of the identified points in area.
@@ -116,14 +123,12 @@ class AreaIdentification(object):
         # Extracting the data from the identified points.
         for i in self.points_in_area:
             try:
-                cur_distance = self.distances[i] - self.distances[i - 1]
-                cur_time = (self.timestamps[i] - self.timestamps[i - 1]).seconds
+                cur_distance = self.distances[i][1] - self.distances[i][0]
+                cur_time = (self.timestamps[i][1] - self.timestamps[i][0]).seconds
                 distance += cur_distance
                 time += cur_time
-                if self.heartrates[i]:
-                    heartrates = np.append(heartrates, self.heartrates[i])
-                if cur_time != 0.0 and cur_distance / cur_time > max_speed:
-                    max_speed = cur_distance / cur_time
+                if not np.isnan(self.heartrates[[i][0]:[i][1]]).any():
+                    heartrates = np.append(heartrates, self.heartrates[[i][0]:[i][1]])
             except:
                 pass
 
@@ -144,7 +149,6 @@ class AreaIdentification(object):
         return {
             'distance': distance,
             'time': time,
-            'max_speed': max_speed,
             'avg_speed': avg_speed,
             'min_heartrate': min_heartrate,
             'max_heartrate': max_heartrate,
@@ -170,11 +174,26 @@ class AreaIdentification(object):
         ax = plt.subplot(111)
         ax.imshow(image)
         if np.shape(self.points_in_area)[0] > 0:
-            x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in self.points_in_area))
-            ax.plot(x, y, c='red', label='Inside area')
-        if np.shape(self.points_outside_area)[0] > 0:
-            x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in self.points_outside_area))
+            # Drawing the starting path outside of the area.
+            x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in np.arange(0, self.points_in_area[0][0] + 1)))
             ax.plot(x, y, c='blue', label='Outside area')
+
+            # Drawing the path inside of the area and possible paths in between outside of the area.
+            for i in np.arange(np.shape(self.points_in_area)[0]):
+                x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in np.arange(self.points_in_area[i][0], self.points_in_area[i][1] + 1)))
+
+                if i == 0:
+                    ax.plot(x, y, c='red', label='Inside area')
+                else:
+                    ax.plot(x, y, c='red', label='_nolegend_')
+
+                if np.shape(self.points_in_area)[0] > i + 1:
+                    x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in np.arange(self.points_in_area[i][1], self.points_in_area[i + 1][0] + 1)))
+                    ax.plot(x, y, c='blue', label='_nolegend_')
+
+            # Drawing the ending path outside of the area.
+            x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in np.arange(self.points_in_area[-1][1], np.shape(self.positions)[0])))
+            ax.plot(x, y, c='blue', label='_nolegend_')
 
         # Drawing the bounding box of the chosen area.
         for hull in self.area_coordinates:
@@ -199,14 +218,23 @@ class AreaIdentification(object):
         longitudes = coordinates[1::2]
         map = geotiler.Map(extent=(np.min(longitudes), np.min(latitudes), np.max(longitudes), np.max(latitudes)), size=(size, size))
         image = geotiler.render_map(map)
+        colors = ['red', 'blue', 'green', 'cyan', 'magenta', 'yellow', 'key', 'white']
 
         # Drawing the map as plot.
         ax = plt.subplot(111)
         ax.imshow(image)
-           
         for i in np.arange(np.shape(activities)[0]):
-            x, y = zip(*(map.rev_geocode(activities[i].positions[p][::-1]) for p in activities[i].points_in_area))
-            ax.plot(x, y, label='Activity {}'.format(i + 1))
+            sectors = np.array([])
+            for j in np.arange(np.shape(activities[i].points_in_area)[0]):
+                sectors = np.append(sectors, zip(*(map.rev_geocode(activities[i].positions[p][::-1]) for p in np.arange(activities[i].points_in_area[j][0], activities[i].points_in_area[j][1] + 1))))
+
+            # Plotting each activity (displayed only once in legend).
+            for j in np.arange(np.shape(sectors)[0]):
+                x, y = sectors[j]
+                if j == 0:
+                    ax.plot(x, y, c=colors[i % 8], label='Activity {}'.format(i + 1))
+                else:
+                    ax.plot(x, y, c=colors[i % 8], label='_nolegend_')
 
         # Drawing the bounding box of the chosen area.
         for hull in area_coordinates:
