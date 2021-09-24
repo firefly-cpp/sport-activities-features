@@ -28,9 +28,9 @@ for file in all_files:
     timestamps = np.array([*activity['timestamps']])
     heartrates = np.array([*activity['heartrates']])
 
-    # Area coordinates should be given in clockwise orientation in the form of 3D array (number_of_hulls, hull_coordinates, 2).
-    # Holes in area are permitted.
-    area_coordinates = np.array([[[45.530643, 13.706290], [45.570553, 13.744146], [45.554449, 13.789791], [45.534131, 13.751618], [45.543990, 13.735831], [45.524630, 13.742444]]])
+    # Area coordinates should be given in clockwise orientation in the form of a 3D array (number_of_hulls, hull_coordinates, 2).
+    # Holes in the area are permitted.
+    area_coordinates = np.array([[[47.530643, 15.706290], [47.570553, 15.744146], [47.554449, 15.789791], [47.534131, 15.751618], [47.543990, 15.735831], [47.524630, 15.742444]]])
 
     # Extracting the data inside the given area.
     area = AreaIdentification(positions, distances, timestamps, heartrates, area_coordinates)
@@ -39,8 +39,10 @@ for file in all_files:
     if area_data['distance'] != 0.0:
         areas = np.append(areas, area)
 
+    # Drawing a map of the activity and updating the progress.
     area.draw_map()
     progress += 100 / len(all_files)
 
+# Drawing a map of all the activities or their parts inside of the chosen area.
 print('\rProgress: 100 %')
 AreaIdentification.draw_activities_inside_area_on_map(areas, area_coordinates)
