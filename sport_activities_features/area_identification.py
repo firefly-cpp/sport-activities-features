@@ -173,17 +173,19 @@ class AreaIdentification(object):
         # Drawing the map as plot.
         ax = plt.subplot(111)
         ax.imshow(image)
+
+        # If there are some points inside the given area, the segments outside and inside of the area are plotted on the map.
         if np.shape(self.points_in_area)[0] > 0:
             # Drawing the starting path outside of the area.
             x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in np.arange(0, self.points_in_area[0][0] + 1)))
-            ax.plot(x, y, c='blue', label='Outside area')
+            ax.plot(x, y, c='blue', label='Outside of the area')
 
             # Drawing the path inside of the area and possible paths in between outside of the area.
             for i in np.arange(np.shape(self.points_in_area)[0]):
                 x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in np.arange(self.points_in_area[i][0], self.points_in_area[i][1] + 1)))
 
                 if i == 0:
-                    ax.plot(x, y, c='red', label='Inside area')
+                    ax.plot(x, y, c='red', label='Inside of the area')
                 else:
                     ax.plot(x, y, c='red', label='_nolegend_')
 
@@ -194,6 +196,10 @@ class AreaIdentification(object):
             # Drawing the ending path outside of the area.
             x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in np.arange(self.points_in_area[-1][1], np.shape(self.positions)[0])))
             ax.plot(x, y, c='blue', label='_nolegend_')
+        # If there are no points inside the given area, the whole path is plotted as outside of the given area.
+        else:
+            x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in np.arange(np.shape(self.positions)[0])))
+            ax.plot(x, y, c='blue', label='Outside of the area')
 
         # Drawing the bounding box of the chosen area.
         for hull in self.area_coordinates:
