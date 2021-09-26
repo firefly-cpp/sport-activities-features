@@ -9,5 +9,6 @@ tcx_data = tcx_file.read_one_file("path_to_the_file")
 visual_crossing_api_key = "API_KEY" # https://www.visualcrossing.com/weather-api
 
 #return weather objects
+# Explanation of elements - https://www.visualcrossing.com/resources/documentation/weather-data/weather-data-documentation/
 weather = WeatherIdentification(tcx_data['positions'], tcx_data['timestamps'], visual_crossing_api_key)
 weatherlist = weather.get_weather()
