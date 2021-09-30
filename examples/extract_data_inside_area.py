@@ -12,7 +12,7 @@ from sport_activities_features.tcx_manipulation import TCXFile
 
 # Reading the TCX file.
 tcx_file = TCXFile()
-all_files = tcx_file.read_directory("../datasets")
+all_files = tcx_file.read_directory('path_to_the_directory')
 
 areas = np.array([])
 progress = 0.0
