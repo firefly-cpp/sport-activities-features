@@ -18,6 +18,10 @@ class DeadEndIdentification(object):
 
     Attributes:
         None
+
+    Description:
+        This module is intended to be used for the identification and visualization of dead ends in an exercise.
+        Dead end is a part of an exercise, where an athlete suddenly makes a U-turn and takes the same path as before the U-turn is conducted (in the opposite direction).
     """
 
     def __init__(self, positions, distances, tolerance_degrees=5, minimum_distance=500) -> None:
