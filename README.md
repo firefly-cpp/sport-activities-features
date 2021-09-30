@@ -227,7 +227,7 @@ area_data = area.extract_data_in_area()
 ![Area Figure](https://i.imgur.com/Iz8Ga3B.png)
 
 ### Example of a visualization of dead end identification
-![Dead End Figure](https://imgur.com/2z6AzHa.png)
+![Dead End Figure](https://imgur.com/a/GdmUFjD.png)
 
 ## Datasets
 
