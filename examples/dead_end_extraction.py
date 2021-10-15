@@ -12,7 +12,7 @@ from sport_activities_features.tcx_manipulation import TCXFile
 
 # Reading the TCX file.
 tcx_file = TCXFile()
-activity = tcx_file.read_one_file('path_to_the_data')
+activity = tcx_file.read_one_file('../datasets/15.tcx')
 
 # Converting the read data to the array.
 positions = np.array([*activity['positions']])

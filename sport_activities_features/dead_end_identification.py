@@ -1,4 +1,5 @@
 import geotiler
+import geopy.distance
 import math
 import matplotlib.pyplot as plt
 import numpy as np
@@ -24,20 +25,48 @@ class DeadEndIdentification(object):
         Dead end is a part of an exercise, where an athlete suddenly makes a U-turn and takes the same path as before the U-turn is conducted (in the opposite direction).
     """
 
-    def __init__(self, positions, distances, tolerance_degrees=5, minimum_distance=500) -> None:
+    def __init__(self, positions, distances, tolerance_degrees=5, tolerance_position=5, minimum_distance=500) -> None:
         """Initialization of the object.
         return: None
         """
-        self.positions = np.array(positions)
-        self.distances = np.array(distances)
+        self.reorganize_exercise_data(np.array(positions), np.array(distances), interval_distance=10)  # Reorganizing the exercise data in order to achieve better results.
+        self.reorganize_exercise_data(self.positions, self.distances, interval_distance=1)  # Reorganizing the exercise data in order to achieve better results.
         self.tolerance_degrees = tolerance_degrees
+        self.tolerance_position = tolerance_position
         self.minimum_distance = minimum_distance
 
-    def is_dead_end(self, azimuth1, azimuth2, tolerance) -> bool:
+    def reorganize_exercise_data(self, positions, distances, interval_distance=1) -> None:
+        """Exercise is reorganized in the way that the trackpoints are organized in a constant interval of distance.
+        return: None
+        """
+        distance = distances[-1]
+        self.distances = np.arange(math.ceil(distance))
+        self.positions = np.empty((0, 2), float)
+
+        j = 0
+        for i in np.arange(np.shape(self.distances)[0] - 1):
+            while i > distances[j + 1]:
+                j += 1
+
+            position1 = positions[j]
+            position2 = positions[j + 1]
+            distance1 = distances[j]
+            distance2 = distances[j + 1]
+
+            if distance2 - distance1 == 0.0:
+                self.positions = np.append(self.positions, [np.array([position1[0], position1[1]])], axis=0)
+            else:
+                multiplying_factor = (i - distance1) / (distance2 - distance1)
+                self.positions = np.append(self.positions, [np.array([position1[0] + multiplying_factor * (position2[0] - position1[0]), position1[1] + multiplying_factor * (position2[1] - position1[1])])], axis=0)
+
+        self.positions = self.positions[::interval_distance]
+        self.distances = self.distances[::interval_distance]
+
+    def is_dead_end(self, azimuth1, azimuth2, tolerance_azimuth) -> bool:
         """Checking if two azimuths represent a part of a dead end allowing the given tolerance.
         return: bool
         """
-        if abs(180 - abs(azimuth1 - azimuth2)) < tolerance:
+        if abs(180 - abs(azimuth1 - azimuth2)) < tolerance_azimuth:
             return True
 
         return False
@@ -50,6 +79,16 @@ class DeadEndIdentification(object):
             return False
 
         return True
+
+    def really_is_dead_end(self, position1, position2, tolerance_coordinates) -> bool:
+        """Checking whether a dead end really is a dead end.
+        return: bool
+        """
+        print(geopy.distance.distance(position1, position2).m)
+        if geopy.distance.distance(position1, position2).m < tolerance_coordinates:
+            return True
+
+        return False
 
     def identify_dead_ends(self) -> None:
         """Identifying dead ends of the exercise.
@@ -75,21 +114,66 @@ class DeadEndIdentification(object):
             azimuths = np.append(azimuths, azimuth)
 
         # Checking for dead ends in the exercise.
-        for i in np.arange(1, np.shape(azimuths)[0]):
-            if self.is_dead_end(azimuths[i - 1], azimuths[i], self.tolerance_degrees):
-                previous = i - 2
-                next = i + 1
-                while self.is_dead_end(azimuths[previous], azimuths[next], self.tolerance_degrees):
-                    previous -= 1
-                    next += 1
+        i = 50
+        while i < np.shape(azimuths)[0]:
+            print(f"\rProgress: {100 * i // np.shape(azimuths)[0]} %", end='')
+            for j in np.arange(50):
+                try:
+                    if self.is_dead_end(azimuths[i - j - 1], azimuths[i + j], self.tolerance_degrees):
+                        previous = i - j - 2
+                        next = i + j + 1
+                        while self.is_dead_end(azimuths[previous], azimuths[next], self.tolerance_degrees):
+                            previous -= 1
+                            next += 1
 
-                self.dead_ends = np.append(self.dead_ends, [np.array([previous, next])], axis=0)
+                        if np.array([previous, next]) not in self.dead_ends:
+                            if self.long_enough_to_be_a_dead_end(self.distances[previous], self.distances[next]): # and self.really_is_dead_end(self.distances[previous], self.distances[next], self.tolerance_position):
+                                self.dead_ends = np.append(self.dead_ends, [np.array([previous, next])], axis=0)
+                            # i += next - previous
+                except:
+                    pass
+            
+            i += 1
+
+        print(self.dead_ends)
+
+        # Merging the dead ends.
+        i = 1
+        number_of_dead_ends = np.shape(self.dead_ends)[0]
+        while i < number_of_dead_ends:
+            last_element = self.dead_ends[i - 1][-1]  # Retrieving the last index in the previous interval.
+            first_element = self.dead_ends[i][0]  # Retrieving the first index in the current interval.
+
+            # If the distance between two dead ends is less than 300 meters, the two dead ends are combined.
+            if first_element - last_element < 300:
+                self.dead_ends[i - 1][1] = self.dead_ends[i][1]
+                self.dead_ends = np.delete(self.dead_ends, i, 0)  # Current interval is removed from the list
+                number_of_dead_ends -= 1
+            else:
+                i += 1
+
+        print(self.dead_ends)
 
         # Removing the dead ends which are too short to be counted as dead ends.
-        for i in np.arange(np.shape(self.dead_ends)[0]):
-            if not self.long_enough_to_be_a_dead_end(self.distances[self.dead_ends[i][0]], self.distances[self.dead_ends[i][1]]):
+        # i = 0
+        # while i < np.shape(self.dead_ends)[0]:
+        #     if not self.long_enough_to_be_a_dead_end(self.distances[self.dead_ends[i][0]], self.distances[self.dead_ends[i][1]]):
+        #         self.dead_ends = np.delete(self.dead_ends, i, 0)
+        #         i -= 1
+        #     i += 1
+
+        # Removing the dead ends which are not dead ends.
+        i = 0
+        while i < np.shape(self.dead_ends)[0]:
+            print(np.linalg.norm(self.positions[self.dead_ends[i][0]] - self.positions[self.dead_ends[i][1]]))
+            if np.linalg.norm(self.positions[self.dead_ends[i][0]] - self.positions[self.dead_ends[i][1]]) > self.tolerance_position:
                 self.dead_ends = np.delete(self.dead_ends, i, 0)
                 i -= 1
+
+            i += 1
+
+        print(self.dead_ends)
+        print("\rProgress: 100 %")
 
     def draw_map(self) -> None:
         """ Visualization of the exercise with dead ends.
@@ -123,7 +207,7 @@ class DeadEndIdentification(object):
                 if i == 0:
                     ax.plot(x, y, c='red', label='Dead end')
                 else:
-                    ax.plot(x, y, c='red', label='_nolegend_')
+                    ax.plot(x, y, c='green', label='_nolegend_')
 
                 if np.shape(self.dead_ends)[0] > i + 1:
                     x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in np.arange(self.dead_ends[i][1], self.dead_ends[i + 1][0] + 1)))
