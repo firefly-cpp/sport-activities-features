@@ -1,43 +1,15 @@
-import os
-from .classes import StoredSegments
 import requests
 from sport_activities_features.tcx_manipulation import TCXFile
 from datetime import datetime, timedelta
 
+from sport_activities_features.weather_objects.AverageWeather import AverageWeather
+from sport_activities_features.weather_objects.Weather import Weather
 
-class Weather:
-    def __init__(self, temperature: float = None, maximum_temperature: float = None, minimum_temperature: float = None,
-                 wind_chill: float = None, heat_index: float = None, precipitation: float = None,
-                 snow_depth: float = None, wind_speed: float = None, wind_direction=None, wind_gust=None, visibility: float = None,
-                 cloud_cover: float = None, relative_humidity: float = None, weather_type: str = None,
-                 sea_level_pressure = None, dew_point = None, solar_radiation = None,
-                 conditions: str = None, date: datetime = None, location=None, index:int= None):
-        self.temperature: float = temperature
-        self.maximum_temperature = maximum_temperature
-        self.minimum_temperature = minimum_temperature
-        self.wind_chill = wind_chill
-        self.heat_index = heat_index
-        self.solar_radiation = solar_radiation
-        self.precipitation = precipitation
-        self.sea_level_pressure=sea_level_pressure
-        self.snow_depth = snow_depth
-        self.wind_speed = wind_speed
-        self.wind_direction = wind_direction
-        self.wind_gust = wind_gust
-        self.visibility = visibility
-        self.cloud_cover = cloud_cover
-        self.relative_humidity = relative_humidity
-        self.dew_point = dew_point
-        self.weather_type = weather_type
-        self.conditions = conditions
-        self.date = date
-        self.location = location
-        self.index = index
 
 
 class WeatherIdentification(object):
     r"""Identification of Weather data from TCX file.
-    
+
     Attributes:
         altitudes: An array of altitude values extracted from TCX file
         ascent_threshold (float): Parameter that defines the hill (hill >= ascent_threshold)
@@ -56,9 +28,12 @@ class WeatherIdentification(object):
         self.vc_api_key = vc_api_key
         self.unit_group = unit_group
 
-    def get_weather(self) -> [Weather]:
+    def get_weather(self, time_delta=30) -> [Weather]:
         """
+        Args:
+            time_delta: time between two measurements, default 30 mins
         Returns: list of objects Weather from the nearest meteorological station for every 1 hour of training.
+
         """
         time = datetime(1980, 1, 1)
         weather_list: [Weather] = []
@@ -68,15 +43,21 @@ class WeatherIdentification(object):
             if time == datetime(1980, 1, 1):
                 time = self.timestamps[index]
                 location = (self.locations[index][0], self.locations[index][1])
-                weather_response = self.weather_api_call(time, location,index)
+                weather_response = self.weather_api_call(time, location, index)
                 weather_list.append(weather_response)
-            elif time + timedelta(minutes=60) < self.timestamps[index]:
+            elif time + timedelta(minutes=time_delta) < self.timestamps[index]:
                 time = self.timestamps[index]
                 location = (self.locations[index][0], self.locations[index][1])
                 weather_response = self.weather_api_call(time, location, index)
                 weather_list.append(weather_response)
-        return weather_list
 
+            if index == len(self.locations) - 1:
+                time = self.timestamps[index] + timedelta(minutes=60)
+                location = (self.locations[index][0], self.locations[index][1])
+                weather_response = self.weather_api_call(time, location, index)
+                weather_list.append(weather_response)
+
+        return weather_list
 
     def weather_api_call(self, time: datetime, location: (float, float), index):
         URL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/weatherdata/history?"
@@ -105,3 +86,43 @@ class WeatherIdentification(object):
                        relative_humidity=data_values['humidity'], weather_type=data_values['weathertype'],
                        conditions=data_values['conditions'], date=time, location=location, index=index)
 
+    def __find_nearest_weathers(self, timestamp, weather_list):
+        beforeWeathers = list(filter(lambda x: timestamp >= x.date - timedelta(minutes=1), weather_list))
+        afterWeathers = list(filter(lambda x: timestamp < x.date, weather_list))
+        before = None
+        beforeSeconds = 999999999999999999999999999
+        after = None
+        afterSeconds = 999999999999999999999999999
+
+        for bw in beforeWeathers:
+            t = timestamp - bw.date if timestamp > bw.date else bw.date - timestamp
+            if beforeSeconds > t.seconds:
+                before = bw
+                beforeSeconds = t.seconds
+        for aw in afterWeathers:
+            t = timestamp - aw.date if timestamp > aw.date else aw.date - timestamp
+            if afterSeconds > t.seconds:
+                after = aw
+                afterSeconds = t.seconds
+        return {'before': {'weather': before, 'seconds': beforeSeconds},
+                'after': {'weather': after, 'seconds': afterSeconds}}
+
+    def get_average_weather_data(self, timestamps, weather:[Weather]):
+        """
+        :param timestamps: Timestamps from read TCX file method
+        :return: AverageWeather[], averaged out objects of weather
+        """
+        weather_list = weather
+        extended_weather_list = []
+
+        for timestamp in timestamps:
+            before_after = self.__find_nearest_weathers(timestamp, weather_list)
+            before = before_after['before']
+            after = before_after['after']
+            weight_a = 1 - (before['seconds'] / (after['seconds'] + before['seconds']))
+            average_weather_at_timestamp = AverageWeather(weather_a=before['weather'],
+                                                           weather_b=after['weather'],
+                                                           weight_a=weight_a)
+            extended_weather_list.append(average_weather_at_timestamp)
+
+        return extended_weather_list

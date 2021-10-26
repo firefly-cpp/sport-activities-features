@@ -12,10 +12,12 @@ from sport_activities_features.tcx_manipulation import TCXFile
 from sport_activities_features.topographic_features import TopographicFeatures
 from sport_activities_features.training_loads import BanisterTRIMP
 from sport_activities_features.weather_identification import (
-    Weather,
     WeatherIdentification,
 )
-
+from sport_activities_features.weather_objects.AverageWeather import AverageWeather
+from sport_activities_features.weather_objects.Weather import Weather
+from sport_activities_features.missing_elevation_identification import ElevationIdentification
+from sport_activities_features.gpx_manipulation import GPXFile
 __all__ = [
     "StoredSegments",
     "DataAnalysis",
@@ -26,10 +28,13 @@ __all__ = [
     "IntervalIdentificationByPower",
     "PlotData",
     "TCXFile",
+    "GPXFile",
     "TopographicFeatures",
     "BanisterTRIMP",
     "Weather",
     "WeatherIdentification",
+    'AverageWeather',
+    'ElevationIdentification'
 ]
 
 __version__ = "0.1.1"
