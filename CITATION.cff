@@ -1,0 +1,30 @@
+# YAML 1.2
+---
+authors:
+  -
+    family-names: "Fister Jr."
+    given-names: Iztok
+  -
+    family-names: "Lukač"
+    given-names: Luka
+  -
+    family-names: Rajšp
+    given-names: "Alen"
+  -
+    family-names: Fister
+    given-names: "Iztok"
+  -
+    family-names: "Pečnik"
+    given-names: Luka
+  -
+    family-names: "Fister"
+    given-names: Dušan
+cff-version: "1.1.0"
+date-released: 2021
+doi: "10.1109/INES52918.2021.9512927"
+license: MIT
+message: "If you use this software, please cite it using these metadata."
+repository-code: "https://github.com/firefly-cpp/sport-activities-features"
+title: "A minimalistic toolbox for extracting features from sport activity files"
+version: "0.2.5"
+...
