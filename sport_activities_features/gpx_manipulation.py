@@ -50,7 +50,7 @@ class GPXFile(object):
         return self.all_files
 
     def read_one_file(self, filename):
-        r"""Parse one TCX file.
+        r"""Parse one GPX file.
 
         Returns:
             dictionary:
@@ -87,7 +87,7 @@ class GPXFile(object):
                     previous_point=trackpoint
 
         gpx_file.close()
-        # handling missing data - should be improved in original tcxparser
+        # handling missing data - should be improved in original
         try:
             activity_type = gpx.activity_type
         except BaseException:
@@ -128,7 +128,7 @@ class GPXFile(object):
         return activity
 
     def extract_integral_metrics(self, filename):
-        r"""Parse one TCX file and extract integral metrics.
+        r"""Parse one GPX file and extract integral metrics.
 
         Returns:
             dictionary:
