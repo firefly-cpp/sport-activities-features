@@ -59,7 +59,7 @@ $ dnf install python3-sport-activities-features
 - Extraction of intervals (number of intervals, maximum/minimum/average duration of intervals, maximum/minimum/average distance of intervals, maximum/minimum/average heart rate during intervals)
 - Plotting the identified intervals ([see example](examples/draw_map_with_identified_intervals.py)) 
 - Calculation of training loads (Bannister TRIMP, Lucia TRIMP) ([see example](examples/integral_metrics_extraction.py))
-- Compatible with TCX activity files and [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API) nodes
+- Compatible with TCX & GPX activity files and [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API) nodes
 - Parsing of Historical weather data from an external service
 - Extraction of integral metrics of the activity inside area given with coordinates (distance, heartrate, speed) ([see example](examples/extract_data_inside_area.py))
 - Extraction of activities from CSV file(s) and random selection of a specific number of activities ([see example](examples/extract_random_activities_from_csv.py))
