@@ -1,3 +1,9 @@
+<p align="center">
+  <img width="200" src=".github/logo/sport_activities.png">
+</p>
+
+---
+
 # sport-activities-features --- A minimalistic toolbox for extracting features from sport activity files written in Python
 
 ---
@@ -10,11 +16,6 @@
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/firefly-cpp/sport-activities-features.svg)](http://isitmaintained.com/project/firefly-cpp/sport-activities-features "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/firefly-cpp/sport-activities-features.svg)](http://isitmaintained.com/project/firefly-cpp/sport-activities-features "Percentage of issues still open")
 ![GitHub contributors](https://img.shields.io/github/contributors/firefly-cpp/sport-activities-features.svg)
-
-<p align="center">
-  <img width="200" src=".github/logo/sport_activities.png">
-</p>
-
 
 ## Objective
 Data analysis of sport activities that were monitored by the use of [sport trackers is popular](http://iztok-jr-fister.eu/static/publications/42.pdf).
