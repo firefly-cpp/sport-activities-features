@@ -11,7 +11,7 @@
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/firefly-cpp/sport-activities-features.svg)](http://isitmaintained.com/project/firefly-cpp/sport-activities-features "Percentage of issues still open")
 ![GitHub contributors](https://img.shields.io/github/contributors/firefly-cpp/sport-activities-features.svg)
 
-<p align="center">
+<p align="left">
   <img width="200" src=".github/logo/sport_activities.png">
 </p>
 
