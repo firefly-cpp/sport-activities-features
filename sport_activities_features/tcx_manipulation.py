@@ -44,13 +44,22 @@ class TCXFile(object):
         distances = []
         timestamps = []
         heartrates = []
+        speeds = []
         trackpoint: TCXTrackPoint
-        for trackpoint in tcx.trackpoints:
+        for index, trackpoint in enumerate(tcx.trackpoints):
             positions.append((trackpoint.latitude, trackpoint.longitude))
             altitudes.append(trackpoint.elevation)
             distances.append(trackpoint.distance)
             timestamps.append(trackpoint.time)
             heartrates.append(trackpoint.hr_value)
+            if index != 0:
+                delta_distance = distances[-1]-distances[-2]
+                delta_time=(timestamps[-1]-timestamps[-2]).total_seconds()
+                speeds.append((delta_distance / delta_time) * 3.6)
+                a=100
+            else:
+                speeds.append(0)
+
 
         try:
             total_distance = tcx.distance
@@ -65,6 +74,7 @@ class TCXFile(object):
             "total_distance": total_distance,
             "timestamps": timestamps,
             "heartrates": heartrates,
+            "speeds":speeds
         }
 
         return activity
