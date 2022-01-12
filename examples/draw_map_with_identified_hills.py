@@ -18,6 +18,7 @@ tcx_file = TCXFile()
     total_distance,
     timestamps,
     heartrates,
+    speeds
 ) = tcx_file.read_one_file("path_to_the_data").values()
 
 # detect hills in data
@@ -27,4 +28,5 @@ all_hills = Hill.return_hills()
 
 # draw detected hills
 Map = PlotData()
+
 Map.draw_hills_in_map(altitudes, distances, all_hills)

@@ -1,6 +1,4 @@
 # %matplotlib inline
-import geopy.distance
-import numpy as np
 import matplotlib.pyplot as plt
 
 plt.style.use("seaborn-whitegrid")
@@ -34,7 +32,22 @@ class PlotData(object):
         return points
 
     def draw_hills_in_map(self, altitude, distance, identified_hills):
-        r"""Plot all hills identified in data on topographic map."""
+        r"""Plot all hills identified in data on topographic map. Renders the plot."""
+        plt = self.plot_hills_on_map(altitude, distance, identified_hills)
+        plt.show()
+
+    def draw_intervals_in_map(self, timestamp, distance, identified_intervals):
+        """Plot all intervals identified in data on topographic map. Renders the plot."""
+        plt = self.plot_intervals_in_map(self, timestamp, distance, identified_intervals)
+        plt.show()
+
+    def draw_basic_map(self, altitude, distance):
+        r"""Plot the whole topographic map. Renders the plot."""
+        plt = self.plot_basic_map()
+        plt.show()
+
+    def plot_hills_on_map(self, altitude, distance, identified_hills):
+        r"""Plot all hills identified in data on topographic map. Returns plot object."""
         fig = plt.figure()
         ax = plt.axes()
         tocke = []
@@ -67,11 +80,11 @@ class PlotData(object):
         plt.title("Detected hills", fontsize=20)
         plt.xlabel("Distance (m)", fontsize=20)
         plt.ylabel("Altitude (m)", fontsize=20)
-        plt.show()
+        return plt
 
     # Drawing the map with the intervals
-    def draw_intervals_in_map(self, timestamp, distance, identified_intervals):
-        r"""Plot all intervals identified in data on topographic map."""
+    def plot_intervals_in_map(self, timestamp, distance, identified_intervals):
+        r"""Plot all intervals identified in data on topographic map. Returns plot object"""
         fig = plt.figure("Intervals")
         ax = plt.axes()
         x_points = []
@@ -85,7 +98,7 @@ class PlotData(object):
         # Appending points to lists
         for i in range(len(timestamp)):
             time = (
-                timestamp[i] - timestamp[0]
+                    timestamp[i] - timestamp[0]
             ).total_seconds()  # Calculation of time between the current and the starting point
 
             x_points.append(float(time))  # Appending the time to the list
@@ -120,10 +133,10 @@ class PlotData(object):
         plt.title("Intervals", fontsize=20)
         plt.xlabel("Time (s)", fontsize=20)
         plt.ylabel("Interval", fontsize=20)
-        plt.show()
+        return plt
 
-    def draw_basic_map(self, altitude, distance):
-        r"""Plot the whole topographic map."""
+    def plot_basic_map(self, altitude, distance):
+        r"""Plot the whole topographic map. Returns plot object."""
         fig = plt.figure()
         ax = plt.axes()
         tocke = []
@@ -139,4 +152,4 @@ class PlotData(object):
         plt.title("Topographic map of cycling activity", fontsize=20)
         plt.xlabel("Distance (m)", fontsize=20)
         plt.ylabel("Altitude (m)", fontsize=20)
-        plt.show()
+        return plt
