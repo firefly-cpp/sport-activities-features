@@ -88,6 +88,30 @@ Both of the solutions can be used by using free publicly acessible APIs ([Overpa
 
 ## CODE EXAMPLES:
 
+### Reading files
+
+#### (*.TCX)
+```python
+from sport_activities_features.tcx_manipulation import TCXFile
+
+# Class for reading TCX files
+tcx_file=TCXFile()
+data = tcx_file.read_one_file("path_to_the_file")
+```
+
+#### (*.GPX)
+```python
+from sport_activities_features.gpx_manipulation import GPXFile
+
+# Class for reading GPX files
+gpx_file=GPXFile()
+
+# Read the file and generate a dictionary with 
+data = gpx_file.read_one_file("path_to_the_file")
+```
+
+
+
 ### Extraction of topographic features
 ```python
 from sport_activities_features.hill_identification import HillIdentification
@@ -134,6 +158,58 @@ all_intervals = Intervals.return_intervals()
 Intervals = IntervalIdentificationByHeartrate(activity["timestamps"], activity["altitudes"], activity["heartrates"])
 Intervals.identify_intervals()
 all_intervals = Intervals.return_intervals()
+```
+
+### Parsing of Historical weather data from an external service
+```python
+from sport_activities_features import WeatherIdentification
+from sport_activities_features import TCXFile
+
+# Read TCX file
+tcx_file = TCXFile()
+tcx_data = tcx_file.read_one_file("path_to_file")
+
+# Configure visual crossing api key
+visual_crossing_api_key = "weather_api_key" # https://www.visualcrossing.com/weather-api
+
+# Explanation of elements - https://www.visualcrossing.com/resources/documentation/weather-data/weather-data-documentation/
+weather = WeatherIdentification(tcx_data['positions'], tcx_data['timestamps'], visual_crossing_api_key)
+weatherlist = weather.get_weather(time_delta=30)
+tcx_weather = weather.get_average_weather_data(timestamps=tcx_data['timestamps'],weather=weatherlist)
+# Add weather to TCX data
+tcx_data.update({'weather':tcx_weather})
+```
+
+The weather list is of the following type:
+```json
+     [
+        {
+            "temperature": 14.3,
+            "maximum_temperature": 14.3,
+            "minimum_temperature": 14.3,
+            "wind_chill": null,
+            "heat_index": null,
+            "solar_radiation": null,
+            "precipitation": 0.0,
+            "sea_level_pressure": 1021.6,
+            "snow_depth": null,
+            "wind_speed": 6.9,
+            "wind_direction": 129.0,
+            "wind_gust": null,
+            "visibility": 40.0,
+            "cloud_cover": 54.3,
+            "relative_humidity": 47.6,
+            "dew_point": 3.3,
+            "weather_type": "",
+            "conditions": "Partially cloudy",
+            "date": "2016-04-02T17:26:09+00:00",
+            "location": [
+                46.079871179535985,
+                14.738618675619364
+            ],
+            "index": 0
+        }, ...
+    ]
 ```
 
 ### Extraction of integral metrics
@@ -228,6 +304,78 @@ area_coordinates = np.array([[[10, 10], [10, 50], [50, 50], [50, 10]],
 area = AreaIdentification(positions, distances, timestamps, heartrates, area_coordinates)
 area.identify_points_in_area()
 area_data = area.extract_data_in_area()
+```
+
+### Identify interruptions
+```python
+from sport_activities_features.interruptions.interruption_processor import InterruptionProcessor
+from sport_activities_features.tcx_manipulation import TCXFile
+
+"""
+Identify interruption events from a TCX or GPX file.
+"""
+
+# read TCX file (also works with GPX files)
+tcx_file = TCXFile()
+tcx_data = tcx_file.read_one_file("path_to_the_data")
+
+"""
+Time interval = time before and after the start of an event
+Min speed = Threshold speed to trigger an event / interruption (trigger when under min_speed)
+overpass_api_url = Set to something self hosted, or use public instance from https://wiki.openstreetmap.org/wiki/Overpass_API
+"""
+interruptionProcessor = InterruptionProcessor(time_interval=60, min_speed=2,
+                                              overpass_api_url="url_to_overpass_api")
+
+"""
+If classify is set to true, also discover if interruptions are close to intersections. Returns a list of [ExerciseEvent]
+"""
+events = interruptionProcessor.events(tcx_data, True)
+```
+
+### Overpy (Overpass API) node manipulation
+Generate TCXFile parsed like data object from overpy.Node objects
+```python
+import overpy
+from sport_activities_features.overpy_node_manipulation import OverpyNodesReader
+
+
+# External service Overpass API (https://wiki.openstreetmap.org/wiki/Overpass_API) (can be self hosted)
+overpass_api = "https://lz4.overpass-api.de/api/interpreter"
+
+# External service Open Elevation API (https://api.open-elevation.com/api/v1/lookup) (can be self hosted)
+open_elevation_api = "https://api.open-elevation.com/api/v1/lookup"
+
+# OSM Way (https://wiki.openstreetmap.org/wiki/Way)
+open_street_map_way = 164477980
+
+overpass_api = overpy.Overpass(url=overpass_api)
+
+# Get an example Overpass way
+q = f"""(way({open_street_map_way});<;);out geom;"""
+query = overpass_api.query(q)
+
+# Get nodes of an Overpass way
+nodes = query.ways[0].get_nodes(resolve_missing=True)
+
+# Extract basic data from nodes (you can later on use Hill Identification and Hill Data Extraction on them)
+overpy_reader = OverpyNodesReader(open_elevation_api=open_elevation_api)
+# Returns {
+#         'positions': positions, 'altitudes': altitudes, 'distances': distances, 'total_distance': total_distance
+#         }
+data = overpy_reader.read_nodes(nodes)
+```
+### Missing elevation data extraction
+```python
+from sport_activities_features import ElevationIdentification
+from sport_activities_features import TCXFile
+
+tcx_file = TCXFile()
+tcx_data = tcx_file.read_one_file('path_to_file')
+
+elevations = ElevationIdentification(tcx_data['positions'])
+"""Adds tcx_data['elevation'] = eg. [124, 21, 412] for each position"""
+tcx_data.update({'elevations':elevations})
 ```
 
 ### Example of a visualization of the area detection

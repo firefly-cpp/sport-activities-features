@@ -1,6 +1,7 @@
 import overpy
 from sport_activities_features.overpy_node_manipulation import OverpyNodesReader
 
+
 # External service Overpass API (https://wiki.openstreetmap.org/wiki/Overpass_API) (can be self hosted)
 overpass_api = "https://lz4.overpass-api.de/api/interpreter"
 
