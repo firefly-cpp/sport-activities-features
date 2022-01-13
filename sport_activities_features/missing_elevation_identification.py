@@ -41,7 +41,7 @@ class ElevationIdentification():
         i=0
         for chunk in chunks:
             payload = {"locations": chunk}
-            json_data = requests.post(url="https://api.open-elevation.com/api/v1/lookup", json=payload).content
+            json_data = requests.post(url=self.open_elevation_api, json=payload).content
             data = json.loads(json_data)['results']
             for result in data:
                 elevations.append(result['elevation'])

@@ -86,6 +86,7 @@ class WeatherIdentification(object):
                        relative_humidity=data_values['humidity'], weather_type=data_values['weathertype'],
                        conditions=data_values['conditions'], date=time, location=location, index=index)
 
+    @classmethod
     def __find_nearest_weathers(self, timestamp, weather_list):
         beforeWeathers = list(filter(lambda x: timestamp >= x.date - timedelta(minutes=1), weather_list))
         afterWeathers = list(filter(lambda x: timestamp < x.date, weather_list))
@@ -107,6 +108,7 @@ class WeatherIdentification(object):
         return {'before': {'weather': before, 'seconds': beforeSeconds},
                 'after': {'weather': after, 'seconds': afterSeconds}}
 
+    @classmethod
     def get_average_weather_data(self, timestamps, weather:[Weather]):
         """
         :param timestamps: Timestamps from read TCX file method
