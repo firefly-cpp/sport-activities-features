@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sport-activities-features"
-version = "0.2.9"
+version = "0.2.10"
 description = "A minimalistic toolbox for extracting features from sport activity files"
 authors = ["iztokf <iztokf@fedoraproject.org>"]
 
