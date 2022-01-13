@@ -55,6 +55,10 @@ class TCXFile(object):
             if index != 0:
                 delta_distance = distances[-1]-distances[-2]
                 delta_time=(timestamps[-1]-timestamps[-2]).total_seconds()
+                if(delta_time == 0):
+                    delta_time=1
+                    delta_distance=1
+                    print(f"""Invalid input data. Index: {index} - delta time: 0""")
                 speeds.append((delta_distance / delta_time) * 3.6)
                 a=100
             else:
