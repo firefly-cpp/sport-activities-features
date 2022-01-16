@@ -11,9 +11,18 @@ from sport_activities_features.interruptions.overpass import Overpass, Coordinat
 
 
 class InterruptionProcessor():
+    """
+    Class for identifying interruption events (events where the speed dropped below threshold).
+    Args:
+            time_interval: Record x seconds before and after the event
+            min_speed: Speed threshold for the event to trigger (min_speed = 2 -> trigger if speed less than 2km/h)
+            overpass_api_url: Overpass API url. Self-hosting is prefferable if you want to make a lot of requests.
+    """
+
     def __init__(self, time_interval=60, min_speed=2,
                  overpass_api_url="https://lz4.overpass-api.de/api/interpreter"):
         """
+        Initialisation method of InterruptionProcessor class.
         Args:
             time_interval: Record x seconds before and after the event
             min_speed: Speed threshold for the event to trigger (min_speed = 2 -> trigger if speed less than 2km/h)
@@ -25,9 +34,12 @@ class InterruptionProcessor():
 
     def __determine_event_type(self, event_stats: EventStats, lines: [TrackSegment]):
         """
-        :param event_stats:
-        :param lines:
-        :return: Returns Enum if this ia a event of the start, end or actual interruption.
+        Method that idenitifies type of interruption event based on position of the event in regards to the complete training.
+        Args:
+            event_stats: EventStats of the identified event
+            lines: [TrackSegment] of the event
+        Returns:
+            Returns Enum EventType if this ia a event of type exercise start, exercise end or actual interruption.
         """
         if event_stats.index_start == 0:
             return EventType.EXERCISE_START
@@ -37,6 +49,12 @@ class InterruptionProcessor():
             return EventType.EXERCISE_PAUSE
 
     def __data_to_lines(self, tcx_data) -> [TrackSegment]:
+        """
+        Method for transforming TCXFile/GPXFile data into [TrackSegment] list.
+        Args:
+            tcx_data: TCXData/GPXData generated dictionary
+        Returns: list of TrackSegments
+        """
         lines: [TrackSegment] = []
         for i in range(len(tcx_data['positions'])):
             if (i != 0):
@@ -74,14 +92,14 @@ class InterruptionProcessor():
 
         return lines
 
-    def events(self, lines, classify=False) -> [ExerciseEvent]:
+    def events(self, lines:[TrackSegment], classify=False) -> [ExerciseEvent]:
         """
+        Method that parses events (method parse_events()) and classifies them (classify_events()) if required.
         Args:
-            lines: [TrackSegment] | tcx_data | gpx_data
-            classify:
+            lines: [TrackSegment] from TCX/GPX data
+            classify: If set to true calls classify_events() method
 
-        Returns:
-
+        Returns: list of [ExerciseEvent], meaning parsed (and classified) events.
         """
         events = self.parse_events(lines)
         if classify is True:
@@ -91,14 +109,15 @@ class InterruptionProcessor():
             return classified_events
         return events
 
-    def parse_events(self, lines) -> [ExerciseEvent]:
+    def parse_events(self, lines:[TrackSegment]) -> [ExerciseEvent]:
         """
-        Parses all events and returns ExerciseEvent array.
-        :param lines:
-        :return:
+        Parses all events (based on the min_speed parameter in the class initialisation) and returns ExerciseEvent list.
+        Args:
+            lines: list of TrackSegment objects
+
+        Returns: list of identified ExerciseEvent objects
 
         """
-        stoppedTimestamp = 0
         if type(lines) is dict:
             lines = self.__data_to_lines(lines)
         eventList: [ExerciseEvent] = []
@@ -140,10 +159,17 @@ class InterruptionProcessor():
         return eventList
 
     def classify_event(self, event: ExerciseEvent):
+        """
+        Method that classifies the sent ExerciseEvent. Currently only identifies events which happened in the vicincy of
+        intersections.
+        Args:
+            event: ExerciseEvent to be inspected
+        Returns: ExerciseEvent on which classification has been performed.
+        """
         op = Overpass(self.overpass_api_url)
         event: ExerciseEvent
         box = CoordinatesBox(event=event)
-        possible_intersections: overpy.Result = op.identify_intersections(event, box)
+        possible_intersections: overpy.Result = op.identify_intersections(box)
         # [intersection][point]
         (events, intersections) = (len(event.event), len(possible_intersections.nodes))
         min_distance = 1000000

@@ -1,18 +1,20 @@
-from tcxreader.tcxreader import TCXExercise, TCXTrackPoint, TCXReader
 import os
+
+from tcxreader.tcxreader import TCXTrackPoint, TCXReader
 
 
 class TCXFile(object):
-    r"""Working with TCX files"""
+    r"""Class for reading TCX files"""
 
     def __init__(self):
         self.all_files = []
 
     def read_directory(self, directory_name):
-        r"""Find all tcx files in a directory.
-
+        r"""Find all TCX files in a directory.
+        Args:
+            directory_name : name od the directory in which to identify TCX files
         Returns:
-            str: Array of strings
+            str: Array of paths to the identified files
         """
 
         files = os.listdir(directory_name)
@@ -23,10 +25,17 @@ class TCXFile(object):
         return self.all_files
 
     def read_one_file(self, filename):
-        r"""Parse one TCX file.
+        r"""Parse one TCX file using the TCXReader.
 
-        Returns:
-            dictionary:
+        Returns: activity: {
+            "activity_type": activity_type,
+            "positions": positions,
+            "altitudes": altitudes,
+            "distances": distances,
+            "total_distance": total_distance,
+            "timestamps": timestamps,
+            "heartrates": heartrates,
+            "speeds":speeds }
 
         Note:
             In the case of missing value in raw data, we assign None
@@ -53,17 +62,16 @@ class TCXFile(object):
             timestamps.append(trackpoint.time)
             heartrates.append(trackpoint.hr_value)
             if index != 0:
-                delta_distance = distances[-1]-distances[-2]
-                delta_time=(timestamps[-1]-timestamps[-2]).total_seconds()
-                if(delta_time == 0):
-                    delta_time=1
-                    delta_distance=1
+                delta_distance = distances[-1] - distances[-2]
+                delta_time = (timestamps[-1] - timestamps[-2]).total_seconds()
+                if (delta_time == 0):
+                    delta_time = 1
+                    delta_distance = 1
                     print(f"""Invalid input data. Index: {index} - delta time: 0""")
                 speeds.append((delta_distance / delta_time) * 3.6)
-                a=100
+                a = 100
             else:
                 speeds.append(0)
-
 
         try:
             total_distance = tcx.distance
@@ -78,7 +86,7 @@ class TCXFile(object):
             "total_distance": total_distance,
             "timestamps": timestamps,
             "heartrates": heartrates,
-            "speeds":speeds
+            "speeds": speeds
         }
 
         return activity
@@ -86,8 +94,20 @@ class TCXFile(object):
     def extract_integral_metrics(self, filename):
         r"""Parse one TCX file and extract integral metrics.
 
-        Returns:
-            dictionary:
+        Returns: int_metrics: {
+            "activity_type": activity_type,
+            "distance": distance,
+            "duration": duration,
+            "calories": calories,
+            "hr_avg": hr_avg,
+            "hr_max": hr_max,
+            "hr_min": hr_min,
+            "altitude_avg": altitude_avg,
+            "altitude_max": altitude_max,
+            "altitude_min": altitude_min,
+            "ascent": ascent,
+            "descent": descent,
+        }
         """
         tcx = TCXReader().read(filename)
 
