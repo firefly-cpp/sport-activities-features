@@ -3,9 +3,24 @@ import overpy
 from sport_activities_features.interruptions.exercise import TrackSegment
 from sport_activities_features.interruptions.exercise_event import ExerciseEvent
 
+
 class CoordinatesBox:
-    def __init__(self, min_latitude=300, min_longitude=300, max_latitude=-300, max_longitude=-300,
+    """
+    Class for generating a bounding box from which the Overpass intersections will be queried.
+    """
+    def __init__(self, min_latitude:float=300, min_longitude:float=300, max_latitude:float=-300, max_longitude:float=-300,
                  event: ExerciseEvent = ExerciseEvent()):
+        """
+        Initialisation method of CoordinatesBox. If optional parameter event is recieved the box is generated from the
+        location of the event. Otherwise min_latitude, min_longitude, max_latitude, max_longitude can be defined in the
+        initialisation.
+        Args:
+            min_latitude: minimum latitude of the event box
+            min_longitude: minimum longitude of the event box
+            max_latitude: maxiumum latitude of the event box
+            max_longitude: minimum longitude of the event box
+            event: ExerciseEvent, if full the previous parameters are disregarded.
+        """
         self.min_latitude = min_latitude
         self.min_longitude = min_longitude
         self.max_latitude = max_latitude
@@ -13,9 +28,9 @@ class CoordinatesBox:
         if len(event.event) > 0:
             self.define_event_box_size(event)
 
-    def expand(self):
+    def __expand(self):
         """
-        :return: expands the total area by 0.003 degrees (so that all intersections are included)
+        Expands the box by 0.003 degrees longitude and latitude.
         """
         self.min_longitude -= 0.003
         self.min_latitude -= 0.003
@@ -23,6 +38,11 @@ class CoordinatesBox:
         self.max_latitude += 0.003
 
     def define_event_box_size(self, event: ExerciseEvent):
+        """
+        Method for defining the box if the event is present in initialisation parameters.
+        Args:
+            event: ExerciseEvent from which the latitude and longitude is taken
+        """
         x = CoordinatesBox()
         merged_points = event.pre_event + event.event + event.post_event
         point: TrackSegment
@@ -35,18 +55,32 @@ class CoordinatesBox:
                 self.max_latitude = point.point_a.latitude
             if point.point_a.longitude > x.max_longitude:
                 self.max_longitude = point.point_a.longitude
-        self.expand()
+        self.__expand()
 
 
 class Overpass:
-    def __init__(self, api_url):
+    """
+        Class for handling the Overpass API requests. Currently used for detecting intersections.
+        Args:
+            api_url: str location of the Overpass API (default: https://lz4.overpass-api.de/api/interpreter)
+    """
+
+    def __init__(self, api_url="https://lz4.overpass-api.de/api/interpreter"):
+        """
+        Initialisation method of Overpass handling class.
+        Args:
+            api_url: str location of the Overpass API (default: https://lz4.overpass-api.de/api/interpreter). Should
+            be self hosted if a lot of requests are to be made.
+        """
         self.api = overpy.Overpass(url=api_url)
 
-    def identify_intersections(self, event, box: CoordinatesBox):
+    def identify_intersections(self, box: CoordinatesBox):
         """
-        :param event: Event object with pre, event, post
-        :param box: boundaries of intersections on the map
-        :return: possible intersections
+        Method for generating a Overpass Query Language query for identifying intersections inside the bounding
+        box parameters.
+        Args:
+            box: object that defines the minimum and maximum latitude, longitude.
+        Returns: List of possible intersections inside the queried box latitude and longitude parameters.
         """
         query = f'''way 
           ["highway"]
