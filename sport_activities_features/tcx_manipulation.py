@@ -55,6 +55,8 @@ class TCXFile(object):
         heartrates = []
         speeds = []
         trackpoint: TCXTrackPoint
+
+        invalid_points = []
         for index, trackpoint in enumerate(tcx.trackpoints):
             positions.append((trackpoint.latitude, trackpoint.longitude))
             altitudes.append(trackpoint.elevation)
@@ -67,11 +69,14 @@ class TCXFile(object):
                 if (delta_time == 0):
                     delta_time = 1
                     delta_distance = 1
-                    print(f"""Invalid input data. Index: {index} - delta time: 0""")
+                    invalid_points.append(index)
                 speeds.append((delta_distance / delta_time) * 3.6)
                 a = 100
             else:
                 speeds.append(0)
+
+        if len(invalid_points) > 0:
+            print(f"Probably invalid speeds or not a record of exercise. Invalid trackpoints count: {len(invalid_points)} Filename:{filename}")
 
         try:
             total_distance = tcx.distance
