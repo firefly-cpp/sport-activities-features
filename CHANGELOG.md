@@ -1,5 +1,147 @@
 # Changelog
 
+## [0.2.11](https://github.com/firefly-cpp/sport-activities-features/tree/0.2.11) (2022-01-18)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.10...0.2.11)
+
+**Merged pull requests:**
+
+- Dead end identification refactoring and minor change in TCXFile [\#58](https://github.com/firefly-cpp/sport-activities-features/pull/58) ([alenrajsp](https://github.com/alenrajsp))
+- Documentation update and bugfix [\#57](https://github.com/firefly-cpp/sport-activities-features/pull/57) ([alenrajsp](https://github.com/alenrajsp))
+
+## [0.2.10](https://github.com/firefly-cpp/sport-activities-features/tree/0.2.10) (2022-01-13)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.9...0.2.10)
+
+**Implemented enhancements:**
+
+- Add tests  [\#52](https://github.com/firefly-cpp/sport-activities-features/issues/52)
+
+**Closed issues:**
+
+- Add descriptions of added features to readme [\#51](https://github.com/firefly-cpp/sport-activities-features/issues/51)
+
+**Merged pull requests:**
+
+- Refactored area\_identification, minor bugfix in TCXFile [\#56](https://github.com/firefly-cpp/sport-activities-features/pull/56) ([alenrajsp](https://github.com/alenrajsp))
+- Bump pillow from 8.4.0 to 9.0.0 [\#55](https://github.com/firefly-cpp/sport-activities-features/pull/55) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Added tests [\#54](https://github.com/firefly-cpp/sport-activities-features/pull/54) ([alenrajsp](https://github.com/alenrajsp))
+- Updated PlotData and readme [\#53](https://github.com/firefly-cpp/sport-activities-features/pull/53) ([alenrajsp](https://github.com/alenrajsp))
+
+## [0.2.9](https://github.com/firefly-cpp/sport-activities-features/tree/0.2.9) (2021-12-22)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.8...0.2.9)
+
+**Implemented enhancements:**
+
+- Logo for this project [\#45](https://github.com/firefly-cpp/sport-activities-features/issues/45)
+- Add support for processing gpx files [\#40](https://github.com/firefly-cpp/sport-activities-features/issues/40)
+
+**Closed issues:**
+
+- Add interruption detection functionality [\#48](https://github.com/firefly-cpp/sport-activities-features/issues/48)
+- Poetry Issue [\#44](https://github.com/firefly-cpp/sport-activities-features/issues/44)
+
+**Merged pull requests:**
+
+- Added interruption detection [\#49](https://github.com/firefly-cpp/sport-activities-features/pull/49) ([alenrajsp](https://github.com/alenrajsp))
+- pull request for logo [\#46](https://github.com/firefly-cpp/sport-activities-features/pull/46) ([rhododendrom](https://github.com/rhododendrom))
+
+## [0.2.8](https://github.com/firefly-cpp/sport-activities-features/tree/0.2.8) (2021-11-09)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.7...0.2.8)
+
+**Merged pull requests:**
+
+- Overpy Node Manipulation, Elevation Identification update [\#42](https://github.com/firefly-cpp/sport-activities-features/pull/42) ([alenrajsp](https://github.com/alenrajsp))
+
+## [0.2.7](https://github.com/firefly-cpp/sport-activities-features/tree/0.2.7) (2021-10-26)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.6...0.2.7)
+
+**Closed issues:**
+
+- Add a citation.cff file [\#35](https://github.com/firefly-cpp/sport-activities-features/issues/35)
+
+**Merged pull requests:**
+
+- Features [\#41](https://github.com/firefly-cpp/sport-activities-features/pull/41) ([alenrajsp](https://github.com/alenrajsp))
+
+## [0.2.6](https://github.com/firefly-cpp/sport-activities-features/tree/0.2.6) (2021-09-30)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.5...0.2.6)
+
+**Merged pull requests:**
+
+- Small changes in dead end detection [\#38](https://github.com/firefly-cpp/sport-activities-features/pull/38) ([luckyLukac](https://github.com/luckyLukac))
+- Initial version of dead end identification within an exercise [\#37](https://github.com/firefly-cpp/sport-activities-features/pull/37) ([luckyLukac](https://github.com/luckyLukac))
+- Updated Weather identification [\#36](https://github.com/firefly-cpp/sport-activities-features/pull/36) ([alenrajsp](https://github.com/alenrajsp))
+
+## [0.2.5](https://github.com/firefly-cpp/sport-activities-features/tree/0.2.5) (2021-09-24)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.4...0.2.5)
+
+**Merged pull requests:**
+
+- Fixed bug at drawing the map if no points inside of an area [\#34](https://github.com/firefly-cpp/sport-activities-features/pull/34) ([luckyLukac](https://github.com/luckyLukac))
+- Space complexity improvements [\#33](https://github.com/firefly-cpp/sport-activities-features/pull/33) ([luckyLukac](https://github.com/luckyLukac))
+- Added visualization of the area detection in README [\#32](https://github.com/firefly-cpp/sport-activities-features/pull/32) ([luckyLukac](https://github.com/luckyLukac))
+- Small fixes [\#31](https://github.com/firefly-cpp/sport-activities-features/pull/31) ([luckyLukac](https://github.com/luckyLukac))
+
+## [0.2.4](https://github.com/firefly-cpp/sport-activities-features/tree/0.2.4) (2021-08-15)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.3...0.2.4)
+
+**Implemented enhancements:**
+
+- Improve code quality [\#19](https://github.com/firefly-cpp/sport-activities-features/issues/19)
+
+**Fixed bugs:**
+
+- test\_data\_analysis.py is failing [\#26](https://github.com/firefly-cpp/sport-activities-features/issues/26)
+
+**Merged pull requests:**
+
+- Fix tests and add code quality improvements [\#29](https://github.com/firefly-cpp/sport-activities-features/pull/29) ([lukapecnik](https://github.com/lukapecnik))
+- Added test & update README [\#28](https://github.com/firefly-cpp/sport-activities-features/pull/28) ([spelap](https://github.com/spelap))
+
+## [0.2.3](https://github.com/firefly-cpp/sport-activities-features/tree/0.2.3) (2021-07-16)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.2...0.2.3)
+
+**Merged pull requests:**
+
+- data extraction from CSV file & method that returns the desired number of activities [\#27](https://github.com/firefly-cpp/sport-activities-features/pull/27) ([spelap](https://github.com/spelap))
+
+## [0.2.2](https://github.com/firefly-cpp/sport-activities-features/tree/0.2.2) (2021-07-02)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.1...0.2.2)
+
+**Merged pull requests:**
+
+- Added test for area\_identification [\#25](https://github.com/firefly-cpp/sport-activities-features/pull/25) ([luckyLukac](https://github.com/luckyLukac))
+
+## [0.2.1](https://github.com/firefly-cpp/sport-activities-features/tree/0.2.1) (2021-07-01)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.0...0.2.1)
+
+**Merged pull requests:**
+
+- Improvements in area detection [\#24](https://github.com/firefly-cpp/sport-activities-features/pull/24) ([luckyLukac](https://github.com/luckyLukac))
+- Implementation of area detection with rays [\#23](https://github.com/firefly-cpp/sport-activities-features/pull/23) ([luckyLukac](https://github.com/luckyLukac))
+- Documentation improvements [\#21](https://github.com/firefly-cpp/sport-activities-features/pull/21) ([luckyLukac](https://github.com/luckyLukac))
+- Implementation of area recognition [\#17](https://github.com/firefly-cpp/sport-activities-features/pull/17) ([luckyLukac](https://github.com/luckyLukac))
+
+## [0.2.0](https://github.com/firefly-cpp/sport-activities-features/tree/0.2.0) (2021-05-08)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.1.2...0.2.0)
+
+**Merged pull requests:**
+
+- Updated docs, updated library to include total ascent & descent [\#16](https://github.com/firefly-cpp/sport-activities-features/pull/16) ([alenrajsp](https://github.com/alenrajsp))
+- Added Geopy and Overpass basic integration [\#15](https://github.com/firefly-cpp/sport-activities-features/pull/15) ([alenrajsp](https://github.com/alenrajsp))
+- Implementation of calculation of hill gradient [\#14](https://github.com/firefly-cpp/sport-activities-features/pull/14) ([luckyLukac](https://github.com/luckyLukac))
+
 ## [0.1.2](https://github.com/firefly-cpp/sport-activities-features/tree/0.1.2) (2021-03-18)
 
 [Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.1.1...0.1.2)
