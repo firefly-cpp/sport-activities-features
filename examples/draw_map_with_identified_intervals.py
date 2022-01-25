@@ -23,6 +23,7 @@ tcx_file = TCXFile()
     total_distance,
     timestamps,
     heartrates,
+    speeds
 ) = tcx_file.read_one_file("path_to_the_data").values()
 
 # Identifying the intervals in the activity by power and drawing the map

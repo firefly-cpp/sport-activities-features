@@ -1,5 +1,4 @@
 import geotiler
-import itertools
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -155,19 +154,17 @@ class AreaIdentification(object):
             'avg_heartrate': avg_heartrate,
         }
 
-    def draw_map(self) -> None:
-        """ Visualization of the exercise.
-            return: None
-        """
+    def plot_map(self):
         if np.shape(self.positions)[0] == 0:
             raise Exception('Dataset is empty or invalid.')
 
-        # Downloading the map.
+            # Downloading the map.
         size = 10000
         coordinates = self.positions.flatten()
         latitudes = coordinates[::2]
         longitudes = coordinates[1::2]
-        map = geotiler.Map(extent=(np.min(longitudes), np.min(latitudes), np.max(longitudes), np.max(latitudes)), size=(size, size))
+        map = geotiler.Map(extent=(np.min(longitudes), np.min(latitudes), np.max(longitudes), np.max(latitudes)),
+                           size=(size, size))
         image = geotiler.render_map(map)
 
         # Drawing the map as plot.
@@ -182,7 +179,8 @@ class AreaIdentification(object):
 
             # Drawing the path inside of the area and possible paths in between outside of the area.
             for i in np.arange(np.shape(self.points_in_area)[0]):
-                x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in np.arange(self.points_in_area[i][0], self.points_in_area[i][1] + 1)))
+                x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in
+                             np.arange(self.points_in_area[i][0], self.points_in_area[i][1] + 1)))
 
                 if i == 0:
                     ax.plot(x, y, c='red', label='Inside of the area')
@@ -190,11 +188,13 @@ class AreaIdentification(object):
                     ax.plot(x, y, c='red', label='_nolegend_')
 
                 if np.shape(self.points_in_area)[0] > i + 1:
-                    x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in np.arange(self.points_in_area[i][1], self.points_in_area[i + 1][0] + 1)))
+                    x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in
+                                 np.arange(self.points_in_area[i][1], self.points_in_area[i + 1][0] + 1)))
                     ax.plot(x, y, c='blue', label='_nolegend_')
 
             # Drawing the ending path outside of the area.
-            x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in np.arange(self.points_in_area[-1][1], np.shape(self.positions)[0])))
+            x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in
+                         np.arange(self.points_in_area[-1][1], np.shape(self.positions)[0])))
             ax.plot(x, y, c='blue', label='_nolegend_')
         # If there are no points inside the given area, the whole path is plotted as outside of the given area.
         else:
@@ -210,14 +210,17 @@ class AreaIdentification(object):
         plt.axis('off')
         plt.xlim((0, size))
         plt.ylim((size, 0))
+        return plt
+
+    def draw_map(self) -> None:
+        """ Visualization of the exercise.
+            return: None
+        """
+        plt = self.plot_map()
         plt.show()
 
     @staticmethod
-    def draw_activities_inside_area_on_map(activities, area_coordinates) -> None:
-        """ Drawing all activities inside area on map.
-            return: None
-        """
-        # Downloading the map.
+    def plot_activities_inside_area_on_map(activities, area_coordinates):
         size = 10000
         coordinates = area_coordinates.flatten()
         latitudes = coordinates[::2]
@@ -251,4 +254,13 @@ class AreaIdentification(object):
         plt.axis('off')
         plt.xlim((0, size))
         plt.ylim((size, 0))
+        return plt
+
+    @staticmethod
+    def draw_activities_inside_area_on_map(activities, area_coordinates) -> None:
+        """ Drawing all activities inside area on map.
+            return: None
+        """
+        # Downloading the map.
+        plt = AreaIdentification.plot_activities_inside_area_on_map(activities, area_coordinates)
         plt.show()

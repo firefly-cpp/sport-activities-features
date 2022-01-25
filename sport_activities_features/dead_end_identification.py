@@ -177,7 +177,14 @@ class DeadEndIdentification(object):
 
     def draw_map(self) -> None:
         """ Visualization of the exercise with dead ends.
-            return: None
+            return: none
+        """
+        plot = self.show_map()
+        plot.show()
+
+    def show_map(self) -> None:
+        """ Identification of the exercise with dead ends.
+            return: plt
         """
         if np.shape(self.positions)[0] == 0:
             raise Exception('Dataset is empty or invalid.')
@@ -187,7 +194,8 @@ class DeadEndIdentification(object):
         coordinates = self.positions.flatten()
         latitudes = coordinates[::2]
         longitudes = coordinates[1::2]
-        map = geotiler.Map(extent=(np.min(longitudes), np.min(latitudes), np.max(longitudes), np.max(latitudes)), size=(size, size))
+        map = geotiler.Map(extent=(np.min(longitudes), np.min(latitudes), np.max(longitudes), np.max(latitudes)),
+                           size=(size, size))
         image = geotiler.render_map(map)
 
         # Drawing the map as plot.
@@ -202,7 +210,8 @@ class DeadEndIdentification(object):
 
             # Drawing the path within the dead end.
             for i in np.arange(np.shape(self.dead_ends)[0]):
-                x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in np.arange(self.dead_ends[i][0], self.dead_ends[i][1] + 1)))
+                x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in
+                             np.arange(self.dead_ends[i][0], self.dead_ends[i][1] + 1)))
 
                 if i == 0:
                     ax.plot(x, y, c='red', label='Dead end')
@@ -210,11 +219,13 @@ class DeadEndIdentification(object):
                     ax.plot(x, y, c='green', label='_nolegend_')
 
                 if np.shape(self.dead_ends)[0] > i + 1:
-                    x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in np.arange(self.dead_ends[i][1], self.dead_ends[i + 1][0] + 1)))
+                    x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in
+                                 np.arange(self.dead_ends[i][1], self.dead_ends[i + 1][0] + 1)))
                     ax.plot(x, y, c='blue', label='_nolegend_')
 
             # Drawing the ending path with no dead end.
-            x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in np.arange(self.dead_ends[-1][1], np.shape(self.positions)[0])))
+            x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in
+                         np.arange(self.dead_ends[-1][1], np.shape(self.positions)[0])))
             ax.plot(x, y, c='blue', label='_nolegend_')
         # If there are no points inside the given area, the whole path is plotted as outside of the given area.
         else:
@@ -225,4 +236,5 @@ class DeadEndIdentification(object):
         plt.axis('off')
         plt.xlim((0, size))
         plt.ylim((size, 0))
-        plt.show()
+
+        return plt
