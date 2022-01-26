@@ -12,6 +12,10 @@ class AreaIdentification(object):
         timestamps (np.array): information about time as an array of datetimes
         heart_rates (np.array): heart rates as an array of integers
         area_coordinates (np.array): coordinates of the area where data is analysed as an array of latitudes and longitudes
+    Reference:
+        L. Lukač, "Extraction and Analysis of Sport Activity Data Inside Certain Area",
+        7th Student Computer Science Research Conference StuCoSReC, 2021, pp. 47-50,
+        doi: https://doi.org/10.18690/978-961-286-516-0.9
     """
     def __init__(self, positions: np.array, distances: np.array, timestamps: np.array, heart_rates: np.array, area_coordinates: np.array) -> None:
         """

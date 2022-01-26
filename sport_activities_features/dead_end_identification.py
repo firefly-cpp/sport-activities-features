@@ -194,9 +194,11 @@ class DeadEndIdentification(object):
         plot = self.show_map()
         plot.show()
 
-    def show_map(self) -> None:
+    def show_map(self) -> plt:
         """
         Method for plotting the exercise with dead ends.
+        Returns:
+            plt
         """
         if np.shape(self.positions)[0] == 0:
             raise Exception('Dataset is empty or invalid.')
@@ -248,3 +250,4 @@ class DeadEndIdentification(object):
         plt.axis('off')
         plt.xlim((0, size))
         plt.ylim((size, 0))
+        return plt
