@@ -7,44 +7,41 @@ from sport_activities_features.weather_objects.Weather import Weather
 
 
 class WeatherIdentification(object):
-    r"""A class used for identification of Weather data from TCX file.
-    For identification of weather an external API is used (https://www.visualcrossing.com/).
-
+    """
+    A class used for identification of Weather data from TCX file.
+    For identification of weather an external API is used (https://www.visualcrossing.com/).\n
     Args:
-        locations : (float, float) coordinates of exercise recordings, found in TCXFile/GPXFile generated dictionary under "positions"
-        timestamps : timestamps of exercise recordings, found in TCXFile/GPXFile generated dictionary under "timestamps"
-        vc_api_key : API key for accessing VisualCrossing weather data
-        unit_group : Unit group of data recieved. Possible options 'metric' (default), 'us', 'uk', 'base'.
-
+        locations (list[(float, float)]): coordinates of exercise recordings, found in TCXFile/GPXFile generated dictionary under "positions"
+        timestamps (list[datetime]): timestamps of exercise recordings, found in TCXFile/GPXFile generated dictionary under "timestamps"
+        vc_api_key (str): API key for accessing VisualCrossing weather data
+        unit_group (str): Unit group of data recieved. Possible options 'metric' (default), 'us', 'uk', 'base'.
     Warnings:
         vc_api_key : api key is required
-
     """
-
-    def __init__(self, locations: [(float, float)], timestamps: [datetime], vc_api_key: str, unit_group="metric"):
+    def __init__(self, locations: list[(float, float)], timestamps: list[datetime], vc_api_key: str, unit_group="metric") -> None:
         """
-        Constructor for WeatherIdentification class
+        Initialisation method for WeatherIdentification class.\n
         Args:
-            locations : [(float, float)] coordinates of exercise recordings, found in TCXFile/GPXFile generated dictionary under "positions"
-            timestamps : [datetime] timestamps of exercise recordings, found in TCXFile/GPXFile generated dictionary under "timestamps"
-            vc_api_key : API key for accessing VisualCrossing weather data
-            unit_group : Unit group of data recieved. Possible options 'metric' (default), 'us', 'uk', 'base'.
+            locations (list[(float, float)]): coordinates of exercise recordings, found in TCXFile/GPXFile generated dictionary under "positions"
+            timestamps (list[datetime]): timestamps of exercise recordings, found in TCXFile/GPXFile generated dictionary under "timestamps"
+            vc_api_key (str): API key for accessing VisualCrossing weather data
+            unit_group (str): Unit group of data recieved. Possible options 'metric' (default), 'us', 'uk', 'base'.
         """
-        self.locations: [(float, float)] = locations
+        self.locations = locations
         self.timestamps = timestamps
         self.vc_api_key = vc_api_key
         self.unit_group = unit_group
 
-    def get_weather(self, time_delta: int = 30) -> [Weather]:
+    def get_weather(self, time_delta: int = 30) -> list[Weather]:
         """
-        Queries the VisualCrossing weather API for meteorological data at provided (minute) time intervals.
+        Method that queries the VisualCrossing weather API for meteorological data at provided (minute) time intervals.\n
         Args:
-            time_delta : time between two measurements, default 30 mins
+            time_delta (int): time between two measurements, default 30 mins
         Returns:
-                [Weather] - list of Weather objects from the nearest meteorological station for every interval (time_delta minutes) of training.
+            list[Weather]: list of Weather objects from the nearest meteorological station for every interval (time_delta minutes) of training
         """
         time = datetime(1980, 1, 1)
-        weather_list: [Weather] = []
+        weather_list: list[Weather] = []
         index = 0
 
         for index in range(len(self.locations)):
@@ -67,18 +64,16 @@ class WeatherIdentification(object):
 
         return weather_list
 
-    def __weather_api_call(self, time: datetime, location: (float, float), index):
+    def __weather_api_call(self, time: datetime, location: tuple(float, float), index: int) -> Weather:
         """
-        Internal method for making a REST request to the VisualCrossing API.
+        Internal method for making a REST request to the VisualCrossing API.\n
         Args:
-            time : Time at which we are interested in the weather
-            location : (float, float) latitude, longitude of the training point for which we are interested in weather.
-            index: Index of weather object. E.g. a training that lasts 90 min, time-delta 30. Would have Weather objects
+            time (datetime): Time at which we are interested in the weather
+            location (tuple(float, float)): latitude, longitude of the training point for which we are interested in weather
+            index (int): Index of weather object. E.g. a training that lasts 90 min, time-delta 30. Would have Weather objects
                 with indexes 0, 1, 2.
-
         Returns:
             Weather(): object of the weather at specified time and location.
-
         """
         URL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/weatherdata/history?"
         time_start = time.strftime('%Y-%m-%dT%H:%M:%S')
@@ -107,18 +102,17 @@ class WeatherIdentification(object):
                        conditions=data_values['conditions'], date=time, location=location, index=index)
 
     @classmethod
-    def __find_nearest_weathers(self, timestamp: datetime, weather_list: [Weather]):
+    def __find_nearest_weathers(self, timestamp: datetime, weather_list: list[Weather]) -> dict:
         """
-        Finds the two nearest (before and after) Weather() objects from the provided weather_list.
+        Method finds the two nearest (before and after) Weather() objects from the provided weather_list.\n
         Args:
-            timestamp : datetime timestamp that we are interested in.
-            weather_list : [Weather] List of Weather objects from which we want to find the closest before and after Weather.
-
-        Returns: dict : {'before': {'weather': before, 'seconds': beforeSeconds}, 'after': {'weather': after, 'seconds': afterSeconds}}
-                Dictionary with two Weather objects (['before]['weather], ['after']['weather']) and two time measurements
-                (['before']['seconds'], ['after']['seconds']) which tell how much time is between the given timestamp
-                and the identified weather objects.
-
+            timestamp (datetime): timestamp that we are interested in
+            weather_list (list[Weather]): list of Weather objects from which we want to find the closest before and after Weather
+        Returns:
+            dict: {'before': {'weather': before, 'seconds': beforeSeconds}, 'after': {'weather': after, 'seconds': afterSeconds}}
+                  Dictionary with two Weather objects (['before]['weather], ['after']['weather']) and two time measurements
+                  (['before']['seconds'], ['after']['seconds']) which tell how much time is between the given timestamp
+                  and the identified weather objects.
         """
         beforeWeathers = list(filter(lambda x: timestamp >= x.date - timedelta(minutes=1), weather_list))
         afterWeathers = list(filter(lambda x: timestamp < x.date, weather_list))
@@ -141,17 +135,15 @@ class WeatherIdentification(object):
                 'after': {'weather': after, 'seconds': afterSeconds}}
 
     @classmethod
-    def get_average_weather_data(self, timestamps: [datetime], weather: [Weather]):
+    def get_average_weather_data(self, timestamps: list[datetime], weather: list[Weather]) -> list:
         """
-        Generates average weather for each of the timestamps in training by averaging the weather before and after the
-        timestamp, using the __find_nearest_weathers() method.
-
+        Method generates average weather for each of the timestamps in training by averaging the weather before and after the
+        timestamp, using the __find_nearest_weathers() method.\n
         Args:
-            timestamps : [datetime] datetime recordings from the TCXFile parsed data
-            weather: [Weather] list of weather objects retrieved from VisualCrossing API
+            timestamps (list[datetime]): datetime recordings from the TCXFile parsed data
+            weather (list[Weather]): list of weather objects retrieved from VisualCrossing API
         Returns:
-            [AverageWeather] list which is an AverageWeather object for each of the given timestamps.
-
+            list[AverageWeather]: list which is an AverageWeather object for each of the given timestamps
         """
         weather_list = weather
         extended_weather_list = []

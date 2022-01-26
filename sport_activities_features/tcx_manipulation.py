@@ -4,19 +4,23 @@ from tcxreader.tcxreader import TCXTrackPoint, TCXReader
 
 
 class TCXFile(object):
-    r"""Class for reading TCX files"""
-
-    def __init__(self):
+    """
+    Class for reading TCX files.
+    """
+    def __init__(self) -> None:
+        """
+        Initialisation method of TCXFile class.
+        """
         self.all_files = []
 
-    def read_directory(self, directory_name):
-        r"""Find all TCX files in a directory.
-        Args:
-            directory_name : name od the directory in which to identify TCX files
-        Returns:
-            str: Array of paths to the identified files
+    def read_directory(self, directory_name: str) -> list:
         """
-
+        Method for finding all TCX files in a directory.\n
+        Args:
+            directory_name (str): name of the directory in which to identify TCX files
+        Returns:
+            str: array of paths to the identified files
+        """
         files = os.listdir(directory_name)
         all_files1 = [i for i in files if i.endswith(".tcx")]
         for j in range(len(all_files1)):
@@ -24,21 +28,24 @@ class TCXFile(object):
             self.all_files.append(file)
         return self.all_files
 
-    def read_one_file(self, filename):
-        r"""Parse one TCX file using the TCXReader.
-
-        Returns: activity: {
-            "activity_type": activity_type,
-            "positions": positions,
-            "altitudes": altitudes,
-            "distances": distances,
-            "total_distance": total_distance,
-            "timestamps": timestamps,
-            "heartrates": heartrates,
-            "speeds":speeds }
-
+    def read_one_file(self, filename: str) -> dict:
+        """
+        Method for parsing one TCX file using the TCXReader.\n
+        Args:
+            filename (str): name of the TCX file to be read
+        Returns:
+            activity = {
+                "activity_type": activity_type,
+                "positions": positions,
+                "altitudes": altitudes,
+                "distances": distances,
+                "total_distance": total_distance,
+                "timestamps": timestamps,
+                "heartrates": heartrates,
+                "speeds": speeds
+            }
         Note:
-            In the case of missing value in raw data, we assign None
+            In the case of missing value in raw data, we assign None.
         """
         tcx = TCXReader().read(filename)
 
@@ -93,26 +100,28 @@ class TCXFile(object):
             "heartrates": heartrates,
             "speeds": speeds
         }
-
         return activity
 
-    def extract_integral_metrics(self, filename):
-        r"""Parse one TCX file and extract integral metrics.
-
-        Returns: int_metrics: {
-            "activity_type": activity_type,
-            "distance": distance,
-            "duration": duration,
-            "calories": calories,
-            "hr_avg": hr_avg,
-            "hr_max": hr_max,
-            "hr_min": hr_min,
-            "altitude_avg": altitude_avg,
-            "altitude_max": altitude_max,
-            "altitude_min": altitude_min,
-            "ascent": ascent,
-            "descent": descent,
-        }
+    def extract_integral_metrics(self, filename: str) -> dict:
+        """
+        Method for parsing one TCX file and extracting integral metrics.\n
+        Args:
+            filename (str): name of the TCX file to be read
+        Returns:
+            int_metrics = {
+                "activity_type": activity_type,
+                "distance": distance,
+                "duration": duration,
+                "calories": calories,
+                "hr_avg": hr_avg,
+                "hr_max": hr_max,
+                "hr_min": hr_min,
+                "altitude_avg": altitude_avg,
+                "altitude_max": altitude_max,
+                "altitude_min": altitude_min,
+                "ascent": ascent,
+                "descent": descent,
+            }
         """
         tcx = TCXReader().read(filename)
 

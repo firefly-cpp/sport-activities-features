@@ -6,28 +6,28 @@ import numpy as np
 
 
 class DeadEndIdentification(object):
-    r"""Dead end identification based on coordinates.
-
-    Date:
-        2021
-
-    Author:
-        Luka Lukač
-
-    License:
-        MIT
-
-    Attributes:
-        None
-
-    Description:
-        This module is intended to be used for the identification and visualization of dead ends in an exercise.
-        Dead end is a part of an exercise, where an athlete suddenly makes a U-turn and takes the same path as before the U-turn is conducted (in the opposite direction).
     """
-
-    def __init__(self, positions, distances, tolerance_degrees=5, tolerance_position=5, minimum_distance=500) -> None:
-        """Initialization of the object.
-        return: None
+    Class for identifying and visualising dead ends in an exercise.
+    Dead end is a part of an exercise, where an athlete suddenly makes a U-turn
+    and takes the same path as before the U-turn is conducted in the opposite direction.\n
+    Args:
+        positions (np.array): array of positions as pairs of latitudes and longitudes
+        distances (np.array): array of cummulative distances
+        tolerance_degrees (float): tolerance of driving the same route in the opposite direction given in degrees
+        tolerance_position (float): tolerance of positions given in meters
+        minimum_distance (int): minimum distance of a dead end
+    Note:
+        [WIP] This class is still under developement, therefore its methods may not work as expected.
+    """
+    def __init__(self, positions: np.array, distances: np.array, tolerance_degrees: float = 5.0, tolerance_position: float = 5.0, minimum_distance: int = 500) -> None:
+        """
+        Initialisation method for DeadEndIdentification class.
+        Args:
+            positions (np.array): array of positions as pairs of latitudes and longitudes
+            distances (np.array): array of cummulative distances
+            tolerance_degrees (float): tolerance of driving the same route in the opposite direction given in degrees
+            tolerance_position (float): tolerance of positions given in meters
+            minimum_distance (int): minimum distance of a dead end
         """
         self.reorganize_exercise_data(np.array(positions), np.array(distances), interval_distance=10)  # Reorganizing the exercise data in order to achieve better results.
         self.reorganize_exercise_data(self.positions, self.distances, interval_distance=1)  # Reorganizing the exercise data in order to achieve better results.
@@ -35,9 +35,13 @@ class DeadEndIdentification(object):
         self.tolerance_position = tolerance_position
         self.minimum_distance = minimum_distance
 
-    def reorganize_exercise_data(self, positions, distances, interval_distance=1) -> None:
-        """Exercise is reorganized in the way that the trackpoints are organized in a constant interval of distance.
-        return: None
+    def reorganize_exercise_data(self, positions: np.array, distances: np.array, interval_distance: int = 1) -> None:
+        """
+        Method for reorganising the exercise in the way that the trackpoints are organized in a constant interval of distance.\n
+        Args:
+            positions (np.array): array of positions as pairs of latitudes and longitudes
+            distances (np.array): array of cummulative distances
+            interval_distance (int): desired distance between two neighboring points
         """
         distance = distances[-1]
         self.distances = np.arange(math.ceil(distance))
@@ -62,22 +66,31 @@ class DeadEndIdentification(object):
         self.positions = self.positions[::interval_distance]
         self.distances = self.distances[::interval_distance]
 
-    def is_dead_end(self, azimuth1, azimuth2, tolerance_azimuth) -> bool:
-        """Checking if two azimuths represent a part of a dead end allowing the given tolerance.
-        return: bool
+    def is_dead_end(self, azimuth_1: float, azimuth_2: float, tolerance_azimuth: float) -> bool:
         """
-        if abs(180 - abs(azimuth1 - azimuth2)) < tolerance_azimuth:
+        Method for checking whether two azimuths represent a part of a dead end allowing the given tolerance.\n
+        Args:
+            azimuth_1 (float): first azimuth
+            azimuth_2 (float): second azimuth
+            tolerance_azimuth (float): difference tolerance of the two azimuths
+        Returns:
+            bool: True if given azimuths are within the given tolerance, False otherwise
+        """
+        if abs(180 - abs(azimuth_1 - azimuth_2)) < tolerance_azimuth:
             return True
-
         return False
 
-    def long_enough_to_be_a_dead_end(self, distance1, distance2) -> bool:
-        """Checking whether a dead end is long enough to be a dead end.
-        return: bool
+    def long_enough_to_be_a_dead_end(self, start_distance: float, finish_distance: float) -> bool:
         """
-        if distance2 - distance1 < self.minimum_distance:
+        Method for checking whether a dead end is long enough to be a dead end.\n
+        Args:
+            start_distance (float): cummulative distance at the start of the dead end
+            finish_distance (float): cummulative distance at the end of the dead end
+        Returns:
+            bool: True if dead end is long enough, False otherwise
+        """
+        if finish_distance - start_distance < self.minimum_distance:
             return False
-
         return True
 
     def really_is_dead_end(self, position1, position2, tolerance_coordinates) -> bool:
@@ -91,8 +104,8 @@ class DeadEndIdentification(object):
         return False
 
     def identify_dead_ends(self) -> None:
-        """Identifying dead ends of the exercise.
-        return: None
+        """
+        Method for identifying dead ends of the exercise.
         """
         azimuths = np.array([])
         self.dead_ends = np.empty((0, 2), int)
@@ -132,7 +145,6 @@ class DeadEndIdentification(object):
                             # i += next - previous
                 except:
                     pass
-            
             i += 1
 
         print(self.dead_ends)
@@ -176,15 +188,15 @@ class DeadEndIdentification(object):
         print("\rProgress: 100 %")
 
     def draw_map(self) -> None:
-        """ Visualization of the exercise with dead ends.
-            return: none
+        """
+        Method for visualisation of the exercise with identified dead ends.
         """
         plot = self.show_map()
         plot.show()
 
     def show_map(self) -> None:
-        """ Identification of the exercise with dead ends.
-            return: plt
+        """
+        Method for plotting the exercise with dead ends.
         """
         if np.shape(self.positions)[0] == 0:
             raise Exception('Dataset is empty or invalid.')
@@ -236,5 +248,3 @@ class DeadEndIdentification(object):
         plt.axis('off')
         plt.xlim((0, size))
         plt.ylim((size, 0))
-
-        return plt
