@@ -3,34 +3,34 @@ import math
 
 
 class IntervalIdentificationByPower(object):
-    r"""Interval identification based on power.
-
-    Date:
-        2021
-
-    Author:
-        Luka Lukač
-
-    License:
-        MIT
-
-    Attributes:
-        None
     """
-
-    def __init__(self, distances, timestamps, altitudes, mass, minimum_time=30):
-        r"""Initialize instance."""
+    Class for identifying intervals based on power.\n
+    Args:
+        distances (list): list of cummulative distances
+        timestamps (list): list of timestamps
+        altitudes (list): list of altitudes
+        mass (int): total mass of an athlete given in kilograms
+        minimum_time (int): minimum time of an interval given in seconds
+    """
+    def __init__(self, distances: list, timestamps: list, altitudes: list, mass: int, minimum_time: int = 30) -> None:
+        """
+        Initialisation method for IntervalIdentificationByPower class.\n
+        Args:
+            distances (list): list of cummulative distances
+            timestamps (list): list of timestamps
+            altitudes (list): list of altitudes
+            mass (int): total mass of an athlete given in kilograms
+            minimum_time (int): minimum time of an interval given in seconds
+        """
         self.distances = distances
         self.timestamps = timestamps
         self.altitudes = altitudes
-        self.mass = mass  # Mass should be given in kilograms
+        self.mass = mass
         self.minimum_time = minimum_time
 
-    def identify_intervals(self):
-        r"""Identifying intervals from given data.
-
-        Returns:
-            None
+    def identify_intervals(self) -> None:
+        """
+        Method for identifying intervals from given data.
         """
         self.intervals = []
         powers = []
@@ -149,11 +149,19 @@ class IntervalIdentificationByPower(object):
             else:
                 i += 1
 
-    def calculate_interval_statistics(self):
-        r"""Returning a dictionary with interval statistics.
-
+    def calculate_interval_statistics(self) -> dict:
+        """
+        Method for calculating interval statistics.\n
         Returns:
-            dict
+            data = {
+                "number_of_intervals": number_of_intervals,
+                "min_duration": min_duration_interval,
+                "max_duration": max_duration_interval,
+                "avg_duration": avg_duration_interval,
+                "min_distance": min_distance_interval,
+                "max_distance": max_distance_interval,
+                "avg_distance": avg_distance_interval,
+            }
         """
         number_of_intervals = len(self.intervals)  # Number of intervals
 
@@ -187,61 +195,60 @@ class IntervalIdentificationByPower(object):
             "max_distance": max_distance_interval,
             "avg_distance": avg_distance_interval,
         }
-
         return data
 
-    def return_intervals(self):
-        r"""Returning all found intervals.
-
+    def return_intervals(self) -> list:
+        """
+        Method for retrieving identified intervals.\n
         Returns:
-            list
+            list: identified intervals
         """
         return self.intervals
 
 
-class IntervalIdentificationByHeartrate(object):
-    r"""Interval identification based on power.
-
-    Date:
-        2021
-
-    Author:
-        Luka Lukač
-
-    License:
-        MIT
-
-    Attributes:
-        None
+class IntervalIdentificationByHeartRate(object):
     """
-
-    def __init__(self, distances, timestamps, altitudes, heartrates, minimum_time=30):
-        r"""Initialize instance."""
+    Class for identifying intervals based on heart rate.\n
+    Args:
+        distances (list): list of cummulative distances
+        timestamps (list): list of timestamps
+        altitudes (list): list of altitudes
+        heart_rates (list): list of heart rates
+        minimum_time (int): minimum time of an interval given in seconds
+    """
+    def __init__(self, distances: list, timestamps: list, altitudes: list, heart_rates: list, minimum_time: int = 30) -> None:
+        """
+        Initialisation method for IntervalIdentificationByHeartRate class.\n
+        Args:
+            distances (list): list of cummulative distances
+            timestamps (list): list of timestamps
+            altitudes (list): list of altitudes
+            heart_rates (list): list of heart rates
+            minimum_time (int): minimum time of an interval given in seconds
+        """
         self.distances = distances
         self.timestamps = timestamps
         self.altitudes = altitudes
-        self.heartrates = heartrates
+        self.heart_rates = heart_rates
         self.minimum_time = minimum_time
 
-    def identify_intervals(self):
-        r"""Identifying intervals from given data.
-
-        Returns:
-            None
+    def identify_intervals(self) -> None:
+        """
+        Method for identifying intervals from given data.
         """
         self.intervals = []
         sum_heartrate = 0
 
         # Calculating the sum and searching for None values
         i = 0
-        while i < len(self.heartrates):
+        while i < len(self.heart_rates):
             # If the value is number, it is added to sum
-            if isinstance(self.heartrates[i], int):
-                sum_heartrate += self.heartrates[i]
+            if isinstance(self.heart_rates[i], int):
+                sum_heartrate += self.heart_rates[i]
             else:
                 j = i + 1
                 while True:
-                    if isinstance(self.heartrates[j], int):
+                    if isinstance(self.heart_rates[j], int):
                         if (
                             self.timestamps[j] - self.timestamps[i - 1]
                         ).total_seconds() > 10:  # If more than 10 seconds pass withoud a heart rate, the intervals cannot be identified
@@ -250,7 +257,7 @@ class IntervalIdentificationByHeartrate(object):
                             )
                         else:
                             sum_heartrate += (
-                                self.heartrates[j] + self.heartrates[i - 1] / 2
+                                self.heart_rates[j] + self.heart_rates[i - 1] / 2
                             )
                             i = j - 1
                             break
@@ -260,7 +267,7 @@ class IntervalIdentificationByHeartrate(object):
 
         try:
             average_heartrate = sum_heartrate / len(
-                self.heartrates
+                self.heart_rates
             )  # Calculating the average heartrate
         except:
             return
@@ -268,11 +275,11 @@ class IntervalIdentificationByHeartrate(object):
         # Identifying the intervals by heart rate
         # An interval is identified, when a segment's heart rate is greater than the average heart rate
         interval = []
-        for i in range(len(self.heartrates)):
+        for i in range(len(self.heart_rates)):
             # If the heart rate at i is greater than the average heart rate, it belongs to an interval
             if (
-                isinstance(self.heartrates[i], int)
-                and self.heartrates[i] > average_heartrate
+                isinstance(self.heart_rates[i], int)
+                and self.heart_rates[i] > average_heartrate
             ):
                 interval.append(i)
             else:
@@ -294,9 +301,9 @@ class IntervalIdentificationByHeartrate(object):
 
             try:
                 average_heartrate_between = sum(
-                    self.heartrates[last_element + 1 : first_element]
+                    self.heart_rates[last_element + 1 : first_element]
                 ) / len(
-                    self.heartrates[last_element + 1 : first_element]
+                    self.heart_rates[last_element + 1 : first_element]
                 )  # Calculating the average heart rate between two intervals
             except:
                 pass
@@ -334,12 +341,22 @@ class IntervalIdentificationByHeartrate(object):
             else:
                 i += 1
 
-    # Returning a dictionary with interval statistics
-    def calculate_interval_statistics(self):
-        r"""Returning a dictionary with interval statistics.
-
+    def calculate_interval_statistics(self) -> dict:
+        """
+        Method for calculating interval statistics.\n
         Returns:
-            dict
+            data = {
+                "number_of_intervals": number_of_intervals,
+                "min_duration_interval": min_duration_interval,
+                "max_duration_interval": max_duration_interval,
+                "avg_duration_interval": avg_duration_interval,
+                "min_distance_interval": min_distance_interval,
+                "max_distance_interval": max_distance_interval,
+                "avg_distance_interval": avg_distance_interval,
+                "min_heartrate_interval": min_heartrate_interval,
+                "max_heartrate_interval": max_heartrate_interval,
+                "avg_heartrate_interval": avg_heartrate_interval,
+            }
         """
         number_of_intervals = len(self.intervals)  # Number of intervals
 
@@ -374,8 +391,8 @@ class IntervalIdentificationByHeartrate(object):
         )  # Average distance of an interval
 
         list_heartrate = [
-            sum(self.heartrates[item[0] : item[-1] + 1])
-            / len(self.heartrates[item[0] : item[-1] + 1])
+            sum(self.heart_rates[item[0] : item[-1] + 1])
+            / len(self.heart_rates[item[0] : item[-1] + 1])
             for item in self.intervals
         ]  # Heart rate of every interval in list
         min_heartrate_interval = min(
@@ -404,10 +421,10 @@ class IntervalIdentificationByHeartrate(object):
 
         return data
 
-    def return_intervals(self):
-        r"""Returning all found intervals.
-
+    def return_intervals(self) -> list:
+        """
+        Method for retrieving identified intervals.\n
         Returns:
-            list
+            list: identified intervals
         """
         return self.intervals

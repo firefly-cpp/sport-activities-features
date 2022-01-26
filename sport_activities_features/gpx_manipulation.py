@@ -7,32 +7,32 @@ from tcxreader.tcxreader import TCXTrackPoint
 
 class GPXTrackPoint():
     """
-    Class for saving GPX point records.
+    Class for saving GPX point records.\n
     Args:
-        longitude: longitude in degrees
-        latitude: latitude in degrees
-        elevation: elevation in meters
-        time: datetime of time at the given point
-        distance: total distance travelled until this point
-        hr_value: heart beats per minute at given recording.
-        cadence: cadence
-        watts: watts power rating
-        speed: speed in km/h
+        longitude (float): longitude in degrees
+        latitude (float): latitude in degrees
+        elevation (float): elevation in meters
+        time (datetime): datetime of time at the given point
+        distance (float): total distance travelled until this point
+        hr_value (int): heart beats per minute at given recording.
+        cadence (int): cadence
+        watts (float): watts power rating
+        speed (float): speed in km/h
     """
     def __init__(self, longitude: float = None, latitude: float = None, elevation: float = None, time=None,
-                 distance=None, hr_value: int = None, cadence=None, watts: float = None, speed: float = None):
+                 distance=None, hr_value: int = None, cadence=None, watts: float = None, speed: float = None) -> None:
         """
-        Initialisation method for GPXTrackPoint class.
+        Initialisation method for GPXTrackPoint class.\n
         Args:
-            longitude: longitude in degrees
-            latitude: latitude in degrees
-            elevation: elevation in meters
-            time: datetime of time at the given point
-            distance: total distance travelled until this point
-            hr_value: heart beats per minute at given recording.
-            cadence: cadence
-            watts: watts power rating
-            speed: speed in km/h
+            longitude (float): longitude in degrees
+            latitude (float): latitude in degrees
+            elevation (float): elevation in meters
+            time (datetime): datetime of time at the given point
+            distance (float): total distance travelled until this point
+            hr_value (int): heart beats per minute at given recording.
+            cadence (int): cadence
+            watts (float): watts power rating
+            speed (float): speed in km/h
         """
         self.elevation = elevation
         self.latitude = latitude
@@ -44,14 +44,14 @@ class GPXTrackPoint():
         self.cadence = cadence
         self.watts = watts
 
-    def from_GPX(self, gpx: gpxpy.gpx.GPXTrackPoint, hr_value: int = None, cadence: int = None, watts: int = None):
+    def from_GPX(self, gpx: gpxpy.gpx.GPXTrackPoint, hr_value: int = None, cadence: int = None, watts: int = None) -> None:
         """
-        Helper method for initialising GPXTrackPoint from the gpxpy.gpx.GpxTrackPoint
+        Helper method for initialising GPXTrackPoint from the gpxpy.gpx.GpxTrackPoint.\n
         Args:
-            gpx: gpxpy.gpx.GPXTrackPoint not to be confused with class of the same name used in gpx_manipulation
-            hr_value: heart beats per minute at given recording.
-            cadence: cadence
-            watts: watts power rating
+            gpx (gpxpy.gpx.GPXTrackPoint): gpxpy.gpx.GPXTrackPoint not to be confused with class of the same name used in gpx_manipulation
+            hr_value (int): heart beats per minute at given recording.
+            cadence (int): cadence
+            watts (int): watts power rating
         """
         self.elevation = gpx.elevation
         self.latitude = gpx.latitude
@@ -63,18 +63,22 @@ class GPXTrackPoint():
 
 
 class GPXFile(object):
-    r"""Class for reading GPX files"""
-
-    def __init__(self):
+    """
+    Class for reading GPX files.
+    """
+    def __init__(self) -> None:
+        """
+        Initialisation method for GPXFile class.
+        """
         self.all_files = []
 
-    def __ascent(self, altitudes):
+    def __ascent(self, altitudes: list) -> int:
         """
-        Method for calculating the total ascent from a list of altitudes.
+        Method for calculating the total ascent from a list of altitudes.\n
         Args:
-            altitudes: list of altitudes from the recorded training
-        Returns: Total ascent in meters.
-
+            altitudes (list): list of altitudes from the recorded training
+        Returns:
+            int: total ascent in meters
         """
         ascent = 0
         for index, altitude in enumerate(altitudes):
@@ -83,12 +87,13 @@ class GPXFile(object):
                     ascent += altitude - altitudes[index - 1]
         return ascent
 
-    def __descent(self, altitudes):
+    def __descent(self, altitudes: list) -> int:
         """
-        Method for calculating the total descent from a list of altitudes.
+        Method for calculating the total descent from a list of altitudes.\n
         Args:
-            altitudes: list of altitudes from the recorded training
-        Returns: Total descent in meters.
+            altitudes (list): list of altitudes from the recorded training
+        Returns:
+            int: total descent in meters
         """
         descent = 0
         for index, altitude in enumerate(altitudes):
@@ -97,21 +102,14 @@ class GPXFile(object):
                     descent += altitudes[index - 1] - altitude
         return descent
 
-    def read_directory(self, directory_name):
-        r"""Find all GPX files in a directory.
-        Args:
-            directory_name : name od the directory in which to identify GPX files
-        Returns:
-            str: Array of paths to the identified files
+    def read_directory(self, directory_name: str) -> list:
         """
-
-        r"""Find all GPX files in a directory.
+        Method for finding all GPX files in a directory.\n
         Args:
-            directory_name : name od the directory in which to identify TCX files
+            directory_name (str): name od the directory in which to identify GPX files
         Returns:
-            str: Array of paths to the identified files
+            list: array of paths to the identified files
         """
-
         files = os.listdir(directory_name)
         all_files1 = [i for i in files if i.endswith(".gpx")]
         for j in range(len(all_files1)):
@@ -120,20 +118,20 @@ class GPXFile(object):
         return self.all_files
 
     def read_one_file(self, filename):
-
-        r"""Parse one GPX file.
-
+        """
+        Method for parsing one GPX file.\n
         Returns: activity: {
-                "activity_type": activity_type,
-                "positions": positions,
-                "altitudes": altitudes,
-                "distances": distances,
-                "total_distance": total_distance,
-                "timestamps": timestamps,
-                "heartrates": heartrates,
-                "speeds":speeds }
+                    "activity_type": activity_type,
+                    "positions": positions,
+                    "altitudes": altitudes,
+                    "distances": distances,
+                    "total_distance": total_distance,
+                    "timestamps": timestamps,
+                    "heartrates": heartrates,
+                    "speeds": speeds
+                 }
         Note:
-            In the case of missing value in raw data, we assign None
+            In the case of missing value in raw data, we assign None.
         """
         NAMESPACE = "{http://www.garmin.com/xmlschemas/TrackPointExtension/v1}"
         points = []
@@ -205,24 +203,24 @@ class GPXFile(object):
 
         return activity
 
-    def extract_integral_metrics(self, filename):
-        r"""Parse one GPX file and extract integral metrics.
-
-               Returns: int_metrics: {
-                   "activity_type": activity_type,
-                   "distance": distance,
-                   "duration": duration,
-                   "calories": calories,
-                   "hr_avg": hr_avg,
-                   "hr_max": hr_max,
-                   "hr_min": hr_min,
-                   "altitude_avg": altitude_avg,
-                   "altitude_max": altitude_max,
-                   "altitude_min": altitude_min,
-                   "ascent": ascent,
-                   "descent": descent,
-               }
-               """
+    def extract_integral_metrics(self, filename) -> dict:
+        """
+        Method for parsing one GPX file and extracting integral metrics.\n
+        Returns: int_metrics: {
+                    "activity_type": activity_type,
+                    "distance": distance,
+                    "duration": duration,
+                    "calories": calories,
+                    "hr_avg": hr_avg,
+                    "hr_max": hr_max,
+                    "hr_min": hr_min,
+                    "altitude_avg": altitude_avg,
+                    "altitude_max": altitude_max,
+                    "altitude_min": altitude_min,
+                    "ascent": ascent,
+                    "descent": descent,
+                }
+        """
         gpx = self.read_one_file(filename)
 
         # handling missing data in raw files

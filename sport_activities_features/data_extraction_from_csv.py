@@ -3,11 +3,27 @@ import pandas as pd
 
 
 class DataExtractionFromCSV(object):
-    def __init__(self, activities=None):
+    """
+    Class for extracting data from CSV files.\n
+    Args:
+        activities (list): list of activities
+    """
+    def __init__(self, activities: list = None) -> None:
+        """
+        Initialisation method for DataExtractionFromCSV class.\n
+        Args:
+            activities (list): list of activities
+        """
         self.activities = activities
 
-    # Extract data from CSV file to dataframe
-    def from_file(self, path):
+    def from_file(self, path: str) -> list:
+        """
+        Method for extracting data from CSV file to dataframe.\n
+        Args:
+            path (str): absolute path to the CSV file
+        Returns:
+            list: list of activities
+        """
         with open(
             path + ".csv"
             if not (path.endswith(".csv") or path.endswith(".txt"))
@@ -22,8 +38,14 @@ class DataExtractionFromCSV(object):
                 print("Incorrect structure of file " + str(csv_file.name))
                 return pd.DataFrame()
 
-    # Extract data to list of dataframes from all CSV files in the folder
-    def from_all_files(self, path):
+    def from_all_files(self, path: str) -> list:
+        """
+        Method for extracting data to list of dataframes from all CSV files in the folder.\n
+        Args:
+            path (str): absolute path to the folder with CSV files
+        Returns:
+            list: list of activities
+        """
         if not path.endswith("/"):
             path = path + "/"
 
@@ -36,7 +58,14 @@ class DataExtractionFromCSV(object):
                         dataframes.append(df)
             return dataframes
 
-    def select_random_activities(self, number) -> None:
+    def select_random_activities(self, number: int) -> list:
+        """
+        Method for selecting random activities.\n
+        Args:
+            number (int): desired number of random activities
+        Returns:
+            list: list of random activities
+        """
         if self.activities is None:
             print("No activities")
         elif len(self.activities) >= number:
