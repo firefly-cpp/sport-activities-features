@@ -8,7 +8,7 @@ sys.path.append("../")
 
 from sport_activities_features.interval_identification import (
     IntervalIdentificationByPower,
-    IntervalIdentificationByHeartrate,
+    IntervalIdentificationByHeartRate,
 )
 from sport_activities_features.tcx_manipulation import TCXFile
 from sport_activities_features.plot_data import PlotData
@@ -34,7 +34,7 @@ Map = PlotData()
 Map.draw_intervals_in_map(timestamps, distances, all_intervals)
 
 # Identifying the intervals in the activity by heart rate and drawing the map
-Intervals = IntervalIdentificationByHeartrate(
+Intervals = IntervalIdentificationByHeartRate(
     distances, timestamps, altitudes, heartrates
 )
 Intervals.identify_intervals()
