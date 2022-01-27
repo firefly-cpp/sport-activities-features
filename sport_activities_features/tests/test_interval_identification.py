@@ -2,7 +2,7 @@ import os
 from unittest import TestCase
 from sport_activities_features.interval_identification import (
     IntervalIdentificationByPower,
-    IntervalIdentificationByHeartrate,
+    IntervalIdentificationByHeartRate,
 )
 from sport_activities_features.tcx_manipulation import TCXFile
 from sport_activities_features.plot_data import PlotData
@@ -25,7 +25,7 @@ class TestHillIdentification(TestCase):
         self.statistics_power = IntervalsPower.calculate_interval_statistics()
 
         # Identifying the intervals in the activity by heart rate
-        IntervalsHeartrate = IntervalIdentificationByHeartrate(
+        IntervalsHeartrate = IntervalIdentificationByHeartRate(
             self.activity["distances"],
             self.activity["timestamps"],
             self.activity["altitudes"],

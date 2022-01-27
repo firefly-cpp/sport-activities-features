@@ -64,7 +64,7 @@ class WeatherIdentification(object):
 
         return weather_list
 
-    def __weather_api_call(self, time: datetime, location: tuple(float, float), index: int) -> Weather:
+    def __weather_api_call(self, time: datetime, location: tuple, index: int) -> Weather:
         """
         Internal method for making a REST request to the VisualCrossing API.\n
         Args:

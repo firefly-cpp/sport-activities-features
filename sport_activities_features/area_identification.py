@@ -126,7 +126,7 @@ class AreaIdentification(object):
                 'distance': distance,
                 'time': time,
                 'average_speed': average_speed,
-                'minimum_heartrate': minimum_heartrate,
+                'minimum_heart_rate': minimum_heart_rate,
                 'maximum_heart_rate': maximum_heart_rate,
                 'average_heart_rate': average_heart_rate }
         """
@@ -142,9 +142,10 @@ class AreaIdentification(object):
                 distance += current_distance
                 time += current_time
 
-                # Since some of heart rate data may be missing, it is only added to the array if it is an integer.
-                if not np.isnan(self.heart_rates[[i][0]:[i][1]]).any():
-                    heart_rates = np.append(heart_rates, self.heart_rates[[i][0]:[i][1]])
+                # Since some of heart rate data may be missing, only existing data are added to array.
+                heart_rates_with_NaN = self.heart_rates[i[0]:i[1]].astype(float)
+                not_NaN_values = ~np.isnan(heart_rates_with_NaN)
+                heart_rates = np.append(heart_rates, heart_rates_with_NaN[not_NaN_values])
             except:
                 pass
 
@@ -154,11 +155,11 @@ class AreaIdentification(object):
             average_speed = 0.0
         
         try:
-            minimum_heartrate = np.min(heart_rates)
+            minimum_heart_rate = np.min(heart_rates)
             maximum_heart_rate = np.max(heart_rates)
             average_heart_rate = np.sum(heart_rates) / np.size(heart_rates)
         except:
-            minimum_heartrate = None
+            minimum_heart_rate = None
             maximum_heart_rate = None
             average_heart_rate = None
 
@@ -166,7 +167,7 @@ class AreaIdentification(object):
             'distance': distance,
             'time': time,
             'average_speed': average_speed,
-            'minimum_heartrate': minimum_heartrate,
+            'minimum_heart_rate': minimum_heart_rate,
             'maximum_heart_rate': maximum_heart_rate,
             'average_heart_rate': average_heart_rate,
         }
