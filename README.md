@@ -59,6 +59,10 @@ To install sport-activities-features on Fedora, use:
 $ dnf install python3-sport-activities-features
 ```
 
+## API
+
+There is a simple API for remote work with sport-activities-features package available [here](https://github.com/alenrajsp/sport-activities-features-api).
+
 ## Full Features
 
 - Extraction of integral metrics (total distance, total duration, calories) ([see example](examples/integral_metrics_extraction.py))
