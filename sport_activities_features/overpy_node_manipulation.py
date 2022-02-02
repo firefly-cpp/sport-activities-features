@@ -35,11 +35,13 @@ class OverpyNodesReader(object):
             "longitude": float(node.lon),
         }
 
-    def read_nodes(self, nodes:overpy.Node):
+    def read_nodes(self, nodes:overpy.Node, cumulative_distances:bool=True):
         """
         Method for reading overpy.Node nodes and generating a TCXFile/GPXFile like dictionary of objects.
         Args:
             nodes: List of overpy.Node objects
+            cumulative_distances: If set to True, distance equals previous point distance + distance between the nodes,
+            else tells actual distance between two points.
 
         Returns: dictionary of nodes.
             { activity_type": str, "positions": [...], "altitudes": [...], "distances": [...], "total_distance": float}
@@ -49,6 +51,7 @@ class OverpyNodesReader(object):
         positions = []
         altitudes = []
         distances = []
+        total_distance = None
 
         nodes = list(map(self.__map_payload, nodes))
         elevation_identification = ElevationIdentification(open_elevation_api=self.open_elevation_api, positions=nodes)
@@ -68,12 +71,18 @@ class OverpyNodesReader(object):
                 euclidean_distance = math.sqrt(
                     flat_distance ** 2 + abs(altitudes[i] - altitudes[i - 1]) ** 2
                 )
-                distances.append(euclidean_distance+distances[-1])
+                if(cumulative_distances):
+                    distances.append(euclidean_distance+distances[-1])
+                else:
+                    distances.append(euclidean_distance)
             else:
                 distances.append(0)
             prevNode = node
         try:
-            total_distance = sum(distances)
+            if cumulative_distances:
+                total_distance=distances[-1]
+            else:
+                total_distance = sum(distances)
         except BaseException:
             total_distance = None
 
