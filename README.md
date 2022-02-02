@@ -19,26 +19,33 @@
 ![GitHub contributors](https://img.shields.io/github/contributors/firefly-cpp/sport-activities-features.svg)
 [![Fedora package](https://img.shields.io/fedora/v/python3-sport-activities-features?color=blue&label=Fedora%20Linux&logo=fedora)](https://src.fedoraproject.org/rpms/python-sport-activities-features)
 
-## Objective
+## General outline of the framework
 Data analysis of sport activities that were monitored by the use of [sport trackers is popular](http://iztok-jr-fister.eu/static/publications/42.pdf).
 Many interesting utilizations of data are available, e.g. large-scale data mining of sport activities files for the [automatic sport training sessions generation](http://iztok-jr-fister.eu/static/publications/189.pdf).
 
-Most of the available solutions nowadays are relied upon integral metrics such as total duration, total distance, average hearth rate, etc. However,
-such solutions may suffer of "overall (integral) metrics problem", commonly associated with following biases:
+Most of the available solutions nowadays are relied upon integral metrics such as total duration, total distance, average hearth rate, etc. However, such solutions may suffer of "overall (integral) metrics problem", commonly associated with following biases:
 - details not expressed sufficiently,
 - general/integral outlook of the race/training captured only,
 - possibly fallacious intensity metrics of performed race/training and
 - not recognized different stages/phases of the sport race/training, i.e. warming-up, endurance, intervals, etc.
 
-Proposed software supports the extraction of following topographic features from sport activity files:
-- number of hills,
-- average altitude of identified hills,
-- total distance of identified hills,
-- climbing ratio (total distance of identified hills vs. total distance),
-- average ascent of hills
-- total ascent
-- total descent
-- and many others.
+The sport-activities-framework on the other side offers a detailed insight into the sport activity files. The framework supports both identification and extraction methods, such as identifying number of hills, extracting the average altitudes of identified hills, measuring total distance of identified hills, deriving climbing ratios (total distance of identified hills vs. total distance), average/total ascents of hills and so much more. The framework also integrates many other extensions, among others historical weather parsing, statistical evaluations and ex-post visualizations.
+
+## Detailed insights
+The sport-activities-features framework is compatible with TCX & GPX activity files and [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API) nodes.
+
+Framework is dedicated to help researchers by obtaining important data and metrics from sport tracker files, such as:
+- extracting integral metrics, such as total distance, total duration, calories ([see example](examples/integral_metrics_extraction.py)),
+- extracting topographic features, such as number of hills, average altitude of identified hills, total distance of identified hills, climbing ratio, average ascent of hills, total ascent, total descent ([see example](examples/hill_data_extraction.py)),
+- plotting identified hills ([see example](examples/draw_map_with_identified_hills.py)),
+- extracting the intervals, such as number of intervals, maximum/minimum/average duration of intervals, maximum/minimum/average distance of intervals, maximum/minimum/average heart rate during intervals,
+- plotting the identified intervals ([see example](examples/draw_map_with_identified_intervals.py)),
+- calculating the training loads, such as Bannister TRIMP, Lucia TRIMP([see example](examples/integral_metrics_extraction.py)),
+- parsing the historical weather data from an external service,
+- extracting the integral metrics of the activity inside area given with coordinates (distance, heartrate, speed) ([see example](examples/extract_data_inside_area.py)),
+- extracting the activities from CSV file(s) and randomly selecting the specific number of activities ([see example](examples/extract_random_activities_from_csv.py)),
+- extracting the dead ends,
+- and much more.
 
 
 ## Installation
@@ -63,25 +70,12 @@ $ dnf install python3-sport-activities-features
 
 There is a simple API for remote work with sport-activities-features package available [here](https://github.com/alenrajsp/sport-activities-features-api).
 
-## Full Features
-
-- Extraction of integral metrics (total distance, total duration, calories) ([see example](examples/integral_metrics_extraction.py))
-- Extraction of topographic features (number of hills, average altitude of identified hills, total distance of identified hills, climbing ratio, average ascent of hills, total ascent, total descent) ([see example](examples/hill_data_extraction.py))
-- Plotting the identified hills ([see example](examples/draw_map_with_identified_hills.py)) 
-- Extraction of intervals (number of intervals, maximum/minimum/average duration of intervals, maximum/minimum/average distance of intervals, maximum/minimum/average heart rate during intervals)
-- Plotting the identified intervals ([see example](examples/draw_map_with_identified_intervals.py)) 
-- Calculation of training loads (Bannister TRIMP, Lucia TRIMP) ([see example](examples/integral_metrics_extraction.py))
-- Compatible with TCX & GPX activity files and [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API) nodes
-- Parsing of Historical weather data from an external service
-- Extraction of integral metrics of the activity inside area given with coordinates (distance, heartrate, speed) ([see example](examples/extract_data_inside_area.py))
-- Extraction of activities from CSV file(s) and random selection of a specific number of activities ([see example](examples/extract_random_activities_from_csv.py))
-- Extraction of dead ends
 
 ## Historical weather data
-Weather data parsed is collected from the [Visual Crossing Weather API](https://www.visualcrossing.com/). 
-This is an external unaffiliated service and the user must register and use the API key provided from the service. 
-The service has a free tier (1000 Weather reports / day) but is otherwise operating on a pay as you go model.
-For the pricing and terms of use please read the [official documentation](https://www.visualcrossing.com/weather-data-editions) of the API provider.
+Weather data parsed is collected from the [Visual Crossing Weather API](https://www.visualcrossing.com/).
+Please note that this is an external unaffiliated service and users must register to use the API.
+The service has a free tier (1000 Weather reports / day) but is otherwise operating on a pay-as-you-go model.
+For pricing and terms of use please read the [official documentation](https://www.visualcrossing.com/weather-data-editions) of the API provider.
 
 ## Overpass API & Open Elevation API integration
 Without performed activities we can use the [OpenStreetMap](https://www.openstreetmap.org/) for identification of hills,
