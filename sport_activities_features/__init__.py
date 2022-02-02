@@ -4,7 +4,7 @@ from sport_activities_features.data_extraction import DataExtraction
 from sport_activities_features.data_extraction_from_csv import DataExtractionFromCSV
 from sport_activities_features.hill_identification import HillIdentification
 from sport_activities_features.interval_identification import (
-    IntervalIdentificationByHeartrate,
+    IntervalIdentificationByHeartRate,
     IntervalIdentificationByPower,
 )
 
@@ -29,7 +29,7 @@ __all__ = [
     "DataExtraction",
     "DataExtractionFromCSV",
     "HillIdentification",
-    "IntervalIdentificationByHeartrate",
+    "IntervalIdentificationByHeartRate",
     "IntervalIdentificationByPower",
     "PlotData",
     "TCXFile",

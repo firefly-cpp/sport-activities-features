@@ -1,55 +1,64 @@
 import geotiler
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 class AreaIdentification(object):
-    r"""Area identification based by coordinates.
-
-    Date:
-        2021
-
-    Author:
-        Luka Lukač
-
-    Reference:
-        L. Lukač, "Extraction and Analysis of Sport Activity Data Inside Certain Area", 7th Student Computer Science Research Conference StuCoSReC, 2021, pp. 47-50, doi: https://doi.org/10.18690/978-961-286-516-0.9
-
-    License:
-        MIT
-
-    Attributes:
-        None
     """
-
-    def __init__(
-        self, positions, distances, timestamps, heartrates, area_coordinates
-    ) -> None:
-        """Initialization of the object.
-        return: None
+    Area identification based by coordinates.\n
+    Args:
+        positions (np.array): coordinates of positions as an array of latitudes and longitudes
+        distances (np.array): cummulative distances as an array of floats
+        timestamps (np.array): information about time as an array of datetimes
+        heart_rates (np.array): heart rates as an array of integers
+        area_coordinates (np.array): coordinates of the area where data is analysed as an array of latitudes and longitudes
+    Reference:
+        L. Lukač, "Extraction and Analysis of Sport Activity Data Inside Certain Area",
+        7th Student Computer Science Research Conference StuCoSReC, 2021, pp. 47-50,
+        doi: https://doi.org/10.18690/978-961-286-516-0.9
+    """
+    def __init__(self, positions: np.array, distances: np.array, timestamps: np.array, heart_rates: np.array, area_coordinates: np.array) -> None:
         """
-        self.positions = np.array(positions)
-        self.distances = np.array(distances)
-        self.timestamps = np.array(timestamps)
-        self.heartrates = np.array(heartrates)
-        self.area_coordinates = np.array(area_coordinates)
+        Initialisation method for AreaIdentification class.\n
+        Args:
+            positions (np.array): coordinates of positions as an array of latitudes and longitudes
+            distances (np.array): cummulative distances as an array of floats
+            timestamps (np.array): information about time as an array of datetimes
+            heart_rates (np.array): heart rates as an array of integers
+            area_coordinates (np.array): coordinates of the area where data is analysed as an array of latitudes and longitudes
+        """
+        self.positions = positions
+        self.distances = distances
+        self.timestamps = timestamps
+        self.heart_rates = heart_rates
+        self.area_coordinates = area_coordinates
 
-    def is_equal(self, value1, value2) -> bool:
-        """Checking whether the two values are equal with certain tolerance.
-        return: bool
+    def is_equal(self, value_1: float, value_2: float) -> bool:
+        """
+        Method for checking whether the two float values are equal with certain tolerance (because of round error).\n
+        Args:
+            value_1 (float): first value
+            value_2 (float): second value
+        Returns:
+            bool: True if the two values are equal, false otherwise
         """
         tolerance = 0.00001
-
         # If the absolute value of substraction is smaller than the tolerance threshold,
         # the two values are counted as equal.
-        if abs(value1 - value2) < tolerance:
+        if abs(value_1 - value_2) < tolerance:
             return True
-
         return False
 
-    def do_two_lines_intersect(self, p1, p2, p3, p4) -> bool:
-        """Checking whether two lines have an intersection point.
-        return: bool
+    def do_two_line_segments_intersect(self, p1: np.array, p2: np.array, p3: np.array, p4: np.array) -> bool:
+        """
+        Method for checking whether two line segments have an intersection point.\n
+        Args:
+            p1 (np.array): first point of the first line as a pair of coordinates
+            p2 (np.array): second point of the first line as a pair of coordinates
+            p3 (np.array): first point of the second line as a pair of coordinates
+            p4 (np.array): second point of the second line as a pair of coordinates
+        Returns:
+            bool: True if the two lines have an intersection point, False otherwise
         """
         # Initialization of vectors and values.
         v12 = np.array(p2 - p1)
@@ -73,8 +82,8 @@ class AreaIdentification(object):
         return False
 
     def identify_points_in_area(self) -> None:
-        """Identifying the measure points of the activity inside the specified area.
-        return: None
+        """
+        Method for identifying the measure points of the activity inside the specified area.
         """
         self.points_in_area = np.array([])
         self.points_outside_area = np.array([])
@@ -88,7 +97,7 @@ class AreaIdentification(object):
             # If the ray intersects with the area even times, the point is not inside area.
             for border in np.arange(np.shape(self.area_coordinates)[0]):
                 for j in np.arange(-1, np.shape(self.area_coordinates[border])[0] - 1):
-                    if self.do_two_lines_intersect(
+                    if self.do_two_line_segments_intersect(
                         self.area_coordinates[border][j],
                         self.area_coordinates[border][j + 1],
                         np.array([self.positions[i][0], self.positions[i][1]]),
@@ -111,54 +120,67 @@ class AreaIdentification(object):
         self.points_in_area = np.reshape(self.points_in_area, (-1, 2))
 
     def extract_data_in_area(self) -> dict:
-        """Extracting the data of the identified points in area.
-        return: dict
+        """
+        Method for extracting the data of the identified points in area.\n
+        Returns: area_data: {
+                'distance': distance,
+                'time': time,
+                'average_speed': average_speed,
+                'minimum_heart_rate': minimum_heart_rate,
+                'maximum_heart_rate': maximum_heart_rate,
+                'average_heart_rate': average_heart_rate }
         """
         distance = 0.0
         time = 0.0
-        max_speed = 0.0
-        heartrates = np.array([])
+        heart_rates = np.array([])
 
         # Extracting the data from the identified points.
         for i in self.points_in_area:
             try:
-                cur_distance = self.distances[i][1] - self.distances[i][0]
-                cur_time = (self.timestamps[i][1] - self.timestamps[i][0]).seconds
-                distance += cur_distance
-                time += cur_time
-                if not np.isnan(self.heartrates[[i][0]:[i][1]]).any():
-                    heartrates = np.append(heartrates, self.heartrates[[i][0]:[i][1]])
+                current_distance = self.distances[i][1] - self.distances[i][0]
+                current_time = (self.timestamps[i][1] - self.timestamps[i][0]).seconds
+                distance += current_distance
+                time += current_time
+
+                # Since some of heart rate data may be missing, only existing data are added to array.
+                heart_rates_with_NaN = self.heart_rates[i[0]:i[1]].astype(float)
+                not_NaN_values = ~np.isnan(heart_rates_with_NaN)
+                heart_rates = np.append(heart_rates, heart_rates_with_NaN[not_NaN_values])
             except:
                 pass
 
         try:
-            avg_speed = distance / time
+            average_speed = distance / time
         except:
-            avg_speed = 0.0
+            average_speed = 0.0
         
         try:
-            min_heartrate = np.min(heartrates)
-            max_heartrate = np.max(heartrates)
-            avg_heartrate = np.sum(heartrates) / np.size(heartrates)
+            minimum_heart_rate = np.min(heart_rates)
+            maximum_heart_rate = np.max(heart_rates)
+            average_heart_rate = np.sum(heart_rates) / np.size(heart_rates)
         except:
-            min_heartrate = None
-            max_heartrate = None
-            avg_heartrate = None
+            minimum_heart_rate = None
+            maximum_heart_rate = None
+            average_heart_rate = None
 
-        return {
+        area_data = {
             'distance': distance,
             'time': time,
-            'avg_speed': avg_speed,
-            'min_heartrate': min_heartrate,
-            'max_heartrate': max_heartrate,
-            'avg_heartrate': avg_heartrate,
+            'average_speed': average_speed,
+            'minimum_heart_rate': minimum_heart_rate,
+            'maximum_heart_rate': maximum_heart_rate,
+            'average_heart_rate': average_heart_rate,
         }
+        return area_data
 
-    def plot_map(self):
+    def plot_map(self) -> None:
+        """
+        Method for plotting the map using Geotiler according to the object variables.
+        """
         if np.shape(self.positions)[0] == 0:
             raise Exception('Dataset is empty or invalid.')
 
-            # Downloading the map.
+        # Downloading the map.
         size = 10000
         coordinates = self.positions.flatten()
         latitudes = coordinates[::2]
@@ -183,7 +205,7 @@ class AreaIdentification(object):
                              np.arange(self.points_in_area[i][0], self.points_in_area[i][1] + 1)))
 
                 if i == 0:
-                    ax.plot(x, y, c='red', label='Inside of the area')
+                    ax.plot(x, y, c='red', label='Part of exercise inside of the area')
                 else:
                     ax.plot(x, y, c='red', label='_nolegend_')
 
@@ -199,7 +221,7 @@ class AreaIdentification(object):
         # If there are no points inside the given area, the whole path is plotted as outside of the given area.
         else:
             x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in np.arange(np.shape(self.positions)[0])))
-            ax.plot(x, y, c='blue', label='Outside of the area')
+            ax.plot(x, y, c='blue', label='Part of exercise outside of the area')
 
         # Drawing the bounding box of the chosen area.
         for hull in self.area_coordinates:
@@ -210,17 +232,22 @@ class AreaIdentification(object):
         plt.axis('off')
         plt.xlim((0, size))
         plt.ylim((size, 0))
-        return plt
 
     def draw_map(self) -> None:
-        """ Visualization of the exercise.
-            return: None
         """
-        plt = self.plot_map()
+        Method for the visualization of the exercise on the map using Geotiler.
+        """
+        self.plot_map()
         plt.show()
 
     @staticmethod
-    def plot_activities_inside_area_on_map(activities, area_coordinates):
+    def plot_activities_inside_area_on_map(activities: np.array, area_coordinates: np.array) -> None:
+        """
+        Static method for plotting the area borders and the activities (or their parts) inside of an area.\n
+        Args:
+            activities (np.array): array of AreaIdentification objects
+            area_coordinates (np.array): border coordinates of an area as an array of latitudes and longitudes
+        """
         size = 10000
         coordinates = area_coordinates.flatten()
         latitudes = coordinates[::2]
@@ -254,13 +281,14 @@ class AreaIdentification(object):
         plt.axis('off')
         plt.xlim((0, size))
         plt.ylim((size, 0))
-        return plt
 
     @staticmethod
-    def draw_activities_inside_area_on_map(activities, area_coordinates) -> None:
-        """ Drawing all activities inside area on map.
-            return: None
+    def draw_activities_inside_area_on_map(activities: np.array, area_coordinates: np.array) -> None:
         """
-        # Downloading the map.
-        plt = AreaIdentification.plot_activities_inside_area_on_map(activities, area_coordinates)
+        Static method for drawing all the activities inside of an area on the map.\n
+        Args:
+            activities (np.array): array of AreaIdentification objects
+            area_coordinates (np.array): border coordinates of an area as an array of latitudes and longitudes
+        """
+        AreaIdentification.plot_activities_inside_area_on_map(activities, area_coordinates)
         plt.show()

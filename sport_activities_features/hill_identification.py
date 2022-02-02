@@ -3,36 +3,43 @@ from .classes import StoredSegments
 
 
 class HillIdentification(object):
-    r"""Identification of Hills from TCX file.
-
-    Attributes:
-        altitudes: An array of altitude values extracted from TCX file
-        ascent_threshold (float): Parameter that defines the hill (hill >= ascent_threshold)
     """
-
-    def __init__(self, altitudes, ascent_threshold):
+    Class for identification of hills from TCX file.\n
+    Args:
+        altitudes (list): an array of altitude values extracted from TCX file
+        ascent_threshold (float): parameter that defines the hill (hill >= ascent_threshold)
+    """
+    def __init__(self, altitudes: list, ascent_threshold: float) -> None:
+        """
+        Initialisation method of HillIdentification class.\n
+        Args:
+            altitudes (list): an array of altitude values extracted from TCX file
+            ascent_threshold (float): parameter that defines the hill (hill >= ascent_threshold)
+        """
         self.altitudes = altitudes
         self.ascent_threshold = ascent_threshold
         self.identified_hills = []
         self.total_ascent = 0
         self.total_descent = 0
 
-    def return_hill(self, ascent_threshold):
-        r"""Return
-
+    def return_hill(self, ascent_threshold: float) -> bool:
+        """
+        Method for identifying whether the hill is steep enough to be identified as a hill.\n
+        Args:
+            ascent_threshold (float): threshold of the ascent that is used for identifying hills
         Returns:
-            bool:
-
+            bool: True if the hill is recognised, False otherwise
         """
         if ascent_threshold >= 30:
             return True
         else:
             return False
 
-    def identify_hills(self):
-        r"""Algorithm for the identification of hills, total ascent and descent from data.
+    def identify_hills(self) -> None:
+        """
+        Method for identifying hills and extracting total ascent and descent from data.\n
         Note:
-            * :Algorithm is still in its preliminary stage.
+            [WIP] Algorithm is still in its preliminary stage.
         """
         differences = []
         for i in range(1, len(self.altitudes)):
@@ -86,11 +93,11 @@ class HillIdentification(object):
                         BEST_SEGMENT = []
                         BEST_SEGMENT_ASCENT = 0.0
 
-    def return_hills(self):
-        r"""Return identified hills.
-
+    def return_hills(self) -> list:
+        """
+        Method for returning identified hills.\n
         Returns:
-            str: Array of identified hills.
+            list: array of identified hills
         """
         hills = []
         for i in range(len(self.identified_hills)):

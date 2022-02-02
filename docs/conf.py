@@ -20,11 +20,11 @@ sys.path.insert(0, os.path.abspath("../"))
 # -- Project information -----------------------------------------------------
 
 project = "sport-activities-features"
-copyright = "2020, Iztok Fister Jr."
-author = "Iztok Fister Jr."
+copyright = "2020-2022, Iztok Fister Jr. et al."
+author = "Iztok Fister Jr., Luka Lukač, Alen Rajšp, Luka Pečnik, Dušan Fister,"
 
 # The full version, including alpha/beta/rc tags
-release = "0.1.1"
+release = "0.2.10"
 
 # -- General configuration ---------------------------------------------------
 
