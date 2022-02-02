@@ -20,16 +20,10 @@
 [![Fedora package](https://img.shields.io/fedora/v/python3-sport-activities-features?color=blue&label=Fedora%20Linux&logo=fedora)](https://src.fedoraproject.org/rpms/python-sport-activities-features)
 
 ## General outline of the framework
-Data analysis of sport activities that were monitored by the use of [sport trackers is popular](http://iztok-jr-fister.eu/static/publications/42.pdf).
-Many interesting utilizations of data are available, e.g. large-scale data mining of sport activities files for the [automatic sport training sessions generation](http://iztok-jr-fister.eu/static/publications/189.pdf).
+Monitoring of sport activities produces many geographic, topologic and personalized data, with a vast majority of details hidden. Thus, a rigorous ex-post data analysis and statistic evaluation are required to extract them. Namely, most of the mainstream solutions for analyzing sport activities files rely on integral metrics, such as total duration, total distance and average hearth rate, which may suffer of "overall (integral) metrics problem". Among others, such problems are expressed in capturing sport activities in general only (ommiting crucial components), calculating potentially fallacious and misleading metrics, not recognizing different stages/phases of the sport activity (warm-up, endurance, intervals), and others.
 
-Most of the available solutions nowadays are relied upon integral metrics such as total duration, total distance, average hearth rate, etc. However, such solutions may suffer of "overall (integral) metrics problem", commonly associated with following biases:
-- details not expressed sufficiently,
-- general/integral outlook of the race/training captured only,
-- possibly fallacious intensity metrics of performed race/training and
-- not recognized different stages/phases of the sport race/training, i.e. warming-up, endurance, intervals, etc.
+The sport-activities-framework on the other side offers a detailed insight into the sport activity files. The framework supports both identification and extraction methods, such as identifying number of hills, extracting the average altitudes of identified hills, measuring total distance of identified hills, deriving climbing ratios (total distance of identified hills vs. total distance), average/total ascents of hills and so much more. The framework also integrates many other extensions, among others historical weather parsing, statistical evaluations and ex-post visualizations. Previous work on these topical questions were addressed in [relevant scientific papers on data mining](http://iztok-jr-fister.eu/static/publications/42.pdf), also in a combination with the [generating/predicting automated sport training sessions](http://iztok-jr-fister.eu/static/publications/189.pdf).
 
-The sport-activities-framework on the other side offers a detailed insight into the sport activity files. The framework supports both identification and extraction methods, such as identifying number of hills, extracting the average altitudes of identified hills, measuring total distance of identified hills, deriving climbing ratios (total distance of identified hills vs. total distance), average/total ascents of hills and so much more. The framework also integrates many other extensions, among others historical weather parsing, statistical evaluations and ex-post visualizations.
 
 ## Detailed insights
 The sport-activities-features framework is compatible with TCX & GPX activity files and [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API) nodes.
