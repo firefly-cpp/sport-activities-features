@@ -26,7 +26,7 @@ The sport-activities-framework on the other side offers a detailed insight into 
 
 
 ## Detailed insights
-The sport-activities-features framework is compatible with TCX & GPX activity files and [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API) nodes. Framework is dedicated to help researchers by obtaining important data and metrics from sport tracker files, such as:
+The sport-activities-features framework is compatible with TCX & GPX activity files and [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API) nodes. Current version witholds (but is not limited to) following functions:
 - extracting integral metrics, such as total distance, total duration, calories ([see example](examples/integral_metrics_extraction.py)),
 - extracting topographic features, such as number of hills, average altitude of identified hills, total distance of identified hills, climbing ratio, average ascent of hills, total ascent, total descent ([see example](examples/hill_data_extraction.py)),
 - plotting identified hills ([see example](examples/draw_map_with_identified_hills.py)),
