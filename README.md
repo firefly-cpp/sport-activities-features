@@ -26,9 +26,7 @@ The sport-activities-framework on the other side offers a detailed insight into 
 
 
 ## Detailed insights
-The sport-activities-features framework is compatible with TCX & GPX activity files and [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API) nodes.
-
-Framework is dedicated to help researchers by obtaining important data and metrics from sport tracker files, such as:
+The sport-activities-features framework is compatible with TCX & GPX activity files and [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API) nodes. Framework is dedicated to help researchers by obtaining important data and metrics from sport tracker files, such as:
 - extracting integral metrics, such as total distance, total duration, calories ([see example](examples/integral_metrics_extraction.py)),
 - extracting topographic features, such as number of hills, average altitude of identified hills, total distance of identified hills, climbing ratio, average ascent of hills, total ascent, total descent ([see example](examples/hill_data_extraction.py)),
 - plotting identified hills ([see example](examples/draw_map_with_identified_hills.py)),
@@ -40,6 +38,8 @@ Framework is dedicated to help researchers by obtaining important data and metri
 - extracting the activities from CSV file(s) and randomly selecting the specific number of activities ([see example](examples/extract_random_activities_from_csv.py)),
 - extracting the dead ends,
 - and much more.
+
+The framework comes with two (testing) benchmark datasets, which are freely available to download from: [DATASET1](http://iztok-jr-fister.eu/static/publications/Sport5.zip), [DATASET2](http://iztok-jr-fister.eu/static/css/datasets/Sport.zip).
 
 
 ## Installation
@@ -376,10 +376,6 @@ tcx_data.update({'elevations':elevations})
 
 ### Example of a visualization of dead end identification
 ![Dead End Figure](https://imgur.com/LgZzCFS.png)
-
-## Datasets
-
-Datasets are available on the following links: [DATASET1](http://iztok-jr-fister.eu/static/publications/Sport5.zip), [DATASET2](http://iztok-jr-fister.eu/static/css/datasets/Sport.zip)
 
 ## License
 
