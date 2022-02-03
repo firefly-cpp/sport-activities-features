@@ -27,7 +27,7 @@ The sport-activities-features framework is compatible with TCX & GPX activity fi
 - calculating the training loads, such as Bannister TRIMP, Lucia TRIMP (`see example <../examples/integral_metrics_extraction.py>`_),
 - parsing the historical weather data from an external service,
 - extracting the integral metrics of the activity inside area given with coordinates (distance, heartrate, speed) (`see example <../examples/extract_data_inside_area.py>`_),
-- extracting the activities from CSV file(s) and randomly selecting the specific number of activities (`see example <../examples/extract_random_activities_from_csv.py`>_),
+- extracting the activities from CSV file(s) and randomly selecting the specific number of activities (`see example <../examples/extract_random_activities_from_csv.py>`_),
 - extracting the dead ends,
 - and much more.
 
