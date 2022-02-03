@@ -18,17 +18,17 @@ The sport-activities-framework on the other side offers a detailed insight into 
 Detailed insights
 -----------------------
 The sport-activities-features framework is compatible with TCX & GPX activity files and `Overpass API <https://wiki.openstreetmap.org/wiki/Overpass_API>`_ nodes. Current version witholds (but is not limited to) following functions:
-- extracting integral metrics, such as total distance, total duration, calories ([see example](examples/integral_metrics_extraction.py)),
-- extracting topographic features, such as number of hills, average altitude of identified hills, total distance of identified hills, climbing ratio, average ascent of hills, total ascent, total descent ([see example](examples/hill_data_extraction.py)),
-- plotting identified hills ([see example](examples/draw_map_with_identified_hills.py)),
-- extracting the intervals, such as number of intervals, maximum/minimum/average duration of intervals, maximum/minimum/average distance of intervals, maximum/minimum/average heart rate during intervals,
-- plotting the identified intervals ([see example](examples/draw_map_with_identified_intervals.py)),
-- calculating the training loads, such as Bannister TRIMP, Lucia TRIMP([see example](examples/integral_metrics_extraction.py)),
-- parsing the historical weather data from an external service,
-- extracting the integral metrics of the activity inside area given with coordinates (distance, heartrate, speed) ([see example](examples/extract_data_inside_area.py)),
-- extracting the activities from CSV file(s) and randomly selecting the specific number of activities ([see example](examples/extract_random_activities_from_csv.py)),
-- extracting the dead ends,
-- and much more.
+#. extracting integral metrics, such as total distance, total duration, calories ([see example](examples/integral_metrics_extraction.py)),
+#. extracting topographic features, such as number of hills, average altitude of identified hills, total distance of identified hills, climbing ratio, average ascent of hills, total ascent, total descent ([see example](examples/hill_data_extraction.py)),
+#. plotting identified hills ([see example](examples/draw_map_with_identified_hills.py)),
+#. extracting the intervals, such as number of intervals, maximum/minimum/average duration of intervals, maximum/minimum/average distance of intervals, maximum/minimum/average heart rate during intervals,
+#. plotting the identified intervals ([see example](examples/draw_map_with_identified_intervals.py)),
+#. calculating the training loads, such as Bannister TRIMP, Lucia TRIMP([see example](examples/integral_metrics_extraction.py)),
+#. parsing the historical weather data from an external service,
+#. extracting the integral metrics of the activity inside area given with coordinates (distance, heartrate, speed) ([see example](examples/extract_data_inside_area.py)),
+#. extracting the activities from CSV file(s) and randomly selecting the specific number of activities ([see example](examples/extract_random_activities_from_csv.py)),
+#. extracting the dead ends,
+#. and much more.
 
 The framework comes with two (testing) benchmark datasets, which are freely available to download from: `DATASET1 <http://iztok-jr-fister.eu/static/publications/Sport5.zip>`_, `DATASET2 <http://iztok-jr-fister.eu/static/css/datasets/Sport.zip>`_.
 
