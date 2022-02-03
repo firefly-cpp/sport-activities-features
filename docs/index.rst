@@ -13,11 +13,11 @@ General outline of the framework
 -----------------------
 Monitoring of sport activities produces many geographic, topologic and personalized data, with a vast majority of details hidden. Thus, a rigorous ex-post data analysis and statistic evaluation are required to extract them. Namely, most of the mainstream solutions for analyzing sport activities files rely on integral metrics, such as total duration, total distance and average hearth rate, which may suffer of "overall (integral) metrics problem". Among others, such problems are expressed in capturing sport activities in general only (ommiting crucial components), calculating potentially fallacious and misleading metrics, not recognizing different stages/phases of the sport activity (warm-up, endurance, intervals), and others.
 
-The sport-activities-framework on the other side offers a detailed insight into the sport activity files. The framework supports both identification and extraction methods, such as identifying number of hills, extracting the average altitudes of identified hills, measuring total distance of identified hills, deriving climbing ratios (total distance of identified hills vs. total distance), average/total ascents of hills and so much more. The framework also integrates many other extensions, among others historical weather parsing, statistical evaluations and ex-post visualizations. Previous work on these topical questions were addressed in `relevant scientific papers on data mining <http://iztok-jr-fister.eu/static/publications/42.pdf>`_, also in a combination with the [generating/predicting automated sport training sessions](http://iztok-jr-fister.eu/static/publications/189.pdf).
+The sport-activities-framework on the other side offers a detailed insight into the sport activity files. The framework supports both identification and extraction methods, such as identifying number of hills, extracting the average altitudes of identified hills, measuring total distance of identified hills, deriving climbing ratios (total distance of identified hills vs. total distance), average/total ascents of hills and so much more. The framework also integrates many other extensions, among others historical weather parsing, statistical evaluations and ex-post visualizations. Previous work on these topical questions were addressed in `relevant scientific papers on data mining <http://iztok-jr-fister.eu/static/publications/42.pdf>`_, also in a combination with the `generating/predicting automated sport training sessions <http://iztok-jr-fister.eu/static/publications/189.pdf)>`_.
 
 Detailed insights
 -----------------------
-The sport-activities-features framework is compatible with TCX & GPX activity files and [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API) nodes. Current version witholds (but is not limited to) following functions:
+The sport-activities-features framework is compatible with TCX & GPX activity files and `Overpass API <https://wiki.openstreetmap.org/wiki/Overpass_API>`_ nodes. Current version witholds (but is not limited to) following functions:
 - extracting integral metrics, such as total distance, total duration, calories ([see example](examples/integral_metrics_extraction.py)),
 - extracting topographic features, such as number of hills, average altitude of identified hills, total distance of identified hills, climbing ratio, average ascent of hills, total ascent, total descent ([see example](examples/hill_data_extraction.py)),
 - plotting identified hills ([see example](examples/draw_map_with_identified_hills.py)),
@@ -30,15 +30,15 @@ The sport-activities-features framework is compatible with TCX & GPX activity fi
 - extracting the dead ends,
 - and much more.
 
-The framework comes with two (testing) benchmark datasets, which are freely available to download from: [DATASET1](http://iztok-jr-fister.eu/static/publications/Sport5.zip), [DATASET2](http://iztok-jr-fister.eu/static/css/datasets/Sport.zip).
+The framework comes with two (testing) benchmark datasets, which are freely available to download from: `DATASET1 <http://iztok-jr-fister.eu/static/publications/Sport5.zip>`_, `DATASET2 <http://iztok-jr-fister.eu/static/css/datasets/Sport.zip>`_.
 
 Historical Weather Data
 -----------------------
 
-Weather data parsed is collected from the [Visual Crossing Weather API](https://www.visualcrossing.com/).
+Weather data parsed is collected from the `Visual Crossing Weather API <https://www.visualcrossing.com/>`_.
 Please note that this is an external unaffiliated service and users must register to use the API.
 The service has a free tier (1000 Weather reports / day) but is otherwise operating on a pay-as-you-go model.
-For pricing and terms of use please read the [official documentation](https://www.visualcrossing.com/weather-data-editions) of the API provider.
+For pricing and terms of use please read the `official documentation <https://www.visualcrossing.com/weather-data-editions>`_ of the API provider.
 
 Documentation
 =============
