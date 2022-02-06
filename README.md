@@ -1,4 +1,7 @@
 <p align="center">
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
   <img width="200" src=".github/logo/sport_activities.png">
 </p>
 
@@ -388,3 +391,23 @@ This framework is provided as-is, and there are no guarantees that it fits your 
 ## Cite us
 
 I. Jr. Fister, L. Lukač, A. Rajšp, I. Fister, L. Pečnik and D. Fister, "[A minimalistic toolbox for extracting features from sport activity files](http://iztok-jr-fister.eu/static/publications/294.pdf)", 2021 IEEE 25th International Conference on Intelligent Engineering Systems (INES), 2021, pp. 121-126, doi: [10.1109/INES52918.2021.9512927](http://dx.doi.org/10.1109/INES52918.2021.9512927).
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/alenrajsp"><img src="https://avatars.githubusercontent.com/u/27721714?v=4?s=100" width="100px;" alt=""/><br /><sub><b>alenrajsp</b></sub></a><br /><a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=alenrajsp" title="Code">💻</a> <a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=alenrajsp" title="Tests">⚠️</a> <a href="#example-alenrajsp" title="Examples">💡</a> <a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=alenrajsp" title="Documentation">📖</a> <a href="#ideas-alenrajsp" title="Ideas, Planning, & Feedback">🤔</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
