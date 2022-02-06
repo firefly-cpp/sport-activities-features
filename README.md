@@ -1,6 +1,6 @@
 <p align="center">
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
   <img width="200" src=".github/logo/sport_activities.png">
 </p>
@@ -406,6 +406,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/luckyLukac"><img src="https://avatars.githubusercontent.com/u/73126820?v=4?s=100" width="100px;" alt=""/><br /><sub><b>luckyLukac</b></sub></a><br /><a href="#ideas-luckyLukac" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=luckyLukac" title="Code">💻</a> <a href="https://github.com/firefly-cpp/sport-activities-features/issues?q=author%3AluckyLukac" title="Bug reports">🐛</a> <a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=luckyLukac" title="Tests">⚠️</a> <a href="#example-luckyLukac" title="Examples">💡</a></td>
     <td align="center"><a href="https://github.com/rhododendrom"><img src="https://avatars.githubusercontent.com/u/3198785?v=4?s=100" width="100px;" alt=""/><br /><sub><b>rhododendrom</b></sub></a><br /><a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=rhododendrom" title="Code">💻</a> <a href="#design-rhododendrom" title="Design">🎨</a> <a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=rhododendrom" title="Documentation">📖</a> <a href="#ideas-rhododendrom" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/lukapecnik"><img src="https://avatars.githubusercontent.com/u/23029992?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Luka Pečnik</b></sub></a><br /><a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=lukapecnik" title="Code">💻</a> <a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=lukapecnik" title="Documentation">📖</a> <a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=lukapecnik" title="Tests">⚠️</a> <a href="https://github.com/firefly-cpp/sport-activities-features/issues?q=author%3Alukapecnik" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/spelap"><img src="https://avatars.githubusercontent.com/u/19300429?v=4?s=100" width="100px;" alt=""/><br /><sub><b>spelap</b></sub></a><br /><a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=spelap" title="Code">💻</a></td>
   </tr>
 </table>
 
