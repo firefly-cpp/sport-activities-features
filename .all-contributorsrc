@@ -17,6 +17,23 @@
         "doc",
         "ideas"
       ]
+    },
+    {
+      "login": "firefly-cpp",
+      "name": "Iztok Fister Jr.",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1633361?v=4",
+      "profile": "http://www.iztok-jr-fister.eu/",
+      "contributions": [
+        "code",
+        "bug",
+        "test",
+        "example",
+        "doc",
+        "ideas",
+        "mentoring",
+        "platform",
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
