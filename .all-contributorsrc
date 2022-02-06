@@ -59,6 +59,18 @@
         "doc",
         "ideas"
       ]
+    },
+    {
+      "login": "lukapecnik",
+      "name": "Luka Pečnik",
+      "avatar_url": "https://avatars.githubusercontent.com/u/23029992?v=4",
+      "profile": "https://github.com/lukapecnik",
+      "contributions": [
+        "code",
+        "doc",
+        "test",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
