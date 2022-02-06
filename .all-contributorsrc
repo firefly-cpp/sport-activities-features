@@ -34,6 +34,19 @@
         "platform",
         "maintenance"
       ]
+    },
+    {
+      "login": "luckyLukac",
+      "name": "luckyLukac",
+      "avatar_url": "https://avatars.githubusercontent.com/u/73126820?v=4",
+      "profile": "https://github.com/luckyLukac",
+      "contributions": [
+        "ideas",
+        "code",
+        "bug",
+        "test",
+        "example"
+      ]
     }
   ],
   "contributorsPerLine": 7,
