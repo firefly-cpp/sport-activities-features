@@ -18,6 +18,69 @@
         "ideas",
         "bug"
       ]
+    },
+    {
+      "login": "firefly-cpp",
+      "name": "Iztok Fister Jr.",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1633361?v=4",
+      "profile": "http://www.iztok-jr-fister.eu/",
+      "contributions": [
+        "code",
+        "bug",
+        "test",
+        "example",
+        "doc",
+        "ideas",
+        "mentoring",
+        "platform",
+        "maintenance"
+      ]
+    },
+    {
+      "login": "luckyLukac",
+      "name": "luckyLukac",
+      "avatar_url": "https://avatars.githubusercontent.com/u/73126820?v=4",
+      "profile": "https://github.com/luckyLukac",
+      "contributions": [
+        "ideas",
+        "code",
+        "bug",
+        "test",
+        "example"
+      ]
+    },
+    {
+      "login": "rhododendrom",
+      "name": "rhododendrom",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3198785?v=4",
+      "profile": "https://github.com/rhododendrom",
+      "contributions": [
+        "code",
+        "design",
+        "doc",
+        "ideas"
+      ]
+    },
+    {
+      "login": "lukapecnik",
+      "name": "Luka Pečnik",
+      "avatar_url": "https://avatars.githubusercontent.com/u/23029992?v=4",
+      "profile": "https://github.com/lukapecnik",
+      "contributions": [
+        "code",
+        "doc",
+        "test",
+        "bug"
+      ]
+    },
+    {
+      "login": "spelap",
+      "name": "spelap",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19300429?v=4",
+      "profile": "https://github.com/spelap",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
