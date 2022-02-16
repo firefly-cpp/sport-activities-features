@@ -150,7 +150,7 @@ class GPXFile(object):
                             elif ext.tag == f'{NAMESPACE}hr':
                                 trackpoint.hr_value = int(ext.text)
                         points.append(trackpoint)
-                    if previous_point == None:
+                    if previous_point is None:
                         trackpoint.distance = 0
                         trackpoint.speed = 0
                     else:
@@ -177,7 +177,6 @@ class GPXFile(object):
         speeds = []
         trackpoint: TCXTrackPoint
         for trackpoint in points:
-            a = 100
             positions.append((trackpoint.latitude, trackpoint.longitude))
             altitudes.append(trackpoint.elevation)
             distances.append(trackpoint.distance)

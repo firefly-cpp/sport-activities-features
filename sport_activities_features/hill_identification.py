@@ -1,4 +1,3 @@
-import os
 from .classes import StoredSegments
 
 
@@ -51,13 +50,11 @@ class HillIdentification(object):
         BEST_SEGMENT_ASCENT = 0.0
 
         for i in range(len(differences)):
-            CURRENT = differences[i]
             TOTAL_ASCENT = 0.0
             selected_IDs = []
             selected_IDs.append(i)
             descent_counter = 0
 
-            descent_flag = True
             for j in range(i + 1, len(differences)):
                 NEXT = differences[j]
                 if NEXT >= 0.0:

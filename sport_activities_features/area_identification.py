@@ -153,7 +153,7 @@ class AreaIdentification(object):
             average_speed = distance / time
         except:
             average_speed = 0.0
-        
+
         try:
             minimum_heart_rate = np.min(heart_rates)
             maximum_heart_rate = np.max(heart_rates)

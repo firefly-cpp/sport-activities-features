@@ -10,7 +10,7 @@ from sport_activities_features.interval_identification import (
 
 from  sport_activities_features.interruptions.exercise import GPXTrackPoint, TCXTrackPoint, TrackSegment, Speed
 from sport_activities_features.interruptions.overpass import Overpass, CoordinatesBox
-from sport_activities_features.interruptions.exercise_event import EventType,EventStats,ExerciseEvent,EventDetailType,EventLocation,EventDetail
+from sport_activities_features.interruptions.exercise_event import EventType, EventStats, ExerciseEvent, EventDetailType, EventLocation, EventDetail
 from sport_activities_features.interruptions.interruption_processor import InterruptionProcessor
 from sport_activities_features.plot_data import PlotData
 from sport_activities_features.tcx_manipulation import TCXFile

@@ -78,7 +78,6 @@ class TCXFile(object):
                     delta_distance = 1
                     invalid_points.append(index)
                 speeds.append((delta_distance / delta_time) * 3.6)
-                a = 100
             else:
                 speeds.append(0)
 

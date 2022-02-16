@@ -1,6 +1,3 @@
-from sport_activities_features.tcx_manipulation import TCXFile
-
-
 class SportyDataGen(object):
     """
     Class that contains selected and modified SportyDataGen methods for generation of sports activity collections.\n

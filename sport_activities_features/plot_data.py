@@ -1,6 +1,5 @@
 # %matplotlib inline
 import matplotlib.pyplot as plt
-from pendulum import datetime
 
 plt.style.use("seaborn-whitegrid")
 
