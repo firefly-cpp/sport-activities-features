@@ -6,11 +6,18 @@ This section is going to show you how to use the sport-activities-features toolb
 Installation
 ------------
 
-First install sport-activities-features package using the following command:
+Firstly, install sport-activities-features package using the following command:
 
 .. code:: bash
 
     pip install sport-activities-features
+
+To install sport-activities-features on Fedora, use:
+
+.. code:: bash
+
+    dnf install python3-sport-activities-features
+
 
 After the successful installation you are ready to run your first example.
 

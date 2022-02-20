@@ -59,3 +59,10 @@ bibtex_bibfiles = ['refs.bib']
 
 # Bibliography style
 bibtex_default_style = 'unsrt'
+
+# Add logo for project
+html_logo = "../.github/logo/sport_activities.png"
+html_theme_options = {
+    'logo_only': True,
+    'display_version': False,
+}
