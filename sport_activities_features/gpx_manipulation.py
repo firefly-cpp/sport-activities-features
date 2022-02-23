@@ -1,7 +1,6 @@
-import os
-
 import geopy
 import gpxpy
+import os
 from tcxreader.tcxreader import TCXTrackPoint
 
 
@@ -9,30 +8,58 @@ class GPXTrackPoint():
     """
     Class for saving GPX point records.\n
     Args:
-        longitude (float): longitude in degrees
-        latitude (float): latitude in degrees
-        elevation (float): elevation in meters
-        time (datetime): datetime of time at the given point
-        distance (float): total distance travelled until this point
-        hr_value (int): heart beats per minute at given recording.
-        cadence (int): cadence
-        watts (float): watts power rating
-        speed (float): speed in km/h
+        longitude (float):
+            longitude in degrees
+        latitude (float):
+            latitude in degrees
+        elevation (float):
+            elevation in meters
+        time (datetime):
+            datetime of time at the given point
+        distance (float):
+            total distance travelled until this point
+        hr_value (int):
+            heart beats per minute at given recording.
+        cadence (int):
+            cadence
+        watts (float):
+            watts power rating
+        speed (float):
+            speed in km/h
     """
-    def __init__(self, longitude: float = None, latitude: float = None, elevation: float = None, time=None,
-                 distance=None, hr_value: int = None, cadence=None, watts: float = None, speed: float = None) -> None:
+    def __init__(
+        self,
+        longitude: float = None,
+        latitude: float = None,
+        elevation: float = None,
+        time=None,
+        distance=None,
+        hr_value: int = None,
+        cadence=None,
+        watts: float = None,
+        speed: float = None
+    ) -> None:
         """
         Initialisation method for GPXTrackPoint class.\n
         Args:
-            longitude (float): longitude in degrees
-            latitude (float): latitude in degrees
-            elevation (float): elevation in meters
-            time (datetime): datetime of time at the given point
-            distance (float): total distance travelled until this point
-            hr_value (int): heart beats per minute at given recording.
-            cadence (int): cadence
-            watts (float): watts power rating
-            speed (float): speed in km/h
+            longitude (float):
+                longitude in degrees
+            latitude (float):
+                latitude in degrees
+            elevation (float):
+                elevation in meters
+            time (datetime):
+                datetime of time at the given point
+            distance (float):
+                total distance travelled until this point
+            hr_value (int):
+                heart beats per minute at given recording.
+            cadence (int):
+                cadence
+            watts (float):
+                watts power rating
+            speed (float):
+                speed in km/h
         """
         self.elevation = elevation
         self.latitude = latitude
@@ -44,14 +71,27 @@ class GPXTrackPoint():
         self.cadence = cadence
         self.watts = watts
 
-    def from_GPX(self, gpx: gpxpy.gpx.GPXTrackPoint, hr_value: int = None, cadence: int = None, watts: int = None) -> None:
+    def from_GPX(
+        self,
+        gpx: gpxpy.gpx.GPXTrackPoint,
+        hr_value: int = None,
+        cadence: int = None,
+        watts: int = None
+    ) -> None:
         """
-        Helper method for initialising GPXTrackPoint from the gpxpy.gpx.GpxTrackPoint.\n
+        Helper method for initialising GPXTrackPoint
+        from the gpxpy.gpx.GpxTrackPoint.\n
         Args:
-            gpx (gpxpy.gpx.GPXTrackPoint): gpxpy.gpx.GPXTrackPoint not to be confused with class of the same name used in gpx_manipulation
-            hr_value (int): heart beats per minute at given recording.
-            cadence (int): cadence
-            watts (int): watts power rating
+            gpx (gpxpy.gpx.GPXTrackPoint):
+                gpxpy.gpx.GPXTrackPoint not to be confused
+                with class of the same name used in
+                gpx_manipulation
+            hr_value (int):
+                heart beats per minute at given recording
+            cadence (int):
+                cadence
+            watts (int):
+                watts power rating
         """
         self.elevation = gpx.elevation
         self.latitude = gpx.latitude
@@ -76,7 +116,8 @@ class GPXFile(object):
         """
         Method for calculating the total ascent from a list of altitudes.\n
         Args:
-            altitudes (list): list of altitudes from the recorded training
+            altitudes (list):
+                list of altitudes from the recorded training
         Returns:
             int: total ascent in meters
         """
@@ -91,7 +132,8 @@ class GPXFile(object):
         """
         Method for calculating the total descent from a list of altitudes.\n
         Args:
-            altitudes (list): list of altitudes from the recorded training
+            altitudes (list):
+                list of altitudes from the recorded training
         Returns:
             int: total descent in meters
         """
@@ -106,7 +148,8 @@ class GPXFile(object):
         """
         Method for finding all GPX files in a directory.\n
         Args:
-            directory_name (str): name od the directory in which to identify GPX files
+            directory_name (str):
+                name of the directory in which to identify GPX files
         Returns:
             list: array of paths to the identified files
         """
@@ -121,14 +164,14 @@ class GPXFile(object):
         """
         Method for parsing one GPX file.\n
         Returns: activity: {
-                    "activity_type": activity_type,
-                    "positions": positions,
-                    "altitudes": altitudes,
-                    "distances": distances,
-                    "total_distance": total_distance,
-                    "timestamps": timestamps,
-                    "heartrates": heartrates,
-                    "speeds": speeds
+                    'activity_type': activity_type,
+                    'positions': positions,
+                    'altitudes': altitudes,
+                    'distances': distances,
+                    'total_distance': total_distance,
+                    'timestamps': timestamps,
+                    'heartrates': heartrates,
+                    'speeds': speeds
                  }
         Note:
             In the case of missing value in raw data, we assign None.
@@ -154,11 +197,21 @@ class GPXFile(object):
                         trackpoint.distance = 0
                         trackpoint.speed = 0
                     else:
-                        trackpoint.distance = previous_point.distance + geopy.distance.geodesic(
-                            (trackpoint.latitude, trackpoint.longitude),
-                            (previous_point.latitude, previous_point.longitude)).m
-                        seconds_between = (trackpoint.time - previous_point.time).total_seconds()
-                        travelled = trackpoint.distance - previous_point.distance
+                        trackpoint.distance = \
+                            (previous_point.distance
+                             + geopy.distance.geodesic(
+                                (trackpoint.latitude,
+                                    trackpoint.longitude),
+                                (previous_point.latitude,
+                                    previous_point.longitude)
+                             ).m
+                             )
+                        seconds_between = (
+                            trackpoint.time - previous_point.time
+                        ).total_seconds()
+                        travelled = (trackpoint.distance
+                                     - previous_point.distance
+                                     )
                         trackpoint.speed = travelled * 3.6 / seconds_between
                     previous_point = trackpoint
 

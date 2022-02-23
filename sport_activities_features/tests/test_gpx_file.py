@@ -1,12 +1,17 @@
 import os
 from unittest import TestCase
+
 from sport_activities_features import GPXFile
 
 
 class TestGPXFile(TestCase):
     def setUp(self):
-        filename = os.path.join(os.path.dirname(__file__), "data", "riderx3.gpx")
-        self.gpx_file=GPXFile()
+        filename = os.path.join(
+            os.path.dirname(__file__),
+            'data',
+            'riderx3.gpx'
+        )
+        self.gpx_file = GPXFile()
         self.data = self.gpx_file.read_one_file(filename)
 
     def test_total_distance(self):

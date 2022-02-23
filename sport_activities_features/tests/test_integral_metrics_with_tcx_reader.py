@@ -1,6 +1,6 @@
 import os
+from tcxreader.tcxreader import TCXReader
 from unittest import TestCase
-from tcxreader.tcxreader import TCXReader, TCXTrackPoint, TCXExercise
 
 
 class TestTCXReader(TestCase):

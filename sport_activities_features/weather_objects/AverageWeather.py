@@ -3,7 +3,8 @@ from sport_activities_features.weather_objects.Weather import Weather
 
 class AveragedType:
     """
-    Class that contains the name and percentage (weight) of the weather conditions and types.
+    Class that contains the name and percentage
+    (weight) of the weather conditions and types.
     """
     def __init__(self, name, percentage):
         """
@@ -19,7 +20,7 @@ def none_to_zero(value):
     """
     Helper function that replaces None with 0.
     """
-    if value == None:
+    if value is None:
         return 0
     else:
         return value
@@ -66,41 +67,81 @@ class AverageWeather:
             weight_a=None,
     ):
         """
-        Returns average weather between two dates (e.g. average temperature between two times). The average weather
-        is linearly calculated. weight_a = 1 - (before['seconds'] / (after['seconds'] + before['seconds']))
+        Returns average weather between two dates (e.g. average temperature
+        between two times). The average weather is linearly calculated.
+        weight_a =
+            1 - (before['seconds'] / (after['seconds'] + before['seconds']))
         Args:
             weather_a: Weather before the determined timestamps.
             weather_b: Weather before the determined timestamp.
             weight_a: Weight of the weather_a (0-1), weight_b is (1-weight_a)
         Returns:
-            Average weather between the two timestamps. The average weather contains only the following attributes
-            temperature, maximum_temperature, minimum_temperature, precipitation, sea_level_pressure, wind_speed,
-            wind_direction, visibility, clout_cover, relative_humidity, dew_point, weather_type and conditions.
+            Average weather between the two timestamps. The average weather
+            contains only the following attributes:
+            temperature, maximum_temperature, minimum_temperature,
+            precipitation, sea_level_pressure, wind_speed, wind_direction,
+            visibility, clout_cover, relative_humidity, dew_point,
+            weather_type and conditions.
         Warnings:
-            weather_type and conditions in Weather objects are just strings for describing them. Here they are both
-            objects of type AveragedType!
+            weather_type and conditions in Weather objects are just strings
+            for describing them. Here they are both objects of type
+            AveragedType!
         """
         a = weather_none_to_zero(weather_a)
         b = weather_none_to_zero(weather_b)
         weight_b = 1 - weight_a
 
         self.temperature = a.temperature * weight_a + b.temperature * weight_b
-        self.maximum_temperature = a.maximum_temperature * weight_a + b.maximum_temperature * weight_b
-        self.minimum_temperature = a.minimum_temperature * weight_a + b.minimum_temperature * weight_b
-        # self.wind_chill = a.wind_chill*weight_a+b.wind_chill*weight_b EXCLUDED
-        # self.heat_index = a.heat_index*weight_a+b.heat_index*weight_b EXCLUDED
-        # self.solar_radiation = a.solar_radiation*weight_a+b.solar_radiation*weight_b EXCLUDED
-        self.precipitation = a.precipitation * weight_a + b.solar_radiation * weight_b
-        self.sea_level_pressure = a.sea_level_pressure * weight_a + b.solar_radiation * weight_b
-        # self.snow_depth = a.snow_depth*weight_a+b.solar_radiation*weight_b EXCLUDED
-        self.wind_speed = a.wind_speed * weight_a + b.solar_radiation * weight_b
-        self.wind_direction = a.wind_direction * weight_a + b.solar_radiation * weight_b
-        # self.wind_gust = a.wind_gust*weight_a+b.solar_radiation*weight_b EXCLUDED
-        self.visibility = a.visibility * weight_a + b.solar_radiation * weight_b
-        self.cloud_cover = a.cloud_cover * weight_a + b.solar_radiation * weight_b
-        self.relative_humidity = a.relative_humidity * weight_a + b.solar_radiation * weight_b
-        self.dew_point = a.dew_point * weight_a + b.solar_radiation * weight_b
-        self.weather_type = [AveragedType(name=a.weather_type, percentage=weight_a),
-                             AveragedType(name=b.weather_type, percentage=weight_b)]  ###
-        self.conditions = [AveragedType(name=a.conditions, percentage=weight_a),
-                           AveragedType(name=b.conditions, percentage=weight_b)]
+        self.maximum_temperature = (
+            a.maximum_temperature * weight_a + b.maximum_temperature * weight_b
+        )
+        self.minimum_temperature = (
+            a.minimum_temperature * weight_a + b.minimum_temperature * weight_b
+        )
+        # self.wind_chill = (
+        #   a.wind_chill*weight_a+b.wind_chill*weight_b EXCLUDED
+        # )
+        # self.heat_index = (
+        #   a.heat_index*weight_a+b.heat_index*weight_b EXCLUDED
+        # )
+        # self.solar_radiation = (
+        #   a.solar_radiation*weight_a+b.solar_radiation*weight_b EXCLUDED
+        # )
+        self.precipitation = (
+            a.precipitation * weight_a + b.solar_radiation * weight_b
+        )
+        self.sea_level_pressure = (
+            a.sea_level_pressure * weight_a + b.solar_radiation * weight_b
+        )
+        # self.snow_depth = (
+        #   a.snow_depth*weight_a+b.solar_radiation*weight_b EXCLUDED
+        # )
+        self.wind_speed = (
+            a.wind_speed * weight_a + b.solar_radiation * weight_b
+        )
+        self.wind_direction = (
+            a.wind_direction * weight_a + b.solar_radiation * weight_b
+        )
+        # self.wind_gust = (
+        #   a.wind_gust*weight_a+b.solar_radiation*weight_b EXCLUDED
+        # )
+        self.visibility = (
+            a.visibility * weight_a + b.solar_radiation * weight_b
+        )
+        self.cloud_cover = (
+            a.cloud_cover * weight_a + b.solar_radiation * weight_b
+        )
+        self.relative_humidity = (
+            a.relative_humidity * weight_a + b.solar_radiation * weight_b
+        )
+        self.dew_point = (
+            a.dew_point * weight_a + b.solar_radiation * weight_b
+        )
+        self.weather_type = (
+            [AveragedType(name=a.weather_type, percentage=weight_a),
+             AveragedType(name=b.weather_type, percentage=weight_b)]
+        )
+        self.conditions = (
+            [AveragedType(name=a.conditions, percentage=weight_a),
+             AveragedType(name=b.conditions, percentage=weight_b)]
+        )
