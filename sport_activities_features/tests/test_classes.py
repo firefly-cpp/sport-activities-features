@@ -1,4 +1,5 @@
 from unittest import TestCase
+
 from sport_activities_features.classes import StoredSegments
 
 

@@ -1,12 +1,13 @@
 import os
 from unittest import TestCase
+
 from sport_activities_features import TCXFile
 
 
 class TestTCXFile(TestCase):
     def setUp(self):
-        filename = os.path.join(os.path.dirname(__file__), "data", "15.tcx")
-        self.tcx_file=TCXFile()
+        filename = os.path.join(os.path.dirname(__file__), 'data', '15.tcx')
+        self.tcx_file = TCXFile()
         self.data = self.tcx_file.read_one_file(filename)
 
     def test_total_distance(self):

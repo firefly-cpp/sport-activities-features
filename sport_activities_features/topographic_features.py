@@ -5,20 +5,23 @@ class TopographicFeatures(object):
     """
     Class for feature extraction from topographic maps.\n
     Args:
-        identified_hills (list): identified hills are now passed to this class
+        identified_hills (list):
+            identified hills are now passed to this class
     """
     def __init__(self, identified_hills: list) -> None:
         """
         Initialisation method of TopographicFeatures class.\n
         Args:
-            identified_hills (list): identified hills are now passed to this class
+            identified_hills (list):
+                identified hills are now passed to this class
         """
         self.identified_hills = identified_hills
         self.features = []
 
     def num_of_hills(self) -> int:
         """
-        Method for calculating the number of identified hills in sport activity.\n
+        Method for calculating the number of
+        identified hills in sport activity.\n
         Returns:
             int: number of hills
         """
@@ -26,9 +29,11 @@ class TopographicFeatures(object):
 
     def avg_altitude_of_hills(self, alts: list) -> float:
         """
-        Method for calculating the average altitude of all identified hills in sport activity.\n
+        Method for calculating the average altitude of
+        all identified hills in sport activity.\n
         Args:
-            alts (list): list of altitudes
+            alts (list):
+                list of altitudes
         Returns:
             float: average altitude
         """
@@ -46,9 +51,11 @@ class TopographicFeatures(object):
 
     def distance_of_hills(self, positions: list) -> float:
         """
-        Method for calculating the total distance of all identified hills in sport activity.\n
+        Method for calculating the total distance of all
+        identified hills in sport activity.\n
         Args:
-            positions (list): list of positions
+            positions (list):
+                list of positions
         Returns:
             float: distance of hills
         """
@@ -73,10 +80,13 @@ class TopographicFeatures(object):
 
     def share_of_hills(self, hills_dist: float, total_dist: float) -> float:
         """
-        Method for calculating the share of hills in sport activity (percentage).\n
+        Method for calculating the share of hills
+        in sport activity (percentage).\n
         Args:
-            hills_dict (float): distance of all hills
-            total_dist (float): total distance
+            hills_dict (float):
+                distance of all hills
+            total_dist (float):
+                total distance
         Returns:
             float: share of hills
         """
@@ -87,15 +97,16 @@ class TopographicFeatures(object):
 
     def avg_ascent_of_hills(self, alts: list) -> float:
         """
-        Method for calculating the average ascent of all hills in sport activity.\n
+        Method for calculating the average ascent
+        of all hills in sport activity.\n
         Args:
-            alts (list): list of altitudes
+            alts (list):
+                list of altitudes
         Returns:
             float: average ascent
         """
         all_values = []
         for i in range(len(self.identified_hills)):
-            ascents = []
             alt_points = []
             detected = self.identified_hills[i]
             for j in range(len(detected)):
@@ -112,11 +123,13 @@ class TopographicFeatures(object):
         """
         Method for ascent calculation.\n
         Args:
-            altitude_data (list): list of altitudes
+            altitude_data (list):
+                list of altitudes
         Returns:
             float: total ascent
         Note:
-            [WIP] This method should be improved.
+            [WIP]
+            This method should be improved.
         """
         total_ascent = 0.0
         for i in range(len(altitude_data) - 1):
@@ -129,11 +142,13 @@ class TopographicFeatures(object):
         """
         Method for descent calculation.\n
         Args:
-            altitude_data (list): list of altitudes
+            altitude_data (list):
+                list of altitudes
         Returns:
             float: total descent
         Note:
-            [WIP] This method should be improved.
+            [WIP]
+            This method should be improved.
         """
         total_descent = 0.0
         for i in range(len(altitude_data) - 1):
@@ -142,14 +157,25 @@ class TopographicFeatures(object):
                 total_descent += abs(diff)
         return total_descent
 
-    def calculate_distance(self, latitude_1: float, latitude_2: float, longitude_1: float, longitude_2: float) -> float:
+    def calculate_distance(
+        self,
+        latitude_1: float,
+        latitude_2: float,
+        longitude_1: float,
+        longitude_2: float
+    ) -> float:
         """
-        Method for calculating the distance between the two pairs of coordinates.\n
+        Method for calculating the distance between
+        the two pairs of coordinates.\n
         Args:
-            latitude_1 (float): first latitude
-            latitude_2 (float): second latitude
-            longitude_1 (float): first longitude
-            longitude_2 (float): second longitude
+            latitude_1 (float):
+                first latitude
+            latitude_2 (float):
+                second latitude
+            longitude_1 (float):
+                first longitude
+            longitude_2 (float):
+                second longitude
         Returns:
             float: distance in kilometers
         """
@@ -158,21 +184,43 @@ class TopographicFeatures(object):
 
         return geopy.distance.geodesic(coords_1, coords_2).km
 
-    def calculate_hill_gradient(self, latitude_1: float, latitude_2: float, longitude_1: float, longitude_2: float, height_1: float, height_2: float) -> float:
+    def calculate_hill_gradient(
+        self,
+        latitude_1: float,
+        latitude_2: float,
+        longitude_1: float,
+        longitude_2: float,
+        height_1: float,
+        height_2: float
+    ) -> float:
         """
         Method for calculation of the hill gradient in percent.\n
         Args:
-            latitude_1 (float): first latitude
-            latitude_2 (float): second latitude
-            longitude_1 (float): first longitude
-            longitude_2 (float): second longitude
-            height_1 (float): first altitude
-            height_2 (float): second altitude
+            latitude_1 (float):
+                first latitude
+            latitude_2 (float):
+                second latitude
+            longitude_1 (float):
+                first longitude
+            longitude_2 (float):
+                second longitude
+            height_1 (float):
+                first altitude
+            height_2 (float):
+                second altitude
         Returns:
             float: gradient in degrees
         """
-        distance = 1000 * self.calculate_distance(latitude_1, latitude_2, longitude_1, longitude_2)  # Calculation of distance between given coordinates in meters
-        height_change = height_2 - height_1  # Calculation of height change in meters
+        # Calculation of distance between given coordinates in meters
+        distance = 1000 * self.calculate_distance(
+            latitude_1,
+            latitude_2,
+            longitude_1,
+            longitude_2
+        )
+        # Calculation of height change in meters
+        height_change = height_2 - height_1
 
-        gradient = (100 * height_change / distance)  # Calculation of the gradient in percent
+        # Calculation of the gradient in percent
+        gradient = (100 * height_change / distance)
         return gradient

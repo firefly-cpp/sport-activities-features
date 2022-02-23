@@ -1,15 +1,13 @@
-import sys
-
-sys.path.append("../")
-
+"""
+This example presents how to draw a map with identified hills.
+"""
 from sport_activities_features.hill_identification import HillIdentification
-from sport_activities_features.tcx_manipulation import TCXFile
-from sport_activities_features.topographic_features import TopographicFeatures
 from sport_activities_features.plot_data import PlotData
+from sport_activities_features.tcx_manipulation import TCXFile
+
 
 # read TCX file
 tcx_file = TCXFile()
-
 (
     activity_type,
     positions,
@@ -19,7 +17,7 @@ tcx_file = TCXFile()
     timestamps,
     heartrates,
     speeds
-) = tcx_file.read_one_file("path_to_the_data").values()
+) = tcx_file.read_one_file('path_to_the_data').values()
 
 # detect hills in data
 Hill = HillIdentification(altitudes, 30)

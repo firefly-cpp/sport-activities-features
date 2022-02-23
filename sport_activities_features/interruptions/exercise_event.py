@@ -16,8 +16,10 @@ class EventType(Enum):
 
 class EventDetailType(Enum):
     """
-    Enum for determining the details of interruption event. Currently only Intersections can be identified, but if the
-    algorithm is extended in the future also road bends and other types of obstacles will be detected.
+    Enum for determining the details of interruption event.
+    Currently only Intersections can be identified, but if the algorithm is
+    extended in the future also road bends and other types of obstacles will
+    be detected.
     """
     UNDEFINED = -1  # WORKS
     INTERSECTION = 0  # WORKS
@@ -38,7 +40,11 @@ class EventDetail:
     """
     Class for holding the EventLocation and EventDetailType
     """
-    def __init__(self, location: EventLocation = None, type: EventDetailType = EventDetailType.UNDEFINED):
+    def __init__(
+        self,
+        location: EventLocation = None,
+        type: EventDetailType = EventDetailType.UNDEFINED
+    ):
         """
         Initialisation class for EventDetail.
         Args:
@@ -51,12 +57,20 @@ class EventDetail:
 
 class ExerciseEvent:
     """
-    Class for idenitified ExerciseEvents. Each event is made from pre event data (recording previous to the event),
-    post event data (recording after the event) and actual event (recording during which the boundary conditions of event are met).
+    Class for idenitified ExerciseEvents.
+    Each event is made from pre event data (recording previous to the event),
+    post event data (recording after the event) and actual event (recording
+    during which the boundary conditions of event are met).
     """
-    def __init__(self, pre_event: [TrackSegment] = [], event: [TrackSegment] = [], post_event: [TrackSegment] = [],
-                 title: str = "",
-                 event_type: EventType = EventType.UNDEFINED, event_detail: EventDetail = EventDetail()):
+    def __init__(
+        self,
+        pre_event: list = [],
+        event: list = [],
+        post_event: list = [],
+        title: str = "",
+        event_type: EventType = EventType.UNDEFINED,
+        event_detail: EventDetail = EventDetail()
+    ):
         """
         Initialisation method for ExerciseEvent class.
         Args:
@@ -67,9 +81,9 @@ class ExerciseEvent:
             event_type: Enum EventType
             event_detail: Enum EventDetailType
         """
-        self.pre_event: [TrackSegment] = pre_event
-        self.event: [TrackSegment] = event
-        self.post_event: [TrackSegment] = post_event
+        self.pre_event: list = pre_event
+        self.event: list = event
+        self.post_event: list = post_event
         self.title = title
         self.event_type: EventType = event_type
         self.event_detail: EventDetailType = event_detail
@@ -103,10 +117,17 @@ class EventStats:
     """
     Class for holding the statistics about the identified event.
     """
-    def __init__(self, index_start=-1, index_mid=-1, index_end=-1,
-                 timestamp_mid_start=None, timestamp_mid: datetime = None, timestamp_mid_end: datetime = None,
-                 timestamp_post_end: datetime = None,
-                 timestamp_pre_start: datetime = None):
+    def __init__(
+        self,
+        index_start=-1,
+        index_mid=-1,
+        index_end=-1,
+        timestamp_mid_start=None,
+        timestamp_mid: datetime = None,
+        timestamp_mid_end: datetime = None,
+        timestamp_post_end: datetime = None,
+        timestamp_pre_start: datetime = None
+    ):
         """
         Initialisation method for EventStats object.
         Args:
