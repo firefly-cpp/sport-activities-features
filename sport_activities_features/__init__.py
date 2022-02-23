@@ -23,6 +23,7 @@ from sport_activities_features.missing_elevation_identification import (
     ElevationIdentification
 )
 from sport_activities_features.gpx_manipulation import GPXFile
+from sport_activities_features.interruptions.interruption_processor import InterruptionProcessor
 
 
 __all__ = [
@@ -41,7 +42,8 @@ __all__ = [
     'Weather',
     'WeatherIdentification',
     'AverageWeather',
-    'ElevationIdentification'
+    'ElevationIdentification',
+    'InterruptionProcessor'
 ]
 
 __version__ = '0.2.14'

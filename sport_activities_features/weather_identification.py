@@ -216,7 +216,7 @@ class WeatherIdentification(object):
             if timestamp > bw.date:
                 t = timestamp - bw.date
             else:
-                bw.date - timestamp
+                t = bw.date - timestamp
             if beforeSeconds > t.seconds:
                 before = bw
                 beforeSeconds = t.seconds
@@ -224,7 +224,7 @@ class WeatherIdentification(object):
             if timestamp > aw.date:
                 t = timestamp - aw.date
             else:
-                aw.date - timestamp
+                t = aw.date - timestamp
             if afterSeconds > t.seconds:
                 after = aw
                 afterSeconds = t.seconds
