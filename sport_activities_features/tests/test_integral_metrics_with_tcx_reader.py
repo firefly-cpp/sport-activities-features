@@ -21,7 +21,7 @@ class TestTCXReader(TestCase):
         self.assertEqual(int(self.tcx.hr_avg), 140)
 
     def test_hr_max(self):
-        self.assertEqual(self.tcx.hr_max, None)
+        self.assertEqual(self.tcx.hr_max, 200)
 
     def test_hr_min(self):
         self.assertEqual(self.tcx.hr_min, 94)
