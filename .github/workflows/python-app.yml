@@ -33,4 +33,4 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest -k 'not test_data_analysis and not test_overpy_node_manipulation'
+        pytest -k 'not test_data_analysis and not test_overpy_node_manipulation and not test_weather'
