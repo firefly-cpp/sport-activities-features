@@ -1,26 +1,33 @@
-from sport_activities_features.tcx_manipulation import TCXFile
-
-
 class SportyDataGen(object):
     """
-    Class that contains selected and modified SportyDataGen methods for generation of sports activity collections.\n
+    Class that contains selected and modified SportyDataGen methods
+    for generation of sports activity collections.\n
     Args:
         **kwargs: various arguments
     Reference:
-        Fister Jr., I., Vrbančič, G., Brezočnik, L., Podgorelec, V., & Fister, I. (2018).
-        SportyDataGen: An Online Generator of Endurance Sports Activity Collections.
-        In Central European Conference on Information and Intelligent Systems (pp. 171-178).
+        Fister Jr., I.,
+        Vrbančič, G.,
+        Brezočnik, L.,
+        Podgorelec, V.,
+        & Fister, I. (2018).
+        SportyDataGen: An Online Generator of Endurance
+                       Sports Activity Collections.
+        In Central European Conference on Information
+        and Intelligent Systems (pp. 171-178).
         Faculty of Organization and Informatics Varazdin.
     Reference URL:
         http://www.iztok-jr-fister.eu/static/publications/225.pdf
     Note:
-        [WIP] This class is still under developement, therefore its methods may not work as expected.
+        [WIP]
+        This class is still under developement,
+        therefore its methods may not work as expected.
     """
     def __init__(self, **kwargs) -> None:
         """
         Initialisation method for SportyDataGen class.\n
         Args:
-            **kwargs: various arguments
+            **kwargs:
+                various arguments
         """
         self._set_parameters(**kwargs)
 
@@ -28,16 +35,20 @@ class SportyDataGen(object):
         """
         Method for setting parameters of the instance.\n
         Args:
-            **kwargs: various arguments
+            **kwargs:
+                various arguments
         """
         return None
 
     def random_generation_without_clustering(self, activities) -> None:
         """
-        Method for the random generation of sport activities (without clustering).\n
+        Method for the random generation of
+        sport activities (without clustering).\n
         Args:
-            activities: 
+            activities:
+
         Note:
-            Select n activities randomly without any special preprocessing tasks.
+            Select n activities randomly without
+            any special preprocessing tasks.
         """
         return None

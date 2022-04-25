@@ -1,4 +1,3 @@
-import os
 from .classes import StoredSegments
 
 
@@ -6,15 +5,19 @@ class HillIdentification(object):
     """
     Class for identification of hills from TCX file.\n
     Args:
-        altitudes (list): an array of altitude values extracted from TCX file
-        ascent_threshold (float): parameter that defines the hill (hill >= ascent_threshold)
+        altitudes (list):
+            an array of altitude values extracted from TCX file
+        ascent_threshold (float):
+            parameter that defines the hill (hill >= ascent_threshold)
     """
     def __init__(self, altitudes: list, ascent_threshold: float) -> None:
         """
         Initialisation method of HillIdentification class.\n
         Args:
-            altitudes (list): an array of altitude values extracted from TCX file
-            ascent_threshold (float): parameter that defines the hill (hill >= ascent_threshold)
+            altitudes (list):
+                an array of altitude values extracted from TCX file
+            ascent_threshold (float):
+                parameter that defines the hill (hill >= ascent_threshold)
         """
         self.altitudes = altitudes
         self.ascent_threshold = ascent_threshold
@@ -24,9 +27,11 @@ class HillIdentification(object):
 
     def return_hill(self, ascent_threshold: float) -> bool:
         """
-        Method for identifying whether the hill is steep enough to be identified as a hill.\n
+        Method for identifying whether the hill is
+        steep enough to be identified as a hill.\n
         Args:
-            ascent_threshold (float): threshold of the ascent that is used for identifying hills
+            ascent_threshold (float):
+                threshold of the ascent that is used for identifying hills
         Returns:
             bool: True if the hill is recognised, False otherwise
         """
@@ -37,9 +42,11 @@ class HillIdentification(object):
 
     def identify_hills(self) -> None:
         """
-        Method for identifying hills and extracting total ascent and descent from data.\n
+        Method for identifying hills and extracting
+        total ascent and descent from data.\n
         Note:
-            [WIP] Algorithm is still in its preliminary stage.
+            [WIP]
+            Algorithm is still in its preliminary stage.
         """
         differences = []
         for i in range(1, len(self.altitudes)):
@@ -51,13 +58,11 @@ class HillIdentification(object):
         BEST_SEGMENT_ASCENT = 0.0
 
         for i in range(len(differences)):
-            CURRENT = differences[i]
             TOTAL_ASCENT = 0.0
             selected_IDs = []
             selected_IDs.append(i)
             descent_counter = 0
 
-            descent_flag = True
             for j in range(i + 1, len(differences)):
                 NEXT = differences[j]
                 if NEXT >= 0.0:
@@ -72,7 +77,9 @@ class HillIdentification(object):
                         descent_counter = descent_counter + 1
 
                 if descent_counter == 10:
-                    selected_IDs = selected_IDs[: len(selected_IDs) - descent_counter]
+                    selected_IDs = selected_IDs[
+                        : len(selected_IDs) - descent_counter
+                    ]
                     break
 
             if self.return_hill(TOTAL_ASCENT):
@@ -84,7 +91,8 @@ class HillIdentification(object):
                         set(BEST_SEGMENT).intersection(selected_IDs)
                     )
                     calculation = float(
-                        float(length_of_intersection) / float(len(BEST_SEGMENT))
+                        float(length_of_intersection)
+                        / float(len(BEST_SEGMENT))
                     )
                     if calculation < 0.1:
                         self.identified_hills.append(

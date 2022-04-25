@@ -1,5 +1,4 @@
 import os
-
 from tcxreader.tcxreader import TCXTrackPoint, TCXReader
 
 
@@ -17,7 +16,8 @@ class TCXFile(object):
         """
         Method for finding all TCX files in a directory.\n
         Args:
-            directory_name (str): name of the directory in which to identify TCX files
+            directory_name (str):
+                name of the directory in which to identify TCX files
         Returns:
             str: array of paths to the identified files
         """
@@ -32,17 +32,18 @@ class TCXFile(object):
         """
         Method for parsing one TCX file using the TCXReader.\n
         Args:
-            filename (str): name of the TCX file to be read
+            filename (str):
+                name of the TCX file to be read
         Returns:
             activity = {
-                "activity_type": activity_type,
-                "positions": positions,
-                "altitudes": altitudes,
-                "distances": distances,
-                "total_distance": total_distance,
-                "timestamps": timestamps,
-                "heartrates": heartrates,
-                "speeds": speeds
+                'activity_type': activity_type,
+                'positions': positions,
+                'altitudes': altitudes,
+                'distances': distances,
+                'total_distance': total_distance,
+                'timestamps': timestamps,
+                'heartrates': heartrates,
+                'speeds': speeds
             }
         Note:
             In the case of missing value in raw data, we assign None.
@@ -78,12 +79,15 @@ class TCXFile(object):
                     delta_distance = 1
                     invalid_points.append(index)
                 speeds.append((delta_distance / delta_time) * 3.6)
-                a = 100
             else:
                 speeds.append(0)
 
         if len(invalid_points) > 0:
-            print(f"Probably invalid speeds or not a record of exercise. Invalid trackpoints count: {len(invalid_points)} Filename:{filename}")
+            print(
+                'Probably invalid speeds or not a record of exercise.',
+                f'Invalid trackpoints count: {len(invalid_points)}',
+                f'Filename:{filename}'
+            )
 
         try:
             total_distance = tcx.distance
@@ -91,14 +95,14 @@ class TCXFile(object):
             total_distance = None
 
         activity = {
-            "activity_type": activity_type,
-            "positions": positions,
-            "altitudes": altitudes,
-            "distances": distances,
-            "total_distance": total_distance,
-            "timestamps": timestamps,
-            "heartrates": heartrates,
-            "speeds": speeds
+            'activity_type': activity_type,
+            'positions': positions,
+            'altitudes': altitudes,
+            'distances': distances,
+            'total_distance': total_distance,
+            'timestamps': timestamps,
+            'heartrates': heartrates,
+            'speeds': speeds
         }
         return activity
 
@@ -106,21 +110,22 @@ class TCXFile(object):
         """
         Method for parsing one TCX file and extracting integral metrics.\n
         Args:
-            filename (str): name of the TCX file to be read
+            filename (str):
+                name of the TCX file to be read
         Returns:
             int_metrics = {
-                "activity_type": activity_type,
-                "distance": distance,
-                "duration": duration,
-                "calories": calories,
-                "hr_avg": hr_avg,
-                "hr_max": hr_max,
-                "hr_min": hr_min,
-                "altitude_avg": altitude_avg,
-                "altitude_max": altitude_max,
-                "altitude_min": altitude_min,
-                "ascent": ascent,
-                "descent": descent,
+                'activity_type': activity_type,
+                'distance': distance,
+                'duration': duration,
+                'calories': calories,
+                'hr_avg': hr_avg,
+                'hr_max': hr_max,
+                'hr_min': hr_min,
+                'altitude_avg': altitude_avg,
+                'altitude_max': altitude_max,
+                'altitude_min': altitude_min,
+                'ascent': ascent,
+                'descent': descent,
             }
         """
         tcx = TCXReader().read(filename)
@@ -187,17 +192,17 @@ class TCXFile(object):
             descent = None
 
         int_metrics = {
-            "activity_type": activity_type,
-            "distance": distance,
-            "duration": duration,
-            "calories": calories,
-            "hr_avg": hr_avg,
-            "hr_max": hr_max,
-            "hr_min": hr_min,
-            "altitude_avg": altitude_avg,
-            "altitude_max": altitude_max,
-            "altitude_min": altitude_min,
-            "ascent": ascent,
-            "descent": descent,
+            'activity_type': activity_type,
+            'distance': distance,
+            'duration': duration,
+            'calories': calories,
+            'hr_avg': hr_avg,
+            'hr_max': hr_max,
+            'hr_min': hr_min,
+            'altitude_avg': altitude_avg,
+            'altitude_max': altitude_max,
+            'altitude_min': altitude_min,
+            'ascent': ascent,
+            'descent': descent,
         }
         return int_metrics

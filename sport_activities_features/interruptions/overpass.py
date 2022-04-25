@@ -1,25 +1,36 @@
 import overpy
 
 from sport_activities_features.interruptions.exercise import TrackSegment
-from sport_activities_features.interruptions.exercise_event import ExerciseEvent
+from sport_activities_features.interruptions.exercise_event import (
+    ExerciseEvent
+)
 
 
 class CoordinatesBox:
     """
-    Class for generating a bounding box from which the Overpass intersections will be queried.
+    Class for generating a bounding box from which
+    the Overpass intersections will be queried.
     """
-    def __init__(self, min_latitude:float=300, min_longitude:float=300, max_latitude:float=-300, max_longitude:float=-300,
-                 event: ExerciseEvent = ExerciseEvent()):
+    def __init__(
+        self,
+        min_latitude: float = 300,
+        min_longitude: float = 300,
+        max_latitude: float = -300,
+        max_longitude: float = -300,
+        event: ExerciseEvent = ExerciseEvent()
+    ):
         """
-        Initialisation method of CoordinatesBox. If optional parameter event is recieved the box is generated from the
-        location of the event. Otherwise min_latitude, min_longitude, max_latitude, max_longitude can be defined in the
-        initialisation.
+        Initialisation method of CoordinatesBox. If optional parameter
+        event is recieved the box is generated from the location of the event.
+        Otherwise min_latitude, min_longitude, max_latitude, max_longitude
+        can be defined in the initialisation.
         Args:
             min_latitude: minimum latitude of the event box
             min_longitude: minimum longitude of the event box
             max_latitude: maxiumum latitude of the event box
             max_longitude: minimum longitude of the event box
-            event: ExerciseEvent, if full the previous parameters are disregarded.
+            event: ExerciseEvent, if full the previous
+                   parameters are disregarded.
         """
         self.min_latitude = min_latitude
         self.min_longitude = min_longitude
@@ -39,7 +50,8 @@ class CoordinatesBox:
 
     def define_event_box_size(self, event: ExerciseEvent):
         """
-        Method for defining the box if the event is present in initialisation parameters.
+        Method for defining the box if the event
+        is present in initialisation parameters.
         Args:
             event: ExerciseEvent from which the latitude and longitude is taken
         """
@@ -60,29 +72,33 @@ class CoordinatesBox:
 
 class Overpass:
     """
-        Class for handling the Overpass API requests. Currently used for detecting intersections.
+        Class for handling the Overpass API requests.
+        Currently used for detecting intersections.
         Args:
-            api_url: str location of the Overpass API (default: https://lz4.overpass-api.de/api/interpreter)
+            api_url: str location of the Overpass API
+                     (default: https://lz4.overpass-api.de/api/interpreter)
     """
-
     def __init__(self, api_url="https://lz4.overpass-api.de/api/interpreter"):
         """
         Initialisation method of Overpass handling class.
         Args:
-            api_url: str location of the Overpass API (default: https://lz4.overpass-api.de/api/interpreter). Should
-            be self hosted if a lot of requests are to be made.
+            api_url: str location of the Overpass API
+                     (default: https://lz4.overpass-api.de/api/interpreter).
+                     Should be self hosted if a lot of requests are to be made.
         """
         self.api = overpy.Overpass(url=api_url)
 
     def identify_intersections(self, box: CoordinatesBox):
         """
-        Method for generating a Overpass Query Language query for identifying intersections inside the bounding
-        box parameters.
+        Method for generating a Overpass Query Language query for
+        identifying intersections inside the bounding box parameters.
         Args:
-            box: object that defines the minimum and maximum latitude, longitude.
-        Returns: List of possible intersections inside the queried box latitude and longitude parameters.
+            box: object that defines the minimum
+                 and maximum latitude, longitude.
+        Returns: List of possible intersections inside the
+                 queried box latitude and longitude parameters.
         """
-        query = f'''way 
+        query = f'''way
           ["highway"]
           ["highway"!~"footway|cycleway|path|service|track"]
           ({box.min_latitude},{box.min_longitude},{box.max_latitude},{box.max_longitude})

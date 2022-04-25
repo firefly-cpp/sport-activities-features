@@ -4,7 +4,7 @@
 
 ---
 
-# sport-activities-features --- A minimalistic toolbox for extracting features from sport activity files written in Python
+# sport-activities-features --- A minimalistic toolbox for extracting features from sports activity files written in Python
 
 ---
 
@@ -16,25 +16,26 @@
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/firefly-cpp/sport-activities-features.svg)
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/firefly-cpp/sport-activities-features.svg)](http://isitmaintained.com/project/firefly-cpp/sport-activities-features "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/firefly-cpp/sport-activities-features.svg)](http://isitmaintained.com/project/firefly-cpp/sport-activities-features "Percentage of issues still open")
-![GitHub contributors](https://img.shields.io/github/contributors/firefly-cpp/sport-activities-features.svg)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 [![Fedora package](https://img.shields.io/fedora/v/python3-sport-activities-features?color=blue&label=Fedora%20Linux&logo=fedora)](https://src.fedoraproject.org/rpms/python-sport-activities-features)
+[![DOI](https://img.shields.io/badge/DOI-10.1109/INES52918.2021.9512927-blue)](https://doi.org/10.1109/INES52918.2021.9512927)
 
 ## General outline of the framework
-Monitoring of sport activities produces many geographic, topologic and personalized data, with a vast majority of details hidden. Thus, a rigorous ex-post data analysis and statistic evaluation are required to extract them. Namely, most of the mainstream solutions for analyzing sport activities files rely on integral metrics, such as total duration, total distance and average hearth rate, which may suffer of "overall (integral) metrics problem". Among others, such problems are expressed in capturing sport activities in general only (ommiting crucial components), calculating potentially fallacious and misleading metrics, not recognizing different stages/phases of the sport activity (warm-up, endurance, intervals), and others.
+Monitoring of sports activities produces many geographic, topologic, and personalized data, with a vast majority of details hidden. Thus, a rigorous ex-post data analysis and statistic evaluation are required to extract them. Namely, most of the mainstream solutions for analyzing sports activities files rely on integral metrics, such as total duration, total distance, and average heart rate, which may suffer from the "overall (integral) metrics problem." Among others, such problems are expressed in capturing sports activities in general only (omitting crucial components), calculating potentially fallacious and misleading metrics, not recognizing different stages/phases of the sports activity (warm-up, endurance, intervals), and others.
 
-The sport-activities-framework on the other side offers a detailed insight into the sport activity files. The framework supports both identification and extraction methods, such as identifying number of hills, extracting the average altitudes of identified hills, measuring total distance of identified hills, deriving climbing ratios (total distance of identified hills vs. total distance), average/total ascents of hills and so much more. The framework also integrates many other extensions, among others historical weather parsing, statistical evaluations and ex-post visualizations. Previous work on these topical questions were addressed in [relevant scientific papers on data mining](http://iztok-jr-fister.eu/static/publications/42.pdf), also in a combination with the [generating/predicting automated sport training sessions](http://iztok-jr-fister.eu/static/publications/189.pdf).
+The sport-activities-framework, on the other side, offers a detailed insight into the sports activity files. The framework supports both identification and extraction methods, such as identifying the number of hills, extracting the average altitudes of identified hills, measuring the total distance of identified hills, deriving climbing ratios (total distance of identified hills vs. total distance), average/total ascents of hills and so much more. The framework also integrates many other extensions, among others, historical weather parsing, statistical evaluations, and ex-post visualizations. Previous work on these topical questions was addressed in [relevant scientific papers on data mining](http://iztok-jr-fister.eu/static/publications/42.pdf), also in combination with the [generating/predicting automated sport training sessions](http://iztok-jr-fister.eu/static/publications/189.pdf).
 
 
 ## Detailed insights
-The sport-activities-features framework is compatible with TCX & GPX activity files and [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API) nodes. Current version witholds (but is not limited to) following functions:
+The sport-activities-features framework is compatible with TCX & GPX activity files and [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API) nodes. The current version withholds (but is not limited to) the following functions:
 - extracting integral metrics, such as total distance, total duration, calories ([see example](examples/integral_metrics_extraction.py)),
-- extracting topographic features, such as number of hills, average altitude of identified hills, total distance of identified hills, climbing ratio, average ascent of hills, total ascent, total descent ([see example](examples/hill_data_extraction.py)),
+- extracting topographic features, such as the number of hills, the average altitude of identified hills, the total distance of identified hills, climbing ratio, average ascent of hills, total ascent, total descent ([see example](examples/hill_data_extraction.py)),
 - plotting identified hills ([see example](examples/draw_map_with_identified_hills.py)),
 - extracting the intervals, such as number of intervals, maximum/minimum/average duration of intervals, maximum/minimum/average distance of intervals, maximum/minimum/average heart rate during intervals,
 - plotting the identified intervals ([see example](examples/draw_map_with_identified_intervals.py)),
 - calculating the training loads, such as Bannister TRIMP, Lucia TRIMP([see example](examples/integral_metrics_extraction.py)),
 - parsing the historical weather data from an external service,
-- extracting the integral metrics of the activity inside area given with coordinates (distance, heartrate, speed) ([see example](examples/extract_data_inside_area.py)),
+- extracting the integral metrics of the activity inside the area given with coordinates (distance, heart rate, speed) ([see example](examples/extract_data_inside_area.py)),
 - extracting the activities from CSV file(s) and randomly selecting the specific number of activities ([see example](examples/extract_random_activities_from_csv.py)),
 - extracting the dead ends,
 - and much more.
@@ -62,20 +63,20 @@ $ dnf install python3-sport-activities-features
 
 ## API
 
-There is a simple API for remote work with sport-activities-features package available [here](https://github.com/alenrajsp/sport-activities-features-api).
+There is a simple API for remote work with the sport-activities-features package available [here](https://github.com/alenrajsp/sport-activities-features-api).
 
 
 ## Historical weather data
 Weather data parsed is collected from the [Visual Crossing Weather API](https://www.visualcrossing.com/).
-Please note that this is an external unaffiliated service and users must register to use the API.
-The service has a free tier (1000 Weather reports / day) but is otherwise operating on a pay-as-you-go model.
-For pricing and terms of use please read the [official documentation](https://www.visualcrossing.com/weather-data-editions) of the API provider.
+Please note that this is an external unaffiliated service, and users must register to use the API.
+The service has a free tier (1000 Weather reports/day) but is otherwise operating on a pay-as-you-go model.
+For pricing and terms of use, please read the [official documentation](https://www.visualcrossing.com/weather-data-editions) of the API provider.
 
 ## Overpass API & Open Elevation API integration
-Without performed activities we can use the [OpenStreetMap](https://www.openstreetmap.org/) for identification of hills,
-total ascent and descent. This is done using the [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API)
-which is a read-only API that allows querying of OSM map data. In addition to that altitude data is retrieved by using the
-[Open-Elevation API](https://open-elevation.com/) which is a open-source and free alternative to the Google Elevation API.
+Without performing activities, we can use the [OpenStreetMap](https://www.openstreetmap.org/) for the identification of hills,
+total ascent, and descent. This is done using the [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API)
+which is a read-only API that allows querying of OSM map data. In addition to that altitude, data is retrieved by using the
+[Open-Elevation API](https://open-elevation.com/) which is an open-source and free alternative to the Google Elevation API.
 Both of the solutions can be used by using free publicly acessible APIs ([Overpass](https://wiki.openstreetmap.org/wiki/Overpass_API), [Open-Elevation](https://open-elevation.com/#public-api)) or can be self hosted on a server or as a Docker container ([Overpass](https://wiki.openstreetmap.org/wiki/Overpass_API/Installation), [Open-Elevation](https://github.com/Jorl17/open-elevation/blob/master/docs/host-your-own.md)).
 
 ## CODE EXAMPLES:
@@ -237,7 +238,7 @@ weather = WeatherIdentification(tcx_data['positions'], tcx_data['timestamps'], v
 weatherlist = weather.get_weather()
 ```
 
-### Using with Overpass queried Open Street Map nodes
+### Using Overpass queried Open Street Map nodes
 ```python
 import overpy
 from sport_activities_features.overpy_node_manipulation import OverpyNodesReader
@@ -313,8 +314,8 @@ tcx_data = tcx_file.read_one_file("path_to_the_data")
 
 """
 Time interval = time before and after the start of an event
-Min speed = Threshold speed to trigger an event / interruption (trigger when under min_speed)
-overpass_api_url = Set to something self hosted, or use public instance from https://wiki.openstreetmap.org/wiki/Overpass_API
+Min speed = Threshold speed to trigger an event/interruption (trigger when under min_speed)
+overpass_api_url = Set to something self-hosted, or use a public instance from https://wiki.openstreetmap.org/wiki/Overpass_API
 """
 interruptionProcessor = InterruptionProcessor(time_interval=60, min_speed=2,
                                               overpass_api_url="url_to_overpass_api")
@@ -374,7 +375,7 @@ tcx_data.update({'elevations':elevations})
 
 ![Area Figure](https://i.imgur.com/Iz8Ga3B.png)
 
-### Example of a visualization of dead end identification
+### Example of visualization of dead end identification
 ![Dead End Figure](https://imgur.com/LgZzCFS.png)
 
 ## License
@@ -387,4 +388,29 @@ This framework is provided as-is, and there are no guarantees that it fits your 
 
 ## Cite us
 
-I. Jr. Fister, L. Lukač, A. Rajšp, I. Fister, L. Pečnik and D. Fister, "A minimalistic toolbox for extracting features from sport activity files," 2021 IEEE 25th International Conference on Intelligent Engineering Systems (INES), 2021, pp. 121-126, doi: [10.1109/INES52918.2021.9512927](http://dx.doi.org/10.1109/INES52918.2021.9512927).
+I. Jr. Fister, L. Lukač, A. Rajšp, I. Fister, L. Pečnik and D. Fister, "[A minimalistic toolbox for extracting features from sport activity files](http://iztok-jr-fister.eu/static/publications/294.pdf)", 2021 IEEE 25th International Conference on Intelligent Engineering Systems (INES), 2021, pp. 121-126, doi: [10.1109/INES52918.2021.9512927](http://dx.doi.org/10.1109/INES52918.2021.9512927).
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="http://www.iztok-jr-fister.eu/"><img src="https://avatars.githubusercontent.com/u/1633361?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Iztok Fister Jr.</b></sub></a><br /><a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=firefly-cpp" title="Code">💻</a> <a href="https://github.com/firefly-cpp/sport-activities-features/issues?q=author%3Afirefly-cpp" title="Bug reports">🐛</a> <a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=firefly-cpp" title="Tests">⚠️</a> <a href="#example-firefly-cpp" title="Examples">💡</a> <a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=firefly-cpp" title="Documentation">📖</a> <a href="#ideas-firefly-cpp" title="Ideas, Planning, & Feedback">🤔</a> <a href="#mentoring-firefly-cpp" title="Mentoring">🧑‍🏫</a> <a href="#platform-firefly-cpp" title="Packaging/porting to new platform">📦</a> <a href="#maintenance-firefly-cpp" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/alenrajsp"><img src="https://avatars.githubusercontent.com/u/27721714?v=4?s=100" width="100px;" alt=""/><br /><sub><b>alenrajsp</b></sub></a><br /><a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=alenrajsp" title="Code">💻</a> <a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=alenrajsp" title="Tests">⚠️</a> <a href="#example-alenrajsp" title="Examples">💡</a> <a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=alenrajsp" title="Documentation">📖</a> <a href="#ideas-alenrajsp" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/firefly-cpp/sport-activities-features/issues?q=author%3Aalenrajsp" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/luckyLukac"><img src="https://avatars.githubusercontent.com/u/73126820?v=4?s=100" width="100px;" alt=""/><br /><sub><b>luckyLukac</b></sub></a><br /><a href="#ideas-luckyLukac" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=luckyLukac" title="Code">💻</a> <a href="https://github.com/firefly-cpp/sport-activities-features/issues?q=author%3AluckyLukac" title="Bug reports">🐛</a> <a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=luckyLukac" title="Tests">⚠️</a> <a href="#example-luckyLukac" title="Examples">💡</a></td>
+    <td align="center"><a href="https://github.com/rhododendrom"><img src="https://avatars.githubusercontent.com/u/3198785?v=4?s=100" width="100px;" alt=""/><br /><sub><b>rhododendrom</b></sub></a><br /><a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=rhododendrom" title="Code">💻</a> <a href="#design-rhododendrom" title="Design">🎨</a> <a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=rhododendrom" title="Documentation">📖</a> <a href="#ideas-rhododendrom" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://github.com/lukapecnik"><img src="https://avatars.githubusercontent.com/u/23029992?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Luka Pečnik</b></sub></a><br /><a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=lukapecnik" title="Code">💻</a> <a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=lukapecnik" title="Documentation">📖</a> <a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=lukapecnik" title="Tests">⚠️</a> <a href="https://github.com/firefly-cpp/sport-activities-features/issues?q=author%3Alukapecnik" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/spelap"><img src="https://avatars.githubusercontent.com/u/19300429?v=4?s=100" width="100px;" alt=""/><br /><sub><b>spelap</b></sub></a><br /><a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=spelap" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind are welcome!
