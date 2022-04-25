@@ -149,7 +149,7 @@ class GPXFile(object):
                                 trackpoint.cadence = int(ext.text)
                             elif ext.tag == f'{NAMESPACE}hr':
                                 trackpoint.hr_value = int(ext.text)
-                        points.append(trackpoint)
+                    points.append(trackpoint)
                     if previous_point == None:
                         trackpoint.distance = 0
                         trackpoint.speed = 0
@@ -157,9 +157,12 @@ class GPXFile(object):
                         trackpoint.distance = previous_point.distance + geopy.distance.geodesic(
                             (trackpoint.latitude, trackpoint.longitude),
                             (previous_point.latitude, previous_point.longitude)).m
-                        seconds_between = (trackpoint.time - previous_point.time).total_seconds()
                         travelled = trackpoint.distance - previous_point.distance
-                        trackpoint.speed = travelled * 3.6 / seconds_between
+                        if trackpoint.time!=None:
+                            seconds_between = (trackpoint.time - previous_point.time).total_seconds()
+                            trackpoint.speed = travelled * 3.6 / seconds_between
+                        else:
+                            trackpoint.speed=0
                     previous_point = trackpoint
 
         gpx_file.close()
@@ -177,7 +180,6 @@ class GPXFile(object):
         speeds = []
         trackpoint: TCXTrackPoint
         for trackpoint in points:
-            a = 100
             positions.append((trackpoint.latitude, trackpoint.longitude))
             altitudes.append(trackpoint.elevation)
             distances.append(trackpoint.distance)
