@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "sport-activities-features"
-version = "0.2.15"
+version = "0.2.16"
 description = "A minimalistic toolbox for extracting features from sport activity files"
-authors = ["iztokf <iztokf@fedoraproject.org>"]
+authors = ["Iztok Fister Jr. <iztok@iztok-jr-fister.eu>", "Luka Lukač <luka.lukac@student.um.si>", "Alen Rajšp <alen.rajsp@.um.si>", "Luka Pečnik <luka.pecnik@student.um.si>", "Dušan Fister <dusan.fister@um.si>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
