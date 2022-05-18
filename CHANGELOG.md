@@ -1,5 +1,72 @@
 # Changelog
 
+## [0.2.16](https://github.com/firefly-cpp/sport-activities-features/tree/0.2.16) (2022-05-17)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.15...0.2.16)
+
+**Fixed bugs:**
+
+- Error reading GPX file [\#77](https://github.com/firefly-cpp/sport-activities-features/issues/77)
+
+**Merged pull requests:**
+
+- Do not package the tests [\#80](https://github.com/firefly-cpp/sport-activities-features/pull/80) ([firefly-cpp](https://github.com/firefly-cpp))
+
+## [0.2.15](https://github.com/firefly-cpp/sport-activities-features/tree/0.2.15) (2022-04-26)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.14...0.2.15)
+
+**Merged pull requests:**
+
+- Bugfix related to reading gpx files [\#78](https://github.com/firefly-cpp/sport-activities-features/pull/78) ([alenrajsp](https://github.com/alenrajsp))
+- Refactored code according to Flake8 standard [\#76](https://github.com/firefly-cpp/sport-activities-features/pull/76) ([luckyLukac](https://github.com/luckyLukac))
+
+## [0.2.14](https://github.com/firefly-cpp/sport-activities-features/tree/0.2.14) (2022-02-20)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.13...0.2.14)
+
+## [0.2.13](https://github.com/firefly-cpp/sport-activities-features/tree/0.2.13) (2022-02-20)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.12...0.2.13)
+
+**Implemented enhancements:**
+
+- TODOs in interruptions [\#50](https://github.com/firefly-cpp/sport-activities-features/issues/50)
+
+**Fixed bugs:**
+
+- One test is failing [\#39](https://github.com/firefly-cpp/sport-activities-features/issues/39)
+
+**Closed issues:**
+
+- @all-contributors bot [\#67](https://github.com/firefly-cpp/sport-activities-features/issues/67)
+- Improve description/motivation/goals in README [\#64](https://github.com/firefly-cpp/sport-activities-features/issues/64)
+- Add CI workflow [\#47](https://github.com/firefly-cpp/sport-activities-features/issues/47)
+
+**Merged pull requests:**
+
+- docs: add alenrajsp as a contributor for bug [\#75](https://github.com/firefly-cpp/sport-activities-features/pull/75) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add spelap as a contributor for code [\#73](https://github.com/firefly-cpp/sport-activities-features/pull/73) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add lukapecnik as a contributor for code, doc, test, bug [\#72](https://github.com/firefly-cpp/sport-activities-features/pull/72) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add rhododendrom as a contributor for code, design, doc, ideas [\#71](https://github.com/firefly-cpp/sport-activities-features/pull/71) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add luckyLukac as a contributor for ideas, code, bug, test, example [\#70](https://github.com/firefly-cpp/sport-activities-features/pull/70) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add firefly-cpp as a contributor for code, bug, test, example, doc, ideas, mentoring, platform, maintenance [\#69](https://github.com/firefly-cpp/sport-activities-features/pull/69) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add alenrajsp as a contributor for code, test, example, doc, ideas [\#68](https://github.com/firefly-cpp/sport-activities-features/pull/68) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+
+## [0.2.12](https://github.com/firefly-cpp/sport-activities-features/tree/0.2.12) (2022-02-03)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.11...0.2.12)
+
+**Implemented enhancements:**
+
+- Add installation instructions for Anaconda users [\#22](https://github.com/firefly-cpp/sport-activities-features/issues/22)
+
+**Merged pull requests:**
+
+- Fixed test and various bugfixes [\#63](https://github.com/firefly-cpp/sport-activities-features/pull/63) ([luckyLukac](https://github.com/luckyLukac))
+- Added references to several modules [\#62](https://github.com/firefly-cpp/sport-activities-features/pull/62) ([luckyLukac](https://github.com/luckyLukac))
+- Documentation improvements [\#61](https://github.com/firefly-cpp/sport-activities-features/pull/61) ([luckyLukac](https://github.com/luckyLukac))
+
 ## [0.2.11](https://github.com/firefly-cpp/sport-activities-features/tree/0.2.11) (2022-01-18)
 
 [Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.10...0.2.11)
