@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="200" src=".github/logo/sport_activities.png">
+  <img width="200" src="https://raw.githubusercontent.com/firefly-cpp/sport-activities-features/main/.github/logo/sport_activities.png">
 </p>
 
 ---
