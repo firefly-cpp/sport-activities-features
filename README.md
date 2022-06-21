@@ -53,6 +53,14 @@ Install sport-activities-features with pip3:
 pip3 install sport-activities-features
 ```
 
+### Alpine Linux
+
+To install sport-activities-features on Alpine, use:
+
+```sh
+$ apk add py3-sport-activities-features
+```
+
 ### Fedora Linux
 
 To install sport-activities-features on Fedora, use:
