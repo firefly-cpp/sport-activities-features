@@ -203,7 +203,10 @@ class GPXFile(object):
                         travelled = trackpoint.distance - previous_point.distance
                         if trackpoint.time!=None:
                             seconds_between = (trackpoint.time - previous_point.time).total_seconds()
-                            trackpoint.speed = travelled * 3.6 / seconds_between
+                            if seconds_between==0: # If two same timestamps, speed of previous timestamp is taken
+                                trackpoint.speed=previous_point.speed
+                            else:
+                                trackpoint.speed = travelled * 3.6 / seconds_between
                         else:
                             trackpoint.speed=0
                     previous_point = trackpoint
