@@ -1,3 +1,4 @@
+import os
 from unittest import TestCase
 
 from sport_activities_features import (
@@ -40,8 +41,10 @@ class EdwardsTRIMPTestCase(TestCase):
         """
         Setting up the test.
         """
+        filename = os.path.join(os.path.dirname(__file__), 'data', '15.tcx')
         tcx_file = TCXFile()
-        activity = tcx_file.read_one_file('../datasets/15.tcx')
+        tcx_file = TCXFile()
+        activity = tcx_file.read_one_file(filename)
         timestamps = activity['timestamps']
         heart_rates = activity['heartrates']
         self.__edwards = EdwardsTRIMP(heart_rates, timestamps, 200)
