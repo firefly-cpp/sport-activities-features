@@ -1,4 +1,5 @@
 import geotiler
+import math
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -442,3 +443,43 @@ class AreaIdentification(object):
             area_coordinates
         )
         plt.show()
+
+    @staticmethod
+    def get_area_coordinates_around_point(
+        point: np.array,
+        distance: int
+    ) -> np.array:
+        """
+        Static method to get area coordinates around the point on Earth
+        according to given distance. Area limits consist of 4 border points.\n
+        Args:
+            point (np.array):
+                a pair of Earth coordinates
+            distance (int):
+                desired distance from given point to
+                area border points
+        Returns:
+            np.array:
+                an array of area coordinates
+        """
+        coordinates = np.empty((1, 4, 2))
+        lat, lon = point[0], point[1]
+        R = 6378137  # Earth's radius (sphere approximation)
+
+        diff_lat = distance / R
+        diff_lon = distance / (R * math.cos(math.pi * lat / 180))
+
+        x = lat - diff_lat * 180 / math.pi
+        y = lon - diff_lon * 180 / math.pi
+        coordinates[0][0] = np.array([x, y])
+        x = lat - diff_lat * 180 / math.pi
+        y = lon + diff_lon * 180 / math.pi
+        coordinates[0][1] = np.array([x, y])
+        x = lat + diff_lat * 180 / math.pi
+        y = lon + diff_lon * 180 / math.pi
+        coordinates[0][2] = np.array([x, y])
+        x = lat + diff_lat * 180 / math.pi
+        y = lon - diff_lon * 180 / math.pi
+        coordinates[0][3] = np.array([x, y])
+
+        return coordinates
