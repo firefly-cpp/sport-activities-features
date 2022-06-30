@@ -23,7 +23,9 @@ from sport_activities_features.missing_elevation_identification import (
     ElevationIdentification
 )
 from sport_activities_features.gpx_manipulation import GPXFile
-from sport_activities_features.interruptions.interruption_processor import InterruptionProcessor
+from sport_activities_features.interruptions.interruption_processor import (
+    InterruptionProcessor
+)
 
 
 __all__ = [
