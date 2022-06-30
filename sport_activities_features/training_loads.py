@@ -1,30 +1,102 @@
-class BanisterTRIMP(object):
+import numpy as np
+
+
+class BanisterTRIMP:
     """
     Class for calculation of Banister's TRIMP.\n
     Reference paper:
-        Banister, Eric W. "Modeling elite athletic performance." Physiological testing of elite athletes 347 (1991): 403-422.
+        Banister, Eric W. "Modeling elite athletic performance."
+        Physiological testing of elite athletes 347 (1991): 403-422.\n
     Args:
         duration (float):
-            total duration in minutes
-        avg_hr (float):
-            average heart rate in bpm
+            total duration in seconds
+        average_heart_rate (float):
+            average heart rate in beats per minute
     """
-    def __init__(self, duration: float, avg_hr: float) -> None:
+    def __init__(self, duration: float, average_heart_rate: float) -> None:
         """
-        Initialisation method for BanisterTRIMP class.\n
+        Initialization method for BanisterTRIMP class.\n
         Args:
             duration (float):
-                total duration in minutes
-            avg_hr (float):
-                average heart rate in bpm
+                total duration in seconds
+            average_heart_rate (float):
+                average heart rate in beats per minute
         """
         self.duration = duration
-        self.avg_hr = avg_hr
+        self.average_heart_rate = average_heart_rate
 
     def calculate_TRIMP(self) -> float:
         """
-        Method for the calculation of TRIMP.\n
+        Method for the calculation of the TRIMP.\n
         Returns:
-            float: TRIMP value
+            float: Banister TRIMP value
         """
-        return self.duration * self.avg_hr
+        return self.duration * self.average_heart_rate
+
+
+class EdwardsTRIMP:
+    """
+    Class for calculation of Edwards TRIMP.\n
+    Reference paper:
+        https://www.frontiersin.org/articles/10.3389/fphys.2020.00480/full\n
+    Args:
+        heart_rates (list[int]):
+            list of heart rates in beats per minute
+        timestamps (list[timestamp]):
+            list of timestamps
+        max_heart_rate (int):
+            maximum heart rate of an athlete
+    """
+    def __init__(
+        self,
+        heart_rates: list,
+        timestamps: list,
+        max_heart_rate: int = 200
+    ) -> None:
+        """
+        Initialization method for EdwardsTRIMP class.\n
+        Args:
+            heart_rates (list[int]):
+                list of heart rates in beats per minute
+            timestamps (list[timestamp]):
+                list of timestamps
+            max_heart_rate (int):
+                maximum heart rate of an athlete
+        """
+        self.heart_rates = heart_rates
+        self.timestamps = timestamps
+        self.max_heart_rate = max_heart_rate
+
+    def calculate_TRIMP(self) -> float:
+        """
+        Method for the calculation of the TRIMP.\n
+        Returns:
+            float: Edwards TRIMP value
+        """
+        TRIMP = 0
+
+        # Loop for iterating through the heart rates and calculating the TRIMP.
+        for i in np.arange(np.shape(self.heart_rates)[0] - 1):
+            # If a current heart rate is NoneType or other non-integer
+            # value, it is ignored in the calculation of the TRIMP.
+            if not self.heart_rates[i]:
+                continue
+
+            # Duration between two timestamps should be given in seconds.
+            duration = (self.timestamps[i + 1] - self.timestamps[i]).seconds
+
+            # See the reference paper for more information
+            # about the TRIMP calculation:
+            # https://www.frontiersin.org/articles/10.3389/fphys.2020.00480/full
+            if self.heart_rates[i] > 0.9 * self.max_heart_rate:
+                TRIMP += 5 * duration
+            elif self.heart_rates[i] > 0.8 * self.max_heart_rate:
+                TRIMP += 4 * duration
+            elif self.heart_rates[i] > 0.7 * self.max_heart_rate:
+                TRIMP += 3 * duration
+            elif self.heart_rates[i] > 0.6 * self.max_heart_rate:
+                TRIMP += 2 * duration
+            elif self.heart_rates[i] > 0.5 * self.max_heart_rate:
+                TRIMP += 1 * duration
+
+        return TRIMP

@@ -51,7 +51,7 @@ class InterruptionProcessor():
     def __determine_event_type(
         self,
         event_stats: EventStats,
-        lines: list[ExerciseEvent]
+        lines: list
     ):
         """
         Method that idenitifies type of interruption event based on
@@ -70,14 +70,14 @@ class InterruptionProcessor():
         else:
             return EventType.EXERCISE_PAUSE
 
-    def __data_to_lines(self, tcx_data) -> list[ExerciseEvent]:
+    def __data_to_lines(self, tcx_data) -> list:
         """
         Method for transforming TCXFile/GPXFile data into [TrackSegment] list.
         Args:
             tcx_data: TCXData/GPXData generated dictionary
         Returns: list of TrackSegments
         """
-        lines: list[ExerciseEvent] = []
+        lines: list = []
         for i in range(len(tcx_data['positions'])):
             if (i != 0):
                 point_a = DotMap()
@@ -116,9 +116,9 @@ class InterruptionProcessor():
 
     def events(
         self,
-        lines: list[TrackSegment],
+        lines: list,
         classify=False
-    ) -> list[ExerciseEvent]:
+    ) -> list:
         """
         Method that parses events (method parse_events()) and
         classifies them (classify_events()) if required.
@@ -137,7 +137,7 @@ class InterruptionProcessor():
             return classified_events
         return events
 
-    def parse_events(self, lines: list[TrackSegment]) -> list[ExerciseEvent]:
+    def parse_events(self, lines: list) -> list:
         """
         Parses all events (based on the min_speed parameter in the
         class initialisation) and returns ExerciseEvent list.
@@ -148,7 +148,7 @@ class InterruptionProcessor():
         """
         if type(lines) is dict:
             lines = self.__data_to_lines(lines)
-        eventList: list[ExerciseEvent] = []
+        eventList: list = []
         index = 0
         while index < len(lines):
             event_stats = EventStats()

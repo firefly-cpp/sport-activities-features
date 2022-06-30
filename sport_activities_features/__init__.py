@@ -11,7 +11,10 @@ from sport_activities_features.interval_identification import (
 from sport_activities_features.plot_data import PlotData
 from sport_activities_features.tcx_manipulation import TCXFile
 from sport_activities_features.topographic_features import TopographicFeatures
-from sport_activities_features.training_loads import BanisterTRIMP
+from sport_activities_features.training_loads import (
+    BanisterTRIMP,
+    EdwardsTRIMP
+)
 from sport_activities_features.weather_identification import (
     WeatherIdentification,
 )
@@ -23,7 +26,9 @@ from sport_activities_features.missing_elevation_identification import (
     ElevationIdentification
 )
 from sport_activities_features.gpx_manipulation import GPXFile
-from sport_activities_features.interruptions.interruption_processor import InterruptionProcessor
+from sport_activities_features.interruptions.interruption_processor import (
+    InterruptionProcessor
+)
 
 
 __all__ = [
@@ -39,6 +44,7 @@ __all__ = [
     'GPXFile',
     'TopographicFeatures',
     'BanisterTRIMP',
+    'EdwardsTRIMP',
     'Weather',
     'WeatherIdentification',
     'AverageWeather',
