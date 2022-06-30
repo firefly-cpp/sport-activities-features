@@ -1,6 +1,8 @@
 class BanisterTRIMP(object):
     """
-    Class for calculation of Banisters TRIMP.\n
+    Class for calculation of Banister's TRIMP.\n
+    Reference paper:
+        Banister, Eric W. "Modeling elite athletic performance." Physiological testing of elite athletes 347 (1991): 403-422.
     Args:
         duration (float):
             total duration in minutes

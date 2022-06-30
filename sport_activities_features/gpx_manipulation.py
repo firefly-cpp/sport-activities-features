@@ -192,27 +192,23 @@ class GPXFile(object):
                                 trackpoint.cadence = int(ext.text)
                             elif ext.tag == f'{NAMESPACE}hr':
                                 trackpoint.hr_value = int(ext.text)
-                        points.append(trackpoint)
-                    if previous_point is None:
+                    points.append(trackpoint)
+                    if previous_point == None:
                         trackpoint.distance = 0
                         trackpoint.speed = 0
                     else:
-                        trackpoint.distance = \
-                            (previous_point.distance
-                             + geopy.distance.geodesic(
-                                (trackpoint.latitude,
-                                    trackpoint.longitude),
-                                (previous_point.latitude,
-                                    previous_point.longitude)
-                             ).m
-                             )
-                        seconds_between = (
-                            trackpoint.time - previous_point.time
-                        ).total_seconds()
-                        travelled = (trackpoint.distance
-                                     - previous_point.distance
-                                     )
-                        trackpoint.speed = travelled * 3.6 / seconds_between
+                        trackpoint.distance = previous_point.distance + geopy.distance.geodesic(
+                            (trackpoint.latitude, trackpoint.longitude),
+                            (previous_point.latitude, previous_point.longitude)).m
+                        travelled = trackpoint.distance - previous_point.distance
+                        if trackpoint.time!=None:
+                            seconds_between = (trackpoint.time - previous_point.time).total_seconds()
+                            if seconds_between==0: # If two same timestamps, speed of previous timestamp is taken
+                                trackpoint.speed=previous_point.speed
+                            else:
+                                trackpoint.speed = travelled * 3.6 / seconds_between
+                        else:
+                            trackpoint.speed=0
                     previous_point = trackpoint
 
         gpx_file.close()
