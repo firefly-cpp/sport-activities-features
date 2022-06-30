@@ -11,7 +11,10 @@ from sport_activities_features.interval_identification import (
 from sport_activities_features.plot_data import PlotData
 from sport_activities_features.tcx_manipulation import TCXFile
 from sport_activities_features.topographic_features import TopographicFeatures
-from sport_activities_features.training_loads import BanisterTRIMP
+from sport_activities_features.training_loads import (
+    BanisterTRIMP,
+    EdwardsTRIMP
+)
 from sport_activities_features.weather_identification import (
     WeatherIdentification,
 )
@@ -41,6 +44,7 @@ __all__ = [
     'GPXFile',
     'TopographicFeatures',
     'BanisterTRIMP',
+    'EdwardsTRIMP',
     'Weather',
     'WeatherIdentification',
     'AverageWeather',
