@@ -29,8 +29,8 @@ class WeatherIdentification(object):
     """
     def __init__(
         self,
-        locations: list[(float, float)],
-        timestamps: list[datetime],
+        locations: list,
+        timestamps: list,
         vc_api_key: str,
         unit_group='metric'
     ) -> None:
@@ -54,7 +54,7 @@ class WeatherIdentification(object):
         self.vc_api_key = vc_api_key
         self.unit_group = unit_group
 
-    def get_weather(self, time_delta: int = 30) -> list[Weather]:
+    def get_weather(self, time_delta: int = 30) -> list:
         """
         Method that queries the VisualCrossing weather API for meteorological
         data at provided (minute) time intervals.\n
@@ -67,7 +67,7 @@ class WeatherIdentification(object):
                            (time_delta minutes) of training
         """
         time = datetime(1980, 1, 1)
-        weather_list: list[Weather] = []
+        weather_list: list = []
         index = 0
 
         for index in range(len(self.locations)):
@@ -177,7 +177,7 @@ class WeatherIdentification(object):
     def __find_nearest_weathers(
         self,
         timestamp: datetime,
-        weather_list: list[Weather]
+        weather_list: list
     ) -> dict:
         """
         Method finds the two nearest (before and after) Weather()
@@ -234,8 +234,8 @@ class WeatherIdentification(object):
     @classmethod
     def get_average_weather_data(
         self,
-        timestamps: list[datetime],
-        weather: list[Weather]
+        timestamps: list,
+        weather: list
     ) -> list:
         """
         Method generates average weather for each of the timestamps
