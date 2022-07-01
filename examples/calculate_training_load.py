@@ -1,13 +1,18 @@
-from sport_activities_features.tcx_manipulation import TCXFile
-from sport_activities_features.training_loads import (
+"""
+This example presents how to calculate Banister,
+Edwards and Lucia TRIMP (training impulse).
+"""
+from sport_activities_features import (
     BanisterTRIMP,
-    EdwardsTRIMP
+    EdwardsTRIMP,
+    LuciaTRIMP,
+    TCXFile
 )
 
 
 # Reading a TCX file.
 tcx_file = TCXFile()
-activity = tcx_file.read_one_file('../datasets/15.tcx')
+activity = tcx_file.read_one_file('path_to_the_file')
 timestamps = activity['timestamps']
 heart_rates = activity['heartrates']
 
@@ -23,3 +28,8 @@ print('Banister TRIMP:', int(banister_TRIMP))
 edwards = EdwardsTRIMP(heart_rates, timestamps, max_heart_rate=200)
 edwards_TRIMP = edwards.calculate_TRIMP()
 print('Edwards TRIMP: ', edwards_TRIMP)
+
+# Calculating Lucia's TRIMP.
+lucia = LuciaTRIMP(heart_rates, timestamps, VT1=160, VT2=180)
+lucia_TRIMP = lucia.calculate_TRIMP()
+print("Lucia's TRIMP: ", lucia_TRIMP)
