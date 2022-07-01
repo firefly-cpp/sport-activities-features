@@ -13,7 +13,8 @@ from sport_activities_features.tcx_manipulation import TCXFile
 from sport_activities_features.topographic_features import TopographicFeatures
 from sport_activities_features.training_loads import (
     BanisterTRIMP,
-    EdwardsTRIMP
+    EdwardsTRIMP,
+    LuciaTRIMP
 )
 from sport_activities_features.weather_identification import (
     WeatherIdentification,
@@ -45,6 +46,7 @@ __all__ = [
     'TopographicFeatures',
     'BanisterTRIMP',
     'EdwardsTRIMP',
+    'LuciaTRIMP',
     'Weather',
     'WeatherIdentification',
     'AverageWeather',

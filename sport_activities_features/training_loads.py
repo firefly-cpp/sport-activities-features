@@ -100,3 +100,73 @@ class EdwardsTRIMP:
                 TRIMP += 1 * duration
 
         return TRIMP
+
+
+class LuciaTRIMP:
+    """
+    Class for calculation of Lucia's TRIMP.\n
+    Reference:
+        https://www.trainingimpulse.com/lucias-trimp-0\n
+    Args:
+        heart_rates (list[int]):
+            list of heart rates in beats per minute
+        timestamps (list[timestamp]):
+            list of timestamps
+        VT1 (int):
+            ventilatory threshold to divide the low and the moderate zone
+        VT2 (int):
+            ventilatory threshold to divide the moderate and the high zone
+    """
+    def __init__(
+        self,
+        heart_rates: list,
+        timestamps: list,
+        VT1: int = 160,
+        VT2: int = 180
+    ) -> None:
+        """
+        Initialization method for LuciaTRIMP class.\n
+        Args:
+            heart_rates (list[int]):
+                list of heart rates in beats per minute
+            timestamps (list[timestamp]):
+                list of timestamps
+            VT1 (int):
+                ventilatory threshold to divide the low and the moderate zone
+            VT2 (int):
+                ventilatory threshold to divide the moderate and the high zone
+        """
+        self.heart_rates = heart_rates
+        self.timestamps = timestamps
+        self.VT1 = VT1
+        self.VT2 = VT2
+
+    def calculate_TRIMP(self) -> float:
+        """
+        Method for the calculation of the TRIMP.\n
+        Returns:
+            float: Lucia's TRIMP value
+        """
+        TRIMP = 0
+
+        # Loop for iterating through the heart rates and calculating the TRIMP.
+        for i in np.arange(np.shape(self.heart_rates)[0] - 1):
+            # If a current heart rate is NoneType or other non-integer
+            # value, it is ignored in the calculation of the TRIMP.
+            if not self.heart_rates[i]:
+                continue
+
+            # Duration between two timestamps should be given in seconds.
+            duration = (self.timestamps[i + 1] - self.timestamps[i]).seconds
+
+            # See the reference paper for more information
+            # about the TRIMP calculation:
+            # https://www.frontiersin.org/articles/10.3389/fphys.2020.00480/full
+            if self.heart_rates[i] < self.VT1:
+                TRIMP += 1 * duration
+            elif self.heart_rates[i] < self.VT2:
+                TRIMP += 2 * duration
+            else:
+                TRIMP += 3 * duration
+
+        return TRIMP

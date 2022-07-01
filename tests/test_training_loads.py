@@ -4,6 +4,7 @@ from unittest import TestCase
 from sport_activities_features import (
     BanisterTRIMP,
     EdwardsTRIMP,
+    LuciaTRIMP,
     TCXFile
 )
 
@@ -43,7 +44,6 @@ class EdwardsTRIMPTestCase(TestCase):
         """
         filename = os.path.join(os.path.dirname(__file__), 'data', '15.tcx')
         tcx_file = TCXFile()
-        tcx_file = TCXFile()
         activity = tcx_file.read_one_file(filename)
         timestamps = activity['timestamps']
         heart_rates = activity['heartrates']
@@ -63,3 +63,35 @@ class EdwardsTRIMPTestCase(TestCase):
         """
         val = self.__edwards.calculate_TRIMP()
         self.assertEqual(41458, val)
+
+
+class LuciaTRIMPTestCase(TestCase):
+    """
+    Lucia's TRIMP test.
+    """
+    def setUp(self):
+        """
+        Setting up the test.
+        """
+        filename = os.path.join(os.path.dirname(__file__), 'data', '15.tcx')
+        tcx_file = TCXFile()
+        activity = tcx_file.read_one_file(filename)
+        timestamps = activity['timestamps']
+        heart_rates = activity['heartrates']
+        self.__lucia = LuciaTRIMP(heart_rates, timestamps, VT1=160, VT2=180)
+
+    def test_init_banister_trimp_works_fine(self):
+        """
+        Testing class arguments.
+        """
+        self.assertEqual(7799, len(self.__lucia.heart_rates))
+        self.assertEqual(7799, len(self.__lucia.timestamps))
+        self.assertEqual(160, self.__lucia.VT1)
+        self.assertEqual(180, self.__lucia.VT2)
+
+    def test_calculate_trimp_works_fine(self):
+        """
+        Testing Lucia's TRIMP.
+        """
+        val = self.__lucia.calculate_TRIMP()
+        self.assertEqual(19251, val)
