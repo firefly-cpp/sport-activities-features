@@ -33,7 +33,7 @@ The sport-activities-features framework is compatible with TCX & GPX activity fi
 - plotting identified hills ([see example](examples/draw_map_with_identified_hills.py)),
 - extracting the intervals, such as number of intervals, maximum/minimum/average duration of intervals, maximum/minimum/average distance of intervals, maximum/minimum/average heart rate during intervals,
 - plotting the identified intervals ([see example](examples/draw_map_with_identified_intervals.py)),
-- calculating the training loads, such as Bannister TRIMP, Lucia TRIMP([see example](examples/integral_metrics_extraction.py)),
+- calculating the training loads, such as Banister TRIMP, Lucia TRIMP([see example](examples/calculate_training_load.py)),
 - parsing the historical weather data from an external service,
 - extracting the integral metrics of the activity inside the area given with coordinates (distance, heart rate, speed) ([see example](examples/extract_data_inside_area.py)),
 - extracting the activities from CSV file(s) and randomly selecting the specific number of activities ([see example](examples/extract_random_activities_from_csv.py)),
