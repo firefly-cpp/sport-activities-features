@@ -1,5 +1,39 @@
 # Changelog
 
+## [Unreleased](https://github.com/firefly-cpp/sport-activities-features/tree/HEAD)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.18...HEAD)
+
+**Closed issues:**
+
+- Add Edward's & Lucia trimp [\#86](https://github.com/firefly-cpp/sport-activities-features/issues/86)
+
+**Merged pull requests:**
+
+- Implementation of Lucia's TRIMP [\#88](https://github.com/firefly-cpp/sport-activities-features/pull/88) ([luckyLukac](https://github.com/luckyLukac))
+
+## [0.2.18](https://github.com/firefly-cpp/sport-activities-features/tree/0.2.18) (2022-07-01)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.17...0.2.18)
+
+**Merged pull requests:**
+
+- Edwards TRIMP implementation and various other changes [\#87](https://github.com/firefly-cpp/sport-activities-features/pull/87) ([luckyLukac](https://github.com/luckyLukac))
+- Reference for Banister's TRIMP added [\#85](https://github.com/firefly-cpp/sport-activities-features/pull/85) ([firefly-cpp](https://github.com/firefly-cpp))
+
+## [0.2.17](https://github.com/firefly-cpp/sport-activities-features/tree/0.2.17) (2022-06-23)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.16...0.2.17)
+
+**Implemented enhancements:**
+
+- Fix logo link \(pypi issue\) [\#81](https://github.com/firefly-cpp/sport-activities-features/issues/81)
+
+**Merged pull requests:**
+
+- Update gpx\_manipulation.py [\#84](https://github.com/firefly-cpp/sport-activities-features/pull/84) ([alenrajsp](https://github.com/alenrajsp))
+- Bump numpy from 1.21.1 to 1.22.0 [\#82](https://github.com/firefly-cpp/sport-activities-features/pull/82) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [0.2.16](https://github.com/firefly-cpp/sport-activities-features/tree/0.2.16) (2022-05-17)
 
 [Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.15...0.2.16)
