@@ -18,6 +18,11 @@ To install sport-activities-features on Fedora, use:
 
     dnf install python3-sport-activities-features
 
+To install sport-activities-features on Arch Linux, please use an `AUR helper <https://wiki.archlinux.org/title/AUR_helpers>`_:
+
+.. code:: bash
+
+    yay -Syyu python-sport-activities-features
 
 After the successful installation you are ready to run your first example.
 

@@ -18,6 +18,7 @@
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/firefly-cpp/sport-activities-features.svg)](http://isitmaintained.com/project/firefly-cpp/sport-activities-features "Percentage of issues still open")
 [![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 [![Fedora package](https://img.shields.io/fedora/v/python3-sport-activities-features?color=blue&label=Fedora%20Linux&logo=fedora)](https://src.fedoraproject.org/rpms/python-sport-activities-features)
+[![AUR package](https://img.shields.io/aur/version/python-sport-activities-features?color=blue&label=Arch%20Linux&logo=arch-linux)](https://aur.archlinux.org/packages/python-sport-activities-features)
 [![DOI](https://img.shields.io/badge/DOI-10.1109/INES52918.2021.9512927-blue)](https://doi.org/10.1109/INES52918.2021.9512927)
 
 ## General outline of the framework
@@ -67,6 +68,14 @@ To install sport-activities-features on Fedora, use:
 
 ```sh
 $ dnf install python3-sport-activities-features
+```
+
+### Arch Linux
+
+To install sport-activities-features on Arch Linux, please use an [AUR helper](https://wiki.archlinux.org/title/AUR_helpers):
+
+```sh
+$ yay -Syyu python-sport-activities-features
 ```
 
 ## API
