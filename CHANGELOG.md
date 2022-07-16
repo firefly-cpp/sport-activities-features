@@ -1,15 +1,17 @@
 # Changelog
 
-## [Unreleased](https://github.com/firefly-cpp/sport-activities-features/tree/HEAD)
+## [0.3.0](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.0) (2022-07-15)
 
-[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.18...HEAD)
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.18...0.3.0)
 
 **Closed issues:**
 
+- Add AUR installation details [\#90](https://github.com/firefly-cpp/sport-activities-features/issues/90)
 - Add Edward's & Lucia trimp [\#86](https://github.com/firefly-cpp/sport-activities-features/issues/86)
 
 **Merged pull requests:**
 
+- Add instructions for install from AUR [\#91](https://github.com/firefly-cpp/sport-activities-features/pull/91) ([carlosal1015](https://github.com/carlosal1015))
 - Implementation of Lucia's TRIMP [\#88](https://github.com/firefly-cpp/sport-activities-features/pull/88) ([luckyLukac](https://github.com/luckyLukac))
 
 ## [0.2.18](https://github.com/firefly-cpp/sport-activities-features/tree/0.2.18) (2022-07-01)
