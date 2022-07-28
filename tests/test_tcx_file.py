@@ -19,3 +19,13 @@ class TestTCXFile(TestCase):
     def test_heartrates(self):
         self.assertEqual(self.data['heartrates'][0], 94)
         self.assertEqual(self.data['heartrates'][1], 95)
+
+
+# test sup activity
+class TestSupTCXFile(TestCase):
+    def setUp(self):
+	# test file is taken from https://github.com/firefly-cpp/tcx-test-files
+        filename = os.path.join(os.path.dirname(__file__), 'data', 'sup_activity_1.tcx')
+        self.tcx_file = TCXFile()
+        self.data = self.tcx_file.read_one_file(filename)
+
