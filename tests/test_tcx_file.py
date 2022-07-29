@@ -29,3 +29,5 @@ class TestSupTCXFile(TestCase):
         self.tcx_file = TCXFile()
         self.data = self.tcx_file.read_one_file(filename)
 
+    def test_total_steps(self):
+        self.assertEqual(self.data['steps'], 491)

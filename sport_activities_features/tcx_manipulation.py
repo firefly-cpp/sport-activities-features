@@ -126,6 +126,7 @@ class TCXFile(object):
                 'altitude_min': altitude_min,
                 'ascent': ascent,
                 'descent': descent,
+                'steps' : steps
             }
         """
         tcx = TCXReader().read(filename)
@@ -191,6 +192,11 @@ class TCXFile(object):
         except BaseException:
             descent = None
 
+        try:
+            steps = tcx.steps
+        except BaseException:
+            steps = None
+            
         int_metrics = {
             'activity_type': activity_type,
             'distance': distance,
@@ -204,5 +210,6 @@ class TCXFile(object):
             'altitude_min': altitude_min,
             'ascent': ascent,
             'descent': descent,
+            'steps' : steps,
         }
         return int_metrics
