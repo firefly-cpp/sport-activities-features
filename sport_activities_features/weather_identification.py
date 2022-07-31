@@ -198,6 +198,10 @@ class WeatherIdentification(object):
                   tell how much time is between the given timestamp
                   and the identified weather objects.
         """
+
+        if timestamp.tzinfo== None: # If timestamp is naive (tzinfo = None), make it so that it is the same as weather_list timestamp.
+            timestamp = timestamp.replace(tzinfo=weather_list[0].date.tzinfo)
+
         beforeWeathers = list(
             filter(
                 lambda x: timestamp >= x.date - timedelta(minutes=1),

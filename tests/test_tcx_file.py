@@ -27,7 +27,7 @@ class TestSupTCXFile(TestCase):
 	# test file is taken from https://github.com/firefly-cpp/tcx-test-files
         filename = os.path.join(os.path.dirname(__file__), 'data', 'sup_activity_1.tcx')
         self.tcx_file = TCXFile()
-        self.data = self.tcx_file.read_one_file(filename)
+        self.data = self.tcx_file.extract_integral_metrics(filename)
 
     def test_total_steps(self):
         self.assertEqual(self.data['steps'], 491)
