@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.3.1](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.1) (2022-08-01)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.0...0.3.1)
+
+**Merged pull requests:**
+
+- Upgrade test for SUP activity [\#93](https://github.com/firefly-cpp/sport-activities-features/pull/93) ([firefly-cpp](https://github.com/firefly-cpp))
+- WIP - Add basic test for reading SUP activity [\#92](https://github.com/firefly-cpp/sport-activities-features/pull/92) ([firefly-cpp](https://github.com/firefly-cpp))
+
 ## [0.3.0](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.0) (2022-07-15)
 
 [Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.2.18...0.3.0)
