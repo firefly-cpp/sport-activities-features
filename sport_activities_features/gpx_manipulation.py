@@ -214,7 +214,7 @@ class GPXFile(object):
         gpx_file.close()
         # handling missing data - should be improved in original
         try:
-            activity_type = gpx.activity_type
+            activity_type = gpx.tracks[0].type
         except BaseException:
             activity_type = None
 
