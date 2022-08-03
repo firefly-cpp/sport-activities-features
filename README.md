@@ -106,7 +106,11 @@ from sport_activities_features.tcx_manipulation import TCXFile
 
 # Class for reading TCX files
 tcx_file=TCXFile()
-data = tcx_file.read_one_file("path_to_the_file")
+data = tcx_file.read_one_file("path_to_the_file") # Represents data as dictionary of lists
+
+# Alternative choice
+data = tcx_file.read_one_file("path_to_the_file", numpy_array= True) # Represents data as dictionary of numpy.arrays
+
 ```
 
 #### (*.GPX)
@@ -117,7 +121,11 @@ from sport_activities_features.gpx_manipulation import GPXFile
 gpx_file=GPXFile()
 
 # Read the file and generate a dictionary with 
-data = gpx_file.read_one_file("path_to_the_file")
+data = gpx_file.read_one_file("path_to_the_file") # Represents data as dictionary of lists
+
+# Alternative choice
+data = gpx_file.read_one_file("path_to_the_file", numpy_array= True) # Represents data as dictionary of numpy.arrays
+
 ```
 
 

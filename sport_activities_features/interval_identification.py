@@ -1,6 +1,8 @@
 import copy
 import math
 
+import numpy
+
 
 class IntervalIdentificationByPower(object):
     """
@@ -292,12 +294,12 @@ class IntervalIdentificationByHeartRate(object):
         i = 0
         while i < len(self.heart_rates):
             # If the value is number, it is added to sum
-            if isinstance(self.heart_rates[i], int):
+            if isinstance(self.heart_rates[i], int) or isinstance(self.heart_rates[i], numpy.int32):
                 sum_heartrate += self.heart_rates[i]
             else:
                 j = i + 1
                 while True:
-                    if isinstance(self.heart_rates[j], int):
+                    if isinstance(self.heart_rates[j], int) or isinstance(self.heart_rates[j], numpy.int32):
                         # If more than 10 seconds pass without a heart
                         # rate, the intervals cannot be identified
                         if (
@@ -333,7 +335,7 @@ class IntervalIdentificationByHeartRate(object):
             # If the heart rate at i is greater than the average
             # heart rate, it belongs to an interval
             if (
-                isinstance(self.heart_rates[i], int)
+                (isinstance(self.heart_rates[i], int) or isinstance(self.heart_rates[i], numpy.int32))
                 and self.heart_rates[i] > average_heartrate
             ):
                 interval.append(i)

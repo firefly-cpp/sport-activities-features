@@ -16,6 +16,7 @@ overpy = "^0.6"
 gpxpy = "^1.4.2"
 geotiler = "^0.14.5"
 dotmap = "^1.3.25"
+numpy = "^1.23.1"
 
 [tool.poetry.dev-dependencies]
 Sphinx = "^3.5.1"

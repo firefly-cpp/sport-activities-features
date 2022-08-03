@@ -1,5 +1,6 @@
 import os
 from tcxreader.tcxreader import TCXTrackPoint, TCXReader
+import numpy as np
 
 
 class TCXFile(object):
@@ -28,12 +29,14 @@ class TCXFile(object):
             self.all_files.append(file)
         return self.all_files
 
-    def read_one_file(self, filename: str) -> dict:
+    def read_one_file(self, filename: str, numpy_array = False) -> dict:
         """
         Method for parsing one TCX file using the TCXReader.\n
         Args:
             filename (str):
                 name of the TCX file to be read
+            numpy_array (bool):
+                if set to true dictionary lists are transformed into numpy.arrays
         Returns:
             activity = {
                 'activity_type': activity_type,
@@ -93,6 +96,15 @@ class TCXFile(object):
             total_distance = tcx.distance
         except BaseException:
             total_distance = None
+
+        if numpy_array == True:
+            positions = np.array(positions)
+            altitudes = np.array(altitudes)
+            distances = np.array(distances)
+            timestamps = np.array(timestamps)
+            heartrates = np.array(heartrates)
+            speeds = np.array(speeds)
+
 
         activity = {
             'activity_type': activity_type,

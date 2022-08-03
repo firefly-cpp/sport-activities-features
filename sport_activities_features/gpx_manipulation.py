@@ -1,6 +1,7 @@
 import geopy
 import gpxpy
 import os
+import numpy as np
 from tcxreader.tcxreader import TCXTrackPoint
 
 
@@ -160,9 +161,14 @@ class GPXFile(object):
             self.all_files.append(file)
         return self.all_files
 
-    def read_one_file(self, filename):
+    def read_one_file(self, filename, numpy_array = False):
         """
         Method for parsing one GPX file.\n
+        Args:
+            filename (str):
+                name of the TCX file to be read
+            numpy_array (bool):
+                if set to true dictionary lists are transformed into numpy.arrays
         Returns: activity: {
                     'activity_type': activity_type,
                     'positions': positions,
@@ -238,6 +244,15 @@ class GPXFile(object):
         except BaseException:
             total_distance = None
 
+        if numpy_array == True:
+            positions = np.array(positions)
+            altitudes = np.array(altitudes)
+            distances = np.array(distances)
+            timestamps = np.array(timestamps)
+            heartrates = np.array(heartrates)
+            speeds = np.array(speeds)
+
+
         activity = {
             "activity_type": activity_type,
             "positions": positions,
@@ -273,7 +288,7 @@ class GPXFile(object):
 
         # handling missing data in raw files
         try:
-            activity_type = gpx['activity_type']
+            activity_type = gpx.tracks[0].type
         except BaseException:
             activity_type = None
 
