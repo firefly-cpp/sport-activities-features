@@ -22,7 +22,7 @@
 [![DOI](https://img.shields.io/badge/DOI-10.1109/INES52918.2021.9512927-blue)](https://doi.org/10.1109/INES52918.2021.9512927)
 
 ## General outline of the framework
-Monitoring of sports activities produces many geographic, topologic, and personalized data, with a vast majority of details hidden. Thus, a rigorous ex-post data analysis and statistic evaluation are required to extract them. Namely, most of the mainstream solutions for analyzing sports activities files rely on integral metrics, such as total duration, total distance, and average heart rate, which may suffer from the "overall (integral) metrics problem." Among others, such problems are expressed in capturing sports activities in general only (omitting crucial components), calculating potentially fallacious and misleading metrics, not recognizing different stages/phases of the sports activity (warm-up, endurance, intervals), and others.
+Monitoring sports activities produce many geographic, topologic, and personalized data, with a vast majority of details hidden. Thus, a rigorous ex-post data analysis and statistic evaluation are required to extract them. Namely, most mainstream solutions for analyzing sports activities files rely on integral metrics, such as total duration, total distance, and average heart rate, which may suffer from the "overall (integral) metrics problem." Among others, such problems are expressed in capturing sports activities in general only (omitting crucial components), calculating potentially fallacious and misleading metrics, not recognizing different stages/phases of the sports activity (warm-up, endurance, intervals), and others.
 
 The sport-activities-framework, on the other side, offers a detailed insight into the sports activity files. The framework supports both identification and extraction methods, such as identifying the number of hills, extracting the average altitudes of identified hills, measuring the total distance of identified hills, deriving climbing ratios (total distance of identified hills vs. total distance), average/total ascents of hills and so much more. The framework also integrates many other extensions, among others, historical weather parsing, statistical evaluations, and ex-post visualizations. Previous work on these topical questions was addressed in [relevant scientific papers on data mining](http://iztok-jr-fister.eu/static/publications/42.pdf), also in combination with the [generating/predicting automated sport training sessions](http://iztok-jr-fister.eu/static/publications/189.pdf).
 
@@ -30,7 +30,7 @@ The sport-activities-framework, on the other side, offers a detailed insight int
 ## Detailed insights
 The sport-activities-features framework is compatible with TCX & GPX activity files and [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API) nodes. The current version withholds (but is not limited to) the following functions:
 - extracting integral metrics, such as total distance, total duration, calories ([see example](examples/integral_metrics_extraction.py)),
-- extracting topographic features, such as the number of hills, the average altitude of identified hills, the total distance of identified hills, climbing ratio, average ascent of hills, total ascent, total descent ([see example](examples/hill_data_extraction.py)),
+- extracting topographic features, such as the number of hills, the average altitude of identified hills, the total distance of identified hills, climbing ratio, average ascent of hills, total ascent, and total descent ([see example](examples/hill_data_extraction.py)),
 - plotting identified hills ([see example](examples/draw_map_with_identified_hills.py)),
 - extracting the intervals, such as number of intervals, maximum/minimum/average duration of intervals, maximum/minimum/average distance of intervals, maximum/minimum/average heart rate during intervals,
 - plotting the identified intervals ([see example](examples/draw_map_with_identified_intervals.py)),
@@ -268,10 +268,10 @@ weatherlist = weather.get_weather()
 import overpy
 from sport_activities_features.overpy_node_manipulation import OverpyNodesReader
 
-# External service Overpass API (https://wiki.openstreetmap.org/wiki/Overpass_API) (can be self hosted)
+# External service Overpass API (https://wiki.openstreetmap.org/wiki/Overpass_API) (can be self-hosted)
 overpass_api = "https://lz4.overpass-api.de/api/interpreter"
 
-# External service Open Elevation API (https://api.open-elevation.com/api/v1/lookup) (can be self hosted)
+# External service Open Elevation API (https://api.open-elevation.com/api/v1/lookup) (can be self-hosted)
 open_elevation_api = "https://api.open-elevation.com/api/v1/lookup"
 
 # OSM Way (https://wiki.openstreetmap.org/wiki/Way)
@@ -286,7 +286,7 @@ query = overpass_api.query(q)
 # Get nodes of an Overpass way
 nodes = query.ways[0].get_nodes(resolve_missing=True)
 
-# Extract basic data from nodes (you can later on use Hill Identification and Hill Data Extraction on them)
+# Extract basic data from nodes (you can, later on, use Hill Identification and Hill Data Extraction on them)
 overpy_reader = OverpyNodesReader(open_elevation_api=open_elevation_api)
 # Returns {
 #         'positions': positions, 'altitudes': altitudes, 'distances': distances, 'total_distance': total_distance
@@ -294,7 +294,7 @@ overpy_reader = OverpyNodesReader(open_elevation_api=open_elevation_api)
 data = overpy_reader.read_nodes(nodes)
 ```
 
-### Extraction of data inside area
+### Extraction of data inside the area
 ```python
 import numpy as np
 import sys
@@ -358,10 +358,10 @@ import overpy
 from sport_activities_features.overpy_node_manipulation import OverpyNodesReader
 
 
-# External service Overpass API (https://wiki.openstreetmap.org/wiki/Overpass_API) (can be self hosted)
+# External service Overpass API (https://wiki.openstreetmap.org/wiki/Overpass_API) (can be self-hosted)
 overpass_api = "https://lz4.overpass-api.de/api/interpreter"
 
-# External service Open Elevation API (https://api.open-elevation.com/api/v1/lookup) (can be self hosted)
+# External service Open Elevation API (https://api.open-elevation.com/api/v1/lookup) (can be self-hosted)
 open_elevation_api = "https://api.open-elevation.com/api/v1/lookup"
 
 # OSM Way (https://wiki.openstreetmap.org/wiki/Way)
@@ -376,7 +376,7 @@ query = overpass_api.query(q)
 # Get nodes of an Overpass way
 nodes = query.ways[0].get_nodes(resolve_missing=True)
 
-# Extract basic data from nodes (you can later on use Hill Identification and Hill Data Extraction on them)
+# Extract basic data from nodes (you can, later on, use Hill Identification and Hill Data Extraction on them)
 overpy_reader = OverpyNodesReader(open_elevation_api=open_elevation_api)
 # Returns {
 #         'positions': positions, 'altitudes': altitudes, 'distances': distances, 'total_distance': total_distance
@@ -400,7 +400,7 @@ tcx_data.update({'elevations':elevations})
 
 ![Area Figure](https://i.imgur.com/Iz8Ga3B.png)
 
-### Example of visualization of dead end identification
+### Example of visualization of dead-end identification
 ![Dead End Figure](https://imgur.com/LgZzCFS.png)
 
 ## License
@@ -417,7 +417,7 @@ I. Jr. Fister, L. Lukač, A. Rajšp, I. Fister, L. Pečnik and D. Fister, "[A mi
 
 ## Contributors ✨
 
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+Thanks go to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
