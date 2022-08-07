@@ -31,3 +31,18 @@ class TestSupTCXFile(TestCase):
 
     def test_total_steps(self):
         self.assertEqual(self.data['steps'], 491)
+
+
+# test swimming activity
+class TestSwimmingTCXFile(TestCase):
+    def setUp(self):
+	# test file is taken from https://github.com/firefly-cpp/tcx-test-files
+        filename = os.path.join(os.path.dirname(__file__), 'data', 'swimming_activity_1.tcx')
+        self.tcx_file = TCXFile()
+        self.data = self.tcx_file.extract_integral_metrics(filename)
+
+    def test_total_calories(self):
+        self.assertEqual(self.data['calories'], 284)
+
+    def test_total_distance(self):
+        self.assertEqual(self.data['distance'], 1330.32)
