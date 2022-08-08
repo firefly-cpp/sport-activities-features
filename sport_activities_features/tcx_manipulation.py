@@ -205,7 +205,7 @@ class TCXFile(object):
             descent = None
 
         try:
-            steps = tcx.steps
+            steps = tcx.lx_ext['Steps']
         except BaseException:
             steps = None
             
