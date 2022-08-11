@@ -7,6 +7,7 @@ class TCXFile(object):
     """
     Class for reading TCX files.
     """
+
     def __init__(self) -> None:
         """
         Initialisation method of TCXFile class.
@@ -29,7 +30,7 @@ class TCXFile(object):
             self.all_files.append(file)
         return self.all_files
 
-    def read_one_file(self, filename: str, numpy_array = False) -> dict:
+    def read_one_file(self, filename: str, numpy_array=False) -> dict:
         """
         Method for parsing one TCX file using the TCXReader.\n
         Args:
@@ -69,28 +70,28 @@ class TCXFile(object):
 
         invalid_points = []
         for index, trackpoint in enumerate(tcx.trackpoints):
-            positions.append((trackpoint.latitude, trackpoint.longitude))
-            altitudes.append(trackpoint.elevation)
-            distances.append(trackpoint.distance)
-            timestamps.append(trackpoint.time)
-            heartrates.append(trackpoint.hr_value)
+
             if index != 0:
-                delta_distance = distances[-1] - distances[-2]
-                delta_time = (timestamps[-1] - timestamps[-2]).total_seconds()
-                if (delta_time == 0):
-                    delta_time = 1
-                    delta_distance = 1
-                    invalid_points.append(index)
-                speeds.append((delta_distance / delta_time) * 3.6)
+                delta_distance = trackpoint.distance - distances[-1]
+                delta_time = (trackpoint.time - timestamps[-1]).total_seconds()
+                if (delta_time != 0):
+                    heartrates.append(trackpoint.hr_value)
+                    positions.append((trackpoint.latitude, trackpoint.longitude))
+                    altitudes.append(trackpoint.elevation)
+                    distances.append(trackpoint.distance)
+                    timestamps.append(trackpoint.time)
+                    speeds.append((delta_distance / delta_time) * 3.6)
             else:
+                heartrates.append(trackpoint.hr_value)
+                positions.append((trackpoint.latitude, trackpoint.longitude))
+                altitudes.append(trackpoint.elevation)
+                if (trackpoint.distance == None):
+                    distances.append(0)
+                else:
+                    distances.append(trackpoint.distance)
+                timestamps.append(trackpoint.time)
                 speeds.append(0)
 
-        if len(invalid_points) > 0:
-            print(
-                'Probably invalid speeds or not a record of exercise.',
-                f'Invalid trackpoints count: {len(invalid_points)}',
-                f'Filename:{filename}'
-            )
 
         try:
             total_distance = tcx.distance
@@ -104,7 +105,6 @@ class TCXFile(object):
             timestamps = np.array(timestamps)
             heartrates = np.array(heartrates)
             speeds = np.array(speeds)
-
 
         activity = {
             'activity_type': activity_type,
@@ -185,7 +185,7 @@ class TCXFile(object):
             altitude_avg = None
 
         try:
-            altitude_max = max(tcx.trackpoints)
+            altitude_max = tcx.altitude_max
         except BaseException:
             altitude_max = None
 
@@ -208,7 +208,7 @@ class TCXFile(object):
             steps = tcx.lx_ext['Steps']
         except BaseException:
             steps = None
-            
+
         int_metrics = {
             'activity_type': activity_type,
             'distance': distance,
@@ -222,6 +222,6 @@ class TCXFile(object):
             'altitude_min': altitude_min,
             'ascent': ascent,
             'descent': descent,
-            'steps' : steps,
+            'steps': steps,
         }
         return int_metrics
