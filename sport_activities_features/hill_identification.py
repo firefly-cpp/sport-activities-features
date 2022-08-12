@@ -1,4 +1,13 @@
+import math
 from .classes import StoredSegments
+from typing import List
+from enum import Enum
+import numpy
+
+
+class GradeUnit(Enum):
+    DEGREES = 1
+    RADIANS = 2
 
 
 class HillIdentification(object):
@@ -9,8 +18,10 @@ class HillIdentification(object):
             an array of altitude values extracted from TCX file
         ascent_threshold (float):
             parameter that defines the hill (hill >= ascent_threshold)
+        distances (list):
+            optional, allows calculation of hill grades (steepnes)
     """
-    def __init__(self, altitudes: list, ascent_threshold: float) -> None:
+    def __init__(self, altitudes: List[float], distances: List[float] = None, ascent_threshold: float = 30) -> None:
         """
         Initialisation method of HillIdentification class.\n
         Args:
@@ -19,23 +30,25 @@ class HillIdentification(object):
             ascent_threshold (float):
                 parameter that defines the hill (hill >= ascent_threshold)
         """
-        self.altitudes = altitudes
-        self.ascent_threshold = ascent_threshold
-        self.identified_hills = []
-        self.total_ascent = 0
-        self.total_descent = 0
+        self.altitudes:List[float] = altitudes
+        self.distances:List[float] = distances
+        self.ascent_threshold:float = ascent_threshold
+        self.identified_hills:List[StoredSegments] = []
+        self.total_ascent:float = 0
+        self.total_descent:float = 0
 
-    def return_hill(self, ascent_threshold: float) -> bool:
+    def return_hill(self, ascent:float, ascent_threshold: float = 30) -> bool:
         """
-        Method for identifying whether the hill is
-        steep enough to be identified as a hill.\n
+        Method for identifying whether the hill is steep enough to be identified as a hill.\n
         Args:
+            ascent (float):
+                actual ascent of the hill
             ascent_threshold (float):
                 threshold of the ascent that is used for identifying hills
         Returns:
             bool: True if the hill is recognised, False otherwise
         """
-        if ascent_threshold >= 30:
+        if ascent >= ascent_threshold:
             return True
         else:
             return False
@@ -54,11 +67,11 @@ class HillIdentification(object):
         self.total_ascent = sum(x for x in differences if x > 0)
         self.total_descent = sum(-x for x in differences if x < 0)
 
-        BEST_SEGMENT = []
-        BEST_SEGMENT_ASCENT = 0.0
+        hill_segment = []
+        hill_segment_ascent = 0.0
 
         for i in range(len(differences)):
-            TOTAL_ASCENT = 0.0
+            total_ascent = 0.0
             selected_IDs = []
             selected_IDs.append(i)
             descent_counter = 0
@@ -66,7 +79,7 @@ class HillIdentification(object):
             for j in range(i + 1, len(differences)):
                 NEXT = differences[j]
                 if NEXT >= 0.0:
-                    TOTAL_ASCENT = TOTAL_ASCENT + NEXT
+                    total_ascent = total_ascent + NEXT
                     selected_IDs.append(j)
 
                 else:
@@ -82,24 +95,36 @@ class HillIdentification(object):
                     ]
                     break
 
-            if self.return_hill(TOTAL_ASCENT):
-                if len(BEST_SEGMENT) < 3:
-                    BEST_SEGMENT = selected_IDs
-                    BEST_SEGMENT_ASCENT = TOTAL_ASCENT
+            if self.return_hill(total_ascent):
+                if len(hill_segment) < 3: #Nothing happens...
+                    hill_segment = selected_IDs
+                    hill_segment_ascent = total_ascent
                 else:
                     length_of_intersection = len(
-                        set(BEST_SEGMENT).intersection(selected_IDs)
+                        set(hill_segment).intersection(selected_IDs)
                     )
                     calculation = float(
                         float(length_of_intersection)
-                        / float(len(BEST_SEGMENT))
+                        / float(len(hill_segment))
                     )
-                    if calculation < 0.1:
+                    if calculation < 0.1: #if less than 10% of nodes repeatž
+
+                        avg_grade = None
+
+                        is_a_list = isinstance(self.distances, numpy.ndarray) or isinstance(self.distances, list)
+                        hill_segment_grade = None
+                        if is_a_list and len(self.distances) == len(self.altitudes):
+                            end_distance = self.distances[hill_segment[-1]]
+                            start_distance = self.distances[hill_segment[0]]
+                            hill_segment_distance = end_distance - start_distance
+                            hill_segment_grade = self.__calculate_hill_grade(hill_segment_distance, hill_segment_ascent)
+
+
                         self.identified_hills.append(
-                            StoredSegments(BEST_SEGMENT, BEST_SEGMENT_ASCENT)
+                            StoredSegments(hill_segment, hill_segment_ascent, hill_segment_grade)
                         )
-                        BEST_SEGMENT = []
-                        BEST_SEGMENT_ASCENT = 0.0
+                        hill_segment = []
+                        hill_segment_ascent = 0.0
 
     def return_hills(self) -> list:
         """
@@ -111,3 +136,24 @@ class HillIdentification(object):
         for i in range(len(self.identified_hills)):
             hills.append(self.identified_hills[i].segment)
         return hills
+
+
+    def __calculate_hill_grade(self, distance: float, ascent: float, unit:GradeUnit = GradeUnit.DEGREES) -> float:
+        """
+        Calculates angle (grade) of the hill from distance and ascent
+        Args:
+            distance (float):
+                distance between points
+            ascent (float):
+                ascent of the hill in meters
+            unit (GradeUnit):
+                return type DEGREES or RADIANS
+        Returns:
+            bool: True if the hill is recognised, False otherwise
+        """
+        if unit == GradeUnit.RADIANS:
+            return math.atan(ascent / distance)
+        elif unit == GradeUnit.DEGREES:
+            return math.degrees(math.atan(ascent / distance))
+        else:
+            raise Exception("Invalid GradeUnit")
