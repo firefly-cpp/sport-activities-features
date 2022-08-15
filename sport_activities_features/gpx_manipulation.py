@@ -4,6 +4,8 @@ import os
 import numpy as np
 from tcxreader.tcxreader import TCXTrackPoint
 
+from sport_activities_features.file_manipulation import FileManipulation
+
 
 class GPXTrackPoint():
     """
@@ -103,7 +105,7 @@ class GPXTrackPoint():
         self.watts = watts
 
 
-class GPXFile(object):
+class GPXFile(FileManipulation):
     """
     Class for reading GPX files.
     """

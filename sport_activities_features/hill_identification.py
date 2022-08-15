@@ -6,8 +6,12 @@ import numpy
 
 
 class GradeUnit(Enum):
+    """
+    Enum for selecting the type of data we want returned in hill slope calculation (degrees / radians or gradient (%))
+    """
     DEGREES = 1
     RADIANS = 2
+    PERCENTS = 3
 
 
 class HillIdentification(object):
@@ -147,13 +151,15 @@ class HillIdentification(object):
             ascent (float):
                 ascent of the hill in meters
             unit (GradeUnit):
-                return type DEGREES or RADIANS
+                return type DEGREES or RADIANS or PERCENTS
         Returns:
-            bool: True if the hill is recognised, False otherwise
+            float: hill grade (in degrees, radians or percents)
         """
         if unit == GradeUnit.RADIANS:
             return math.atan(ascent / distance)
         elif unit == GradeUnit.DEGREES:
             return math.degrees(math.atan(ascent / distance))
+        elif unit == GradeUnit.PERCENTS:
+            return ascent/distance
         else:
             raise Exception("Invalid GradeUnit")

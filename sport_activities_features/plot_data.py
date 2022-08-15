@@ -103,28 +103,28 @@ class PlotData(object):
         Returns:
             plt
         """
-        tocke = []
-        tocke2 = []
+        y = []
+        x = []
 
         points = self.get_positions_of_hills(identified_hills)
         for j in range(len(distance)):
-            tocke.append(float(altitude[j]))
-            tocke2.append(float(distance[j]))
+            y.append(float(altitude[j]))
+            x.append(float(distance[j]))
 
             if j == 0:
                 continue
 
             if (j - 1) in points and j in points:
                 plt.plot(
-                    [tocke2[j - 1], tocke2[j]],
-                    [tocke[j - 1], tocke[j]],
+                    [x[j - 1], x[j]],
+                    [y[j - 1], y[j]],
                     color='r',
                     markersize=5,
                 )
             else:
                 plt.plot(
-                    [tocke2[j - 1], tocke2[j]],
-                    [tocke[j - 1], tocke[j]],
+                    [x[j - 1], x[j]],
+                    [y[j - 1], y[j]],
                     color='b',
                     markersize=5,
                 )
