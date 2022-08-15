@@ -1,5 +1,26 @@
 # Changelog
 
+## [Unreleased](https://github.com/firefly-cpp/sport-activities-features/tree/HEAD)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.3...HEAD)
+
+**Merged pull requests:**
+
+- Improvement in Hill Detection algorithm [\#95](https://github.com/firefly-cpp/sport-activities-features/pull/95) ([alenrajsp](https://github.com/alenrajsp))
+- Bugfix and improvement tcx\_manipulation [\#94](https://github.com/firefly-cpp/sport-activities-features/pull/94) ([alenrajsp](https://github.com/alenrajsp))
+
+## [0.3.3](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.3) (2022-08-08)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.2...0.3.3)
+
+## [0.3.2](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.2) (2022-08-02)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.1...0.3.2)
+
+**Closed issues:**
+
+- Tests [\#66](https://github.com/firefly-cpp/sport-activities-features/issues/66)
+
 ## [0.3.1](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.1) (2022-08-01)
 
 [Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.0...0.3.1)
