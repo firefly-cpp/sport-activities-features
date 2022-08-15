@@ -2,8 +2,10 @@ import os
 from tcxreader.tcxreader import TCXTrackPoint, TCXReader
 import numpy as np
 
+from sport_activities_features.file_manipulation import FileManipulation
 
-class TCXFile(object):
+
+class TCXFile(FileManipulation):
     """
     Class for reading TCX files.
     """
@@ -68,7 +70,6 @@ class TCXFile(object):
         speeds = []
         trackpoint: TCXTrackPoint
 
-        invalid_points = []
         for index, trackpoint in enumerate(tcx.trackpoints):
 
             if index != 0:
@@ -117,6 +118,10 @@ class TCXFile(object):
             'speeds': speeds
         }
         return activity
+
+
+
+
 
     def extract_integral_metrics(self, filename: str) -> dict:
         """
