@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sport-activities-features"
-version = "0.3.3"
+version = "0.3.4"
 description = "A minimalistic toolbox for extracting features from sport activity files"
 authors = ["Iztok Fister Jr. <iztok@iztok-jr-fister.eu>", "Luka Lukač <luka.lukac@student.um.si>", "Alen Rajšp <alen.rajsp@.um.si>", "Luka Pečnik <luka.pecnik@student.um.si>", "Dušan Fister <dusan.fister@um.si>"]
 readme = "README.md"
