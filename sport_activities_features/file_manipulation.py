@@ -6,6 +6,20 @@ class FileManipulation():
     Superclass of GPXFile and TCXFile. Contains common methods of both classes, that have the same implementation.
     e.g. (filling missing values)
     """
+    def count_missing_values(self, list):
+        """
+        Counts the number of elements with value Nona.
+        Args:
+            list (list/ndarray): list to check
+        Returns:
+            (int): number of elements with value None in list
+        """
+        count = 0
+        for i in list:
+            if i==None:
+                count+=1
+        return count
+
     def __missing_from_to(self, lst, start):
         """
         Finds to which index the values are missing
@@ -60,7 +74,7 @@ class FileManipulation():
                 if(to+1<count and index-1>0 and time_between<=max_seconds):
                     starting_value = activity[key][index-1]
                     ending_value = activity[key][to+1]
-                    denominator = (to+1)-(index-1)
+                    denominator = (to)-(index)
                     numerator = 1
                     id = 0
                     for i in activity[key][index:to]:
@@ -68,5 +82,6 @@ class FileManipulation():
                         value = self.__set_value_type(activity[key][index-1], value)
                         activity[key][index+id]=value
                         id+=1
+                        numerator+=1
                     index=to
             index+=1
