@@ -213,14 +213,14 @@ class PlotData(object):
             plt
         """
         ax = plt.axes()
-        tocke = []
-        tocke2 = []
+        y = []
+        x = []
 
         for j in range(len(distance)):
-            tocke.append(float(altitude[j]))
-            tocke2.append(float(distance[j]))
+            y.append(float(altitude[j]))
+            x.append(float(distance[j]))
 
-            ax.plot(tocke2[j], tocke[j], "o", color="b", markersize=2)
+            ax.plot(x[j], y[j], "o", color="b", markersize=2)
 
         plt.xticks(fontsize=14)
         plt.title("Topographic map of cycling activity", fontsize=20)
