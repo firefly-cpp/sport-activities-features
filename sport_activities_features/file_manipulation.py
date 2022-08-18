@@ -70,18 +70,22 @@ class FileManipulation():
         while index<count:
             if activity[key][index] == None:
                 to = self.__missing_from_to(activity[key], index)
-                time_between = (activity['timestamps'][to]-activity['timestamps'][index]).total_seconds()
-                if(to+1<count and index-1>0 and time_between<=max_seconds):
-                    starting_value = activity[key][index-1]
-                    ending_value = activity[key][to+1]
-                    denominator = (to)-(index)
-                    numerator = 1
-                    id = 0
-                    for i in activity[key][index:to]:
-                        value = starting_value*((denominator-numerator)/denominator)+ending_value*(numerator/denominator)
-                        value = self.__set_value_type(activity[key][index-1], value)
-                        activity[key][index+id]=value
-                        id+=1
-                        numerator+=1
-                    index=to
+                if to+1 < len(activity[key]):
+                    time_between = (activity['timestamps'][to]-activity['timestamps'][index]).total_seconds()
+                    if(to+1<count and index-1>0 and time_between<=max_seconds):
+                        starting_value = activity[key][index-1]
+                        ending_value = activity[key][to]
+                        denominator = (to+1)-(index-1)
+                        numerator = 1
+                        id = 0
+                        for i in activity[key][index:to]:
+                            value = None
+                            try:
+                                value = starting_value*((denominator-numerator)/denominator)+ending_value*(numerator/denominator)
+                                value = self.__set_value_type(activity[key][index-1], value)
+                            except Exception as e:
+                                print(str(e))
+                            activity[key][index+id]=value
+                            id+=1
+                index=to
             index+=1
