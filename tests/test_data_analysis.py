@@ -1,7 +1,9 @@
 import os
 from unittest import TestCase
-from sport_activities_features import DataAnalysis
-
+try:
+    from sport_activities_features import DataAnalysis
+except BaseException:
+    pass
 
 class TestDataAnalysis(TestCase):
     def setUp(self):
