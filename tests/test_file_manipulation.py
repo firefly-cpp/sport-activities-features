@@ -24,7 +24,7 @@ class TestGPXFile(TestCase):
         self.assertEqual(after, 0)
 
     def test_missing_values_averages(self):
-        predicted_values = [150, 149, 148, 147, 146]
+        predicted_values = [151, 150, 150, 150, 149]
         actual_values = self.data_without_missing["heartrates"][2959:2964]
         for i in range(0,5):
             self.assertEqual(predicted_values[i], actual_values[i])
