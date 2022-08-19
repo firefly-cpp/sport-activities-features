@@ -75,7 +75,7 @@ class FileManipulation():
                     if(to+1<count and index-1>0 and time_between<=max_seconds):
                         starting_value = activity[key][index-1]
                         ending_value = activity[key][to]
-                        denominator = (to+1)-(index-1)
+                        denominator = (to+1)-(index-1)-1
                         numerator = 1
                         id = 0
                         for i in activity[key][index:to]:
@@ -86,6 +86,7 @@ class FileManipulation():
                             except Exception as e:
                                 print(str(e))
                             activity[key][index+id]=value
+                            numerator+=1
                             id+=1
                 index=to
             index+=1
