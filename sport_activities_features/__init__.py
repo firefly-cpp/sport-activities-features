@@ -1,5 +1,9 @@
 from sport_activities_features.classes import StoredSegments
-from sport_activities_features.data_analysis import DataAnalysis
+try:
+    from sport_activities_features.data_analysis import DataAnalysis
+except BaseException:
+    pass
+
 from sport_activities_features.data_extraction import DataExtraction
 from sport_activities_features.data_extraction_from_csv import (
     DataExtractionFromCSV
@@ -34,7 +38,6 @@ from sport_activities_features.interruptions.interruption_processor import (
 
 __all__ = [
     'StoredSegments',
-    'DataAnalysis',
     'DataExtraction',
     'DataExtractionFromCSV',
     'HillIdentification',
