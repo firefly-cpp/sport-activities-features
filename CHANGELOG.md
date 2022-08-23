@@ -1,11 +1,23 @@
 # Changelog
 
-## [Unreleased](https://github.com/firefly-cpp/sport-activities-features/tree/HEAD)
+## [0.3.5](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.5) (2022-08-19)
 
-[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.3...HEAD)
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.4...0.3.5)
 
 **Merged pull requests:**
 
+- Missing values fix [\#101](https://github.com/firefly-cpp/sport-activities-features/pull/101) ([alenrajsp](https://github.com/alenrajsp))
+- Move NiaAML in extras [\#100](https://github.com/firefly-cpp/sport-activities-features/pull/100) ([firefly-cpp](https://github.com/firefly-cpp))
+- Missing values fix [\#99](https://github.com/firefly-cpp/sport-activities-features/pull/99) ([alenrajsp](https://github.com/alenrajsp))
+- Update file\_manipulation tests, update plot\_data names [\#98](https://github.com/firefly-cpp/sport-activities-features/pull/98) ([alenrajsp](https://github.com/alenrajsp))
+
+## [0.3.4](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.4) (2022-08-16)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.3...0.3.4)
+
+**Merged pull requests:**
+
+- New superclass FileManipulation, update HillIdentification, PlotData added feature to fill missing values [\#97](https://github.com/firefly-cpp/sport-activities-features/pull/97) ([alenrajsp](https://github.com/alenrajsp))
 - Improvement in Hill Detection algorithm [\#95](https://github.com/firefly-cpp/sport-activities-features/pull/95) ([alenrajsp](https://github.com/alenrajsp))
 - Bugfix and improvement tcx\_manipulation [\#94](https://github.com/firefly-cpp/sport-activities-features/pull/94) ([alenrajsp](https://github.com/alenrajsp))
 
