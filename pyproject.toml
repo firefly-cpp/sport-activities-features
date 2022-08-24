@@ -6,7 +6,7 @@ authors = ["Iztok Fister Jr. <iztok@iztok-jr-fister.eu>", "Luka Lukač <luka.luk
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">= 3.8.0, < 4.0.0"
+python = ">= 3.9.0, < 4.0.0"
 matplotlib = "^3.3.3"
 geopy = "^2.0.0"
 requests = "^2.25.1"
@@ -17,6 +17,7 @@ dotmap = "^1.3.25"
 numpy = "^1.23.1"
 tcxreader = "^0.4.1"
 pandas = "*"
+niaaml = "^1.1.10"
 
 [tool.poetry.dev-dependencies]
 Sphinx = "^3.5.1"
