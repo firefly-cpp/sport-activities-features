@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.6](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.6) (2022-08-25)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.5...0.3.6)
+
+**Merged pull requests:**
+
+- Add niaaml dependency [\#102](https://github.com/firefly-cpp/sport-activities-features/pull/102) ([firefly-cpp](https://github.com/firefly-cpp))
+
 ## [0.3.5](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.5) (2022-08-19)
 
 [Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.4...0.3.5)
