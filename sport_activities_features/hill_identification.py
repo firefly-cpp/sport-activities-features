@@ -67,6 +67,8 @@ class HillIdentification(object):
         """
         differences = []
         for i in range(1, len(self.altitudes)):
+            if not type(self.altitudes[i]) is float and type(self.altitudes[i]) is float:
+                continue
             differences.append(self.altitudes[i] - self.altitudes[i - 1])
         self.total_ascent = sum(x for x in differences if x > 0)
         self.total_descent = sum(-x for x in differences if x < 0)
