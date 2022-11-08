@@ -113,7 +113,7 @@ class HillIdentification(object):
                         float(length_of_intersection)
                         / float(len(hill_segment))
                     )
-                    if calculation < 0.1: #if less than 10% of nodes repeatž
+                    if calculation < 0.1: #if less than 10% of nodes repeat
 
                         avg_grade = None
 
