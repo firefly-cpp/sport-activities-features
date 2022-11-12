@@ -98,15 +98,24 @@
       "name": "Luka Koprivc",
       "avatar_url": "https://avatars.githubusercontent.com/u/45632449?v=4",
       "profile": "https://github.com/KoprivcLuka",
-       "contributions": [
+      "contributions": [
         "bug"
       ]
-     },
-     {
+    },
+    {
       "login": "garyjellyarms",
       "name": "Nejc Graj",
       "avatar_url": "https://avatars.githubusercontent.com/u/79595804?v=4",
       "profile": "https://github.com/garyjellyarms",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "Mtvrt123",
+      "name": "MlinaricNejc",
+      "avatar_url": "https://avatars.githubusercontent.com/u/50879568?v=4",
+      "profile": "https://github.com/Mtvrt123",
       "contributions": [
         "bug"
       ]
