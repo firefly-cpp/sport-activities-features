@@ -91,6 +91,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "KoprivcLuka",
+      "name": "Luka Koprivc",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45632449?v=4",
+      "profile": "https://github.com/KoprivcLuka",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
