@@ -435,6 +435,7 @@ Thanks go to these wonderful people ([emoji key](https://allcontributors.org/doc
     </tr>
     <tr>
       <td align="center"><a href="https://github.com/KoprivcLuka"><img src="https://avatars.githubusercontent.com/u/45632449?v=4?s=100" width="100px;" alt="Luka Koprivc"/><br /><sub><b>Luka Koprivc</b></sub></a><br /><a href="https://github.com/firefly-cpp/sport-activities-features/issues?q=author%3AKoprivcLuka" title="Bug reports">🐛</a></td>
+      <td align="center"><a href="https://github.com/garyjellyarms"><img src="https://avatars.githubusercontent.com/u/79595804?v=4?s=100" width="100px;" alt="Nejc Graj"/><br /><sub><b>Nejc Graj</b></sub></a><br /><a href="https://github.com/firefly-cpp/sport-activities-features/issues?q=author%3Agaryjellyarms" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>
