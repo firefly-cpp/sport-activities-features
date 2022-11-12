@@ -16,7 +16,8 @@
         "example",
         "doc",
         "ideas",
-        "bug"
+        "bug",
+        "maintenance"
       ]
     },
     {
@@ -88,5 +89,6 @@
   "projectOwner": "firefly-cpp",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitConvention": "angular"
 }
