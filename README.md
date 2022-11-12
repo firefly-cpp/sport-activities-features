@@ -433,6 +433,9 @@ Thanks go to these wonderful people ([emoji key](https://allcontributors.org/doc
       <td align="center"><a href="https://github.com/spelap"><img src="https://avatars.githubusercontent.com/u/19300429?v=4?s=100" width="100px;" alt="spelap"/><br /><sub><b>spelap</b></sub></a><br /><a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=spelap" title="Code">💻</a></td>
       <td align="center"><a href="http://carlosal1015.github.io"><img src="https://avatars.githubusercontent.com/u/21283014?v=4?s=100" width="100px;" alt="Oromion"/><br /><sub><b>Oromion</b></sub></a><br /><a href="#maintenance-carlosal1015" title="Maintenance">🚧</a></td>
     </tr>
+    <tr>
+      <td align="center"><a href="https://github.com/garyjellyarms"><img src="https://avatars.githubusercontent.com/u/79595804?v=4?s=100" width="100px;" alt="Nejc Graj"/><br /><sub><b>Nejc Graj</b></sub></a><br /><a href="https://github.com/firefly-cpp/sport-activities-features/issues?q=author%3Agaryjellyarms" title="Bug reports">🐛</a></td>
+    </tr>
   </tbody>
 </table>
 
