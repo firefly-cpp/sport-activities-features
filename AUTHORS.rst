@@ -11,6 +11,7 @@ Contributors
 ------------
 
 * Dušan Fister
+* Nejc Graj
 * Luka Lukač
 * Luka Pečnik
 * Špela Pečnik
