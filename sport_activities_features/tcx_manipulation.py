@@ -115,7 +115,9 @@ class TCXFile(FileManipulation):
             'total_distance': total_distance,
             'timestamps': timestamps,
             'heartrates': heartrates,
-            'speeds': speeds
+            'speeds': speeds,
+            'start_time' : tcx.start_time
+
         }
         return activity
 
