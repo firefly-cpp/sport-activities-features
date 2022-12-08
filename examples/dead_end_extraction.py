@@ -1,5 +1,5 @@
 """
-This example presents how to extract dead ends from an exercise.
+This example presents how to extract dead ends from an activity.
 """
 import numpy as np
 
