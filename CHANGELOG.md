@@ -1,5 +1,48 @@
 # Changelog
 
+## [Unreleased](https://github.com/firefly-cpp/sport-activities-features/tree/HEAD)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.7.2...HEAD)
+
+**Merged pull requests:**
+
+- Bump certifi from 2022.9.24 to 2022.12.7 [\#117](https://github.com/firefly-cpp/sport-activities-features/pull/117) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Update tcx\_manipulation.py [\#116](https://github.com/firefly-cpp/sport-activities-features/pull/116) ([garyjellyarms](https://github.com/garyjellyarms))
+
+## [0.3.7.2](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.7.2) (2022-11-30)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.7.1...0.3.7.2)
+
+**Closed issues:**
+
+- @all-contributors add [\#108](https://github.com/firefly-cpp/sport-activities-features/issues/108)
+
+**Merged pull requests:**
+
+- Bump pillow from 9.2.0 to 9.3.0 [\#115](https://github.com/firefly-cpp/sport-activities-features/pull/115) ([dependabot[bot]](https://github.com/apps/dependabot))
+- docs: add Mtvrt123 as a contributor for bug [\#114](https://github.com/firefly-cpp/sport-activities-features/pull/114) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add firefly-cpp as a contributor for data [\#113](https://github.com/firefly-cpp/sport-activities-features/pull/113) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add KoprivcLuka as a contributor for bug [\#112](https://github.com/firefly-cpp/sport-activities-features/pull/112) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add garyjellyarms as a contributor for bug [\#111](https://github.com/firefly-cpp/sport-activities-features/pull/111) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add carlosal1015 as a contributor for maintenance [\#110](https://github.com/firefly-cpp/sport-activities-features/pull/110) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- docs: add alenrajsp as a contributor for maintenance [\#109](https://github.com/firefly-cpp/sport-activities-features/pull/109) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+
+## [0.3.7.1](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.7.1) (2022-10-20)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.7...0.3.7.1)
+
+**Merged pull requests:**
+
+- changed none type  bug in identify\_hills [\#105](https://github.com/firefly-cpp/sport-activities-features/pull/105) ([garyjellyarms](https://github.com/garyjellyarms))
+
+## [0.3.7](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.7) (2022-10-09)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.6...0.3.7)
+
+**Merged pull requests:**
+
+- Bump joblib from 1.1.0 to 1.2.0 [\#103](https://github.com/firefly-cpp/sport-activities-features/pull/103) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [0.3.6](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.6) (2022-08-25)
 
 [Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.5...0.3.6)
