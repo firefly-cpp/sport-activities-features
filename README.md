@@ -12,6 +12,7 @@
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/sport-activities-features.svg)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/sport-activities-features.svg)
 [![Downloads](https://pepy.tech/badge/sport-activities-features)](https://pepy.tech/project/sport-activities-features)
+![GitHub repo size](https://img.shields.io/github/repo-size/firefly-cpp/sport-activities-features?style=flat-square)
 [![GitHub license](https://img.shields.io/github/license/firefly-cpp/sport-activities-features.svg)](https://github.com/firefly-cpp/sport-activities-features/blob/master/LICENSE)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/firefly-cpp/sport-activities-features.svg)
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/firefly-cpp/sport-activities-features.svg)](http://isitmaintained.com/project/firefly-cpp/sport-activities-features "Average time to resolve an issue")
