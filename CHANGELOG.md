@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/firefly-cpp/sport-activities-features/tree/HEAD)
+## [0.3.8](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.8) (2022-12-21)
 
-[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.7.2...HEAD)
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.7.2...0.3.8)
 
 **Merged pull requests:**
 
