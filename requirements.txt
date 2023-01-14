@@ -1,6 +1,6 @@
 matplotlib >= 3.3.3
 geopy >= 2.0.0
-tcxreader >= 0.4.1
+tcxreader >= 0.4.4
 requests >= 2.25.1
 overpy >= 0.6
 gpxpy >= 1.4.2
