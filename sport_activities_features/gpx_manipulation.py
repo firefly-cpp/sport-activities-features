@@ -186,8 +186,13 @@ class GPXFile(FileManipulation):
         """
         NAMESPACE = "{http://www.garmin.com/xmlschemas/TrackPointExtension/v1}"
         points = []
-        gpx_file = open(filename)
-        gpx = gpxpy.parse(gpx_file)
+        gpx = None
+        try:
+            gpx_file = open(filename, encoding='utf-8')
+            gpx = gpxpy.parse(gpx_file)
+        except Exception:
+            gpx_file = open(filename)
+            gpx = gpxpy.parse(gpx_file)
         previous_point = None
         for track in gpx.tracks:
             for segment in track.segments:
