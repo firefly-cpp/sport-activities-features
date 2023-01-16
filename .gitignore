@@ -128,4 +128,9 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+# IDE folders
+.idea
 .vscode
+
+# Development and bug testing
+dev
