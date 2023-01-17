@@ -10,12 +10,12 @@ UTF8 formatted Gpx files testing (Thanks Luka Koprivc for donating these test fi
 - cross-country-skiing_activity_1.tcx: an activity that represents cross-country skiing activity
 written in the tcx file
 
-- nodes-test.temp: TODO
+- nodes-test.temp: pickled array of position nodes retrieved from dictionary TcxFile.read_one_file(filename)['positions'] 
 
 - pool_swim-activity_1.tcx: an activity that represents pool swim activity
 written in the tcx file
 
-- riderx3.gpx: TODO
+- riderx3.gpx: an activity that represents a cycling activity written in the gpx file (from [DATASET2](http://iztok-jr-fister.eu/static/css/datasets/Sport.zip))
 
 - sup_activity_1.tcx: an activity that represents sup activity
 written in the tcx file
@@ -30,7 +30,7 @@ written in the tcx file
 - walking_activity_1.tcx: an activity that represents walking activity
 written in the tcx file
 
-- weather_test.temp: TODO
+- weather_test.temp: Pickled object of class WeatherIdentification, contains weather data
 
 # References
 
