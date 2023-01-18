@@ -34,6 +34,6 @@ written in the tcx file
 
 # References
 
-[DATASET1](http://iztok-jr-fister.eu/static/publications/Sport5.zip), [DATASET2](http://iztok-jr-fister.eu/static/css/datasets/Sport.zip)
+[1] [DATASET1](http://iztok-jr-fister.eu/static/publications/Sport5.zip), [DATASET2](http://iztok-jr-fister.eu/static/css/datasets/Sport.zip)
 
-[tcx-test-files repository]https://github.com/firefly-cpp/tcx-test-files
+[2] [tcx-test-files repository](https://github.com/firefly-cpp/tcx-test-files)
