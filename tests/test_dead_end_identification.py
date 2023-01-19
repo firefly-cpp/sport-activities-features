@@ -1,5 +1,6 @@
 import os
 from unittest import TestCase
+import numpy as np
 
 from sport_activities_features.dead_end_identification import (
     DeadEndIdentification
