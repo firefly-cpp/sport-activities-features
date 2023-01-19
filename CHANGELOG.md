@@ -1,5 +1,36 @@
 # Changelog
 
+## [Unreleased](https://github.com/firefly-cpp/sport-activities-features/tree/HEAD)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.9...HEAD)
+
+**Fixed bugs:**
+
+- Read one GPX file produces division by zero [\#83](https://github.com/firefly-cpp/sport-activities-features/issues/83)
+
+**Closed issues:**
+
+- Tcxreader issue [\#123](https://github.com/firefly-cpp/sport-activities-features/issues/123)
+
+**Merged pull requests:**
+
+- New test scenario for dead end identification [\#124](https://github.com/firefly-cpp/sport-activities-features/pull/124) ([firefly-cpp](https://github.com/firefly-cpp))
+
+## [0.3.9](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.9) (2023-01-16)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.8...0.3.9)
+
+**Implemented enhancements:**
+
+- 'classes' module not finished [\#60](https://github.com/firefly-cpp/sport-activities-features/issues/60)
+
+**Merged pull requests:**
+
+- Added tests for UTF8 formatted Gpx files [\#121](https://github.com/firefly-cpp/sport-activities-features/pull/121) ([alenrajsp](https://github.com/alenrajsp))
+- Update gpx\_manipulation.py [\#120](https://github.com/firefly-cpp/sport-activities-features/pull/120) ([alenrajsp](https://github.com/alenrajsp))
+- Add FIT format test file [\#119](https://github.com/firefly-cpp/sport-activities-features/pull/119) ([firefly-cpp](https://github.com/firefly-cpp))
+- Use tcxreader v0.4.4 [\#118](https://github.com/firefly-cpp/sport-activities-features/pull/118) ([firefly-cpp](https://github.com/firefly-cpp))
+
 ## [0.3.8](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.8) (2022-12-21)
 
 [Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.7.2...0.3.8)
