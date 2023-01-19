@@ -15,12 +15,12 @@ class TestDeadEndIdentification(TestCase):
         tcx_file = TCXFile()
         self.activity = tcx_file.read_one_file(filename)
 
-        self.positions = np.array([*activity['positions']])
-        self.distances = np.array([*activity['distances']])
+        self.positions = np.array([*self.activity['positions']])
+        self.distances = np.array([*self.activity['distances']])
 
     def dead_end_test(self):
-        Dead_ends = DeadEndIdentification(positions,
-                                  distances,
+        Dead_ends = DeadEndIdentification(self.positions,
+                                  self.distances,
                                   tolerance_degrees=1,
                                   tolerance_position=2,
                                   minimum_distance=500)
