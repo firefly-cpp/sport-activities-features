@@ -4,7 +4,7 @@ from unittest import TestCase
 from sport_activities_features import TCXFile
 
 
-class TestGPXFile(TestCase):
+class TestTCXFile(TestCase):
     def setUp(self):
         filename = os.path.join(
             os.path.dirname(__file__),
