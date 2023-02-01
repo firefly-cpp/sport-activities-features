@@ -22,6 +22,7 @@ numpy = "^1.23.1"
 tcxreader = "^0.4.4"
 pandas = "*"
 niaaml = "^1.1.10"
+tcx2gpx = "^0.1.4"
 
 [tool.poetry.dev-dependencies]
 Sphinx = "^3.5.1"
