@@ -5,6 +5,7 @@ try:
 except BaseException:
     pass
 
+
 class TestDataAnalysis(TestCase):
     def setUp(self):
         self.__data_analysis = DataAnalysis()

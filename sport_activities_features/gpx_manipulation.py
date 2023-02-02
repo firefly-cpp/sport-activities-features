@@ -7,7 +7,7 @@ from tcxreader.tcxreader import TCXTrackPoint
 from sport_activities_features.file_manipulation import FileManipulation
 
 
-class GPXTrackPoint():
+class GPXTrackPoint:
     """
     Class for saving GPX point records.\n
     Args:
@@ -30,6 +30,7 @@ class GPXTrackPoint():
         speed (float):
             speed in km/h
     """
+
     def __init__(
         self,
         longitude: float = None,
@@ -40,7 +41,7 @@ class GPXTrackPoint():
         hr_value: int = None,
         cadence=None,
         watts: float = None,
-        speed: float = None
+        speed: float = None,
     ) -> None:
         """
         Initialisation method for GPXTrackPoint class.\n
@@ -79,7 +80,7 @@ class GPXTrackPoint():
         gpx: gpxpy.gpx.GPXTrackPoint,
         hr_value: int = None,
         cadence: int = None,
-        watts: int = None
+        watts: int = None,
     ) -> None:
         """
         Helper method for initialising GPXTrackPoint
@@ -109,6 +110,7 @@ class GPXFile(FileManipulation):
     """
     Class for reading GPX files.
     """
+
     def __init__(self) -> None:
         """
         Initialisation method for GPXFile class.
@@ -163,14 +165,15 @@ class GPXFile(FileManipulation):
             self.all_files.append(file)
         return self.all_files
 
-    def read_one_file(self, filename, numpy_array = False):
+    def read_one_file(self, filename, numpy_array=False):
         """
         Method for parsing one GPX file.\n
         Args:
             filename (str):
                 name of the TCX file to be read
             numpy_array (bool):
-                if set to true dictionary lists are transformed into numpy.arrays
+                if set to true dictionary lists are
+                transformed into numpy.arrays
         Returns: activity: {
                     'activity_type': activity_type,
                     'positions': positions,
@@ -188,7 +191,7 @@ class GPXFile(FileManipulation):
         points = []
         gpx = None
         try:
-            gpx_file = open(filename, encoding='utf-8')
+            gpx_file = open(filename, encoding="utf-8")
             gpx = gpxpy.parse(gpx_file)
         except Exception:
             gpx_file = open(filename)
@@ -201,27 +204,43 @@ class GPXFile(FileManipulation):
                     trackpoint.from_GPX(point_gpx)
                     if len(point_gpx.extensions) > 0:
                         for ext in point_gpx.extensions[0]:
-                            if ext.tag == f'{NAMESPACE}cad':
+                            if ext.tag == f"{NAMESPACE}cad":
                                 trackpoint.cadence = int(ext.text)
-                            elif ext.tag == f'{NAMESPACE}hr':
+                            elif ext.tag == f"{NAMESPACE}hr":
                                 trackpoint.hr_value = int(ext.text)
                     points.append(trackpoint)
-                    if previous_point == None:
+                    if previous_point is None:
                         trackpoint.distance = 0
                         trackpoint.speed = 0
                     else:
-                        trackpoint.distance = previous_point.distance + geopy.distance.geodesic(
-                            (trackpoint.latitude, trackpoint.longitude),
-                            (previous_point.latitude, previous_point.longitude)).m
-                        travelled = trackpoint.distance - previous_point.distance
-                        if trackpoint.time!=None:
-                            seconds_between = (trackpoint.time - previous_point.time).total_seconds()
-                            if seconds_between==0: # If two same timestamps, speed of previous timestamp is taken
-                                trackpoint.speed=previous_point.speed
+                        trackpoint.distance = (
+                            previous_point.distance
+                            + geopy.distance.geodesic(
+                                (trackpoint.latitude, trackpoint.longitude),
+                                (
+                                    previous_point.latitude,
+                                    previous_point.longitude,
+                                ),
+                            ).m
+                        )
+                        travelled = (
+                            trackpoint.distance - previous_point.distance
+                        )
+                        if trackpoint.time is not None:
+                            seconds_between = (
+                                trackpoint.time - previous_point.time
+                            ).total_seconds()
+                            if (
+                                seconds_between == 0
+                            ):  # If two same timestamps, speed
+                                # of previous timestamp is taken
+                                trackpoint.speed = previous_point.speed
                             else:
-                                trackpoint.speed = travelled * 3.6 / seconds_between
+                                trackpoint.speed = (
+                                    travelled * 3.6 / seconds_between
+                                )
                         else:
-                            trackpoint.speed=0
+                            trackpoint.speed = 0
                     previous_point = trackpoint
 
         gpx_file.close()
@@ -251,14 +270,13 @@ class GPXFile(FileManipulation):
         except BaseException:
             total_distance = None
 
-        if numpy_array == True:
+        if numpy_array is True:
             positions = np.array(positions)
             altitudes = np.array(altitudes)
             distances = np.array(distances)
             timestamps = np.array(timestamps)
             heartrates = np.array(heartrates)
             speeds = np.array(speeds)
-
 
         activity = {
             "activity_type": activity_type,
@@ -268,7 +286,7 @@ class GPXFile(FileManipulation):
             "total_distance": total_distance,
             "timestamps": timestamps,
             "heartrates": heartrates,
-            "speeds": speeds
+            "speeds": speeds,
         }
 
         return activity
@@ -300,12 +318,12 @@ class GPXFile(FileManipulation):
             activity_type = None
 
         try:
-            distance = gpx['total_distance']
+            distance = gpx["total_distance"]
         except BaseException:
             distance = None
 
         try:
-            duration = gpx['timestamps'][-1] - gpx['timestamps'][0]
+            duration = gpx["timestamps"][-1] - gpx["timestamps"][0]
         except BaseException:
             duration = None
 
@@ -315,42 +333,42 @@ class GPXFile(FileManipulation):
             calories = None
 
         try:
-            hr_avg = sum(gpx['heartrates']) / len(gpx['heartrates'])
+            hr_avg = sum(gpx["heartrates"]) / len(gpx["heartrates"])
         except BaseException:
             hr_avg = None
 
         try:
-            hr_max = max(gpx['heartrates'])
+            hr_max = max(gpx["heartrates"])
         except BaseException:
             hr_max = None
 
         try:
-            hr_min = min(gpx['heartrates'])
+            hr_min = min(gpx["heartrates"])
         except BaseException:
             hr_min = None
 
         try:
-            altitude_avg = sum(gpx['altitudes']) / len(gpx['altitudes'])
+            altitude_avg = sum(gpx["altitudes"]) / len(gpx["altitudes"])
         except BaseException:
             altitude_avg = None
 
         try:
-            altitude_max = max(gpx['altitudes'])
+            altitude_max = max(gpx["altitudes"])
         except BaseException:
             altitude_max = None
 
         try:
-            altitude_min = min(gpx['altitudes'])
+            altitude_min = min(gpx["altitudes"])
         except BaseException:
             altitude_min = None
 
         try:
-            ascent = self.__ascent(gpx['altitudes'])
+            ascent = self.__ascent(gpx["altitudes"])
         except BaseException:
             ascent = None
 
         try:
-            descent = self.__descent(gpx['altitudes'])
+            descent = self.__descent(gpx["altitudes"])
         except BaseException:
             descent = None
 

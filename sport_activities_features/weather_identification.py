@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 import requests
 
 from sport_activities_features.weather_objects.AverageWeather import (
-    AverageWeather
+    AverageWeather,
 )
 from sport_activities_features.weather_objects.Weather import Weather
 
@@ -27,12 +27,13 @@ class WeatherIdentification(object):
     Warnings:
         vc_api_key: api key is required
     """
+
     def __init__(
         self,
         locations: list,
         timestamps: list,
         vc_api_key: str,
-        unit_group='metric'
+        unit_group="metric",
     ) -> None:
         """
         Initialisation method for WeatherIdentification class.\n
@@ -75,18 +76,14 @@ class WeatherIdentification(object):
                 time = self.timestamps[index]
                 location = (self.locations[index][0], self.locations[index][1])
                 weather_response = self.__weather_api_call(
-                    time,
-                    location,
-                    index
+                    time, location, index
                 )
                 weather_list.append(weather_response)
             elif time + timedelta(minutes=time_delta) < self.timestamps[index]:
                 time = self.timestamps[index]
                 location = (self.locations[index][0], self.locations[index][1])
                 weather_response = self.__weather_api_call(
-                    time,
-                    location,
-                    index
+                    time, location, index
                 )
                 weather_list.append(weather_response)
 
@@ -94,19 +91,14 @@ class WeatherIdentification(object):
                 time = self.timestamps[index] + timedelta(minutes=60)
                 location = (self.locations[index][0], self.locations[index][1])
                 weather_response = self.__weather_api_call(
-                    time,
-                    location,
-                    index
+                    time, location, index
                 )
                 weather_list.append(weather_response)
 
         return weather_list
 
     def __weather_api_call(
-        self,
-        time: datetime,
-        location: tuple,
-        index: int
+        self, time: datetime, location: tuple, index: int
     ) -> Weather:
         """
         Internal method for making a REST request to the VisualCrossing API.\n
@@ -123,61 +115,61 @@ class WeatherIdentification(object):
         Returns:
             Weather(): object of the weather at specified time and location.
         """
-        URL = ('https://weather.visualcrossing.com/VisualCrossingWebServices'
-               + '/rest/services/weatherdata/history?')
-        time_start = time.strftime('%Y-%m-%dT%H:%M:%S')
+        URL = (
+            "https://weather.visualcrossing.com/VisualCrossingWebServices"
+            + "/rest/services/weatherdata/history?"
+        )
+        time_start = time.strftime("%Y-%m-%dT%H:%M:%S")
         # time_end = (time + timedelta(hours=1, seconds=0)
         # ).strftime('%Y-%m-%dT%H:%M:%S')
         location0_str = "{:.5f}".format(location[0])
         location1_str = "{:.5f}".format(location[1])
 
         PARAMS = {
-            'aggregateHours': 1,
-            'combinationMethod': 'aggregate',
-            'startDateTime': time_start,
-            'endDateTime': time_start,
-            'maxStations': -1,
-            'maxDistance': -1,
-            'contentType': 'json',
-            'unitGroup': self.unit_group,
-            'locationMode': 'single',
-            'key': self.vc_api_key,
-            'dataElements': 'all',
-            'locations': f'{location0_str}, {location1_str}'
+            "aggregateHours": 1,
+            "combinationMethod": "aggregate",
+            "startDateTime": time_start,
+            "endDateTime": time_start,
+            "maxStations": -1,
+            "maxDistance": -1,
+            "contentType": "json",
+            "unitGroup": self.unit_group,
+            "locationMode": "single",
+            "key": self.vc_api_key,
+            "dataElements": "all",
+            "locations": f"{location0_str}, {location1_str}",
         }
         # sending get request and saving the response as response object
         r = requests.get(url=URL, params=PARAMS)
         # extracting data in json format
         response_data = r.json()
-        data_values = response_data['location']['values'][0]
+        data_values = response_data["location"]["values"][0]
         return Weather(
-            temperature=data_values['temp'],
-            maximum_temperature=data_values['maxt'],
-            minimum_temperature=data_values['mint'],
-            wind_chill=data_values['windchill'],
-            heat_index=data_values['heatindex'],
-            precipitation=data_values['precip'],
-            snow_depth=data_values['snowdepth'],
-            wind_speed=data_values['wspd'],
-            wind_direction=data_values['wdir'],
-            sea_level_pressure=data_values['sealevelpressure'],
-            visibility=data_values['visibility'],
-            cloud_cover=data_values['cloudcover'],
-            dew_point=data_values['dew'],
-            solar_radiation=data_values['solarradiation'],
-            relative_humidity=data_values['humidity'],
-            weather_type=data_values['weathertype'],
-            conditions=data_values['conditions'],
+            temperature=data_values["temp"],
+            maximum_temperature=data_values["maxt"],
+            minimum_temperature=data_values["mint"],
+            wind_chill=data_values["windchill"],
+            heat_index=data_values["heatindex"],
+            precipitation=data_values["precip"],
+            snow_depth=data_values["snowdepth"],
+            wind_speed=data_values["wspd"],
+            wind_direction=data_values["wdir"],
+            sea_level_pressure=data_values["sealevelpressure"],
+            visibility=data_values["visibility"],
+            cloud_cover=data_values["cloudcover"],
+            dew_point=data_values["dew"],
+            solar_radiation=data_values["solarradiation"],
+            relative_humidity=data_values["humidity"],
+            weather_type=data_values["weathertype"],
+            conditions=data_values["conditions"],
             date=time,
             location=location,
-            index=index
+            index=index,
         )
 
     @classmethod
     def __find_nearest_weathers(
-        self,
-        timestamp: datetime,
-        weather_list: list
+        self, timestamp: datetime, weather_list: list
     ) -> dict:
         """
         Method finds the two nearest (before and after) Weather()
@@ -199,13 +191,16 @@ class WeatherIdentification(object):
                   and the identified weather objects.
         """
 
-        if timestamp.tzinfo== None: # If timestamp is naive (tzinfo = None), make it so that it is the same as weather_list timestamp.
+        if (
+            timestamp.tzinfo is None
+        ):  # If timestamp is naive (tzinfo = None),
+            # make it so that it is the same as weather_list timestamp.
             timestamp = timestamp.replace(tzinfo=weather_list[0].date.tzinfo)
 
         beforeWeathers = list(
             filter(
                 lambda x: timestamp >= x.date - timedelta(minutes=1),
-                weather_list
+                weather_list,
             )
         )
         afterWeathers = list(
@@ -232,14 +227,14 @@ class WeatherIdentification(object):
             if afterSeconds > t.seconds:
                 after = aw
                 afterSeconds = t.seconds
-        return {'before': {'weather': before, 'seconds': beforeSeconds},
-                'after': {'weather': after, 'seconds': afterSeconds}}
+        return {
+            "before": {"weather": before, "seconds": beforeSeconds},
+            "after": {"weather": after, "seconds": afterSeconds},
+        }
 
     @classmethod
     def get_average_weather_data(
-        self,
-        timestamps: list,
-        weather: list
+        self, timestamps: list, weather: list
     ) -> list:
         """
         Method generates average weather for each of the timestamps
@@ -259,19 +254,18 @@ class WeatherIdentification(object):
 
         for timestamp in timestamps:
             before_after = self.__find_nearest_weathers(
-                timestamp,
-                weather_list
+                timestamp, weather_list
             )
-            before = before_after['before']
-            after = before_after['after']
+            before = before_after["before"]
+            after = before_after["after"]
             # Weight depends on the proximity to both of the nearest
             # Weather objects so that weather can be averaged out.
-            weight_a = 1 - (before['seconds']
-                            / (after['seconds'] + before['seconds']))
-            avg_weather_at_timestamp = AverageWeather(before['weather'],
-                                                      after['weather'],
-                                                      weight_a=weight_a
-                                                      )
+            weight_a = 1 - (
+                before["seconds"] / (after["seconds"] + before["seconds"])
+            )
+            avg_weather_at_timestamp = AverageWeather(
+                before["weather"], after["weather"], weight_a=weight_a
+            )
             extended_weather_list.append(avg_weather_at_timestamp)
 
         return extended_weather_list

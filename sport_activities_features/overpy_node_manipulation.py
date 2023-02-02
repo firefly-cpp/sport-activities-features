@@ -102,7 +102,7 @@ class OverpyNodesReader(object):
                     flat_distance ** 2
                     + abs(altitudes[i] - altitudes[i - 1]) ** 2
                 )
-                if(cumulative_distances):
+                if cumulative_distances:
                     distances.append(euclidean_distance+distances[-1])
                 else:
                     distances.append(euclidean_distance)
