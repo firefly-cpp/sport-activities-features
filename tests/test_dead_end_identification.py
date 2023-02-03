@@ -20,10 +20,10 @@ class TestDeadEndIdentification(TestCase):
 
     def dead_end_test(self):
         Dead_ends = DeadEndIdentification(self.positions,
-                                  self.distances,
-                                  tolerance_degrees=1,
-                                  tolerance_position=2,
-                                  minimum_distance=500)
+                                          self.distances,
+                                          tolerance_degrees=1,
+                                          tolerance_position=2,
+                                          minimum_distance=500)
         result = Dead_ends.identify_dead_ends()
 
         self.assertEqual(result, None)

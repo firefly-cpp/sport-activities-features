@@ -7,8 +7,10 @@ import numpy
 
 class GradeUnit(Enum):
     """
-    Enum for selecting the type of data we want returned in hill slope calculation (degrees / radians or gradient (%))
+    Enum for selecting the type of data we want returned in
+    hill slope calculation (degrees / radians or gradient (%))
     """
+
     DEGREES = 1
     RADIANS = 2
     PERCENTS = 3
@@ -25,7 +27,13 @@ class HillIdentification(object):
         distances (list):
             optional, allows calculation of hill grades (steepnes)
     """
-    def __init__(self, altitudes: List[float], distances: List[float] = None, ascent_threshold: float = 30) -> None:
+
+    def __init__(
+        self,
+        altitudes: List[float],
+        distances: List[float] = None,
+        ascent_threshold: float = 30,
+    ) -> None:
         """
         Initialisation method of HillIdentification class.\n
         Args:
@@ -34,16 +42,17 @@ class HillIdentification(object):
             ascent_threshold (float):
                 parameter that defines the hill (hill >= ascent_threshold)
         """
-        self.altitudes:List[float] = altitudes
-        self.distances:List[float] = distances
-        self.ascent_threshold:float = ascent_threshold
-        self.identified_hills:List[StoredSegments] = []
-        self.total_ascent:float = 0
-        self.total_descent:float = 0
+        self.altitudes: List[float] = altitudes
+        self.distances: List[float] = distances
+        self.ascent_threshold: float = ascent_threshold
+        self.identified_hills: List[StoredSegments] = []
+        self.total_ascent: float = 0
+        self.total_descent: float = 0
 
-    def return_hill(self, ascent:float, ascent_threshold: float = 30) -> bool:
+    def return_hill(self, ascent: float, ascent_threshold: float = 30) -> bool:
         """
-        Method for identifying whether the hill is steep enough to be identified as a hill.\n
+        Method for identifying whether the hill is steep enough
+        to be identified as a hill.\n
         Args:
             ascent (float):
                 actual ascent of the hill
@@ -67,7 +76,10 @@ class HillIdentification(object):
         """
         differences = []
         for i in range(1, len(self.altitudes)):
-            if not type(self.altitudes[i]) is float and type(self.altitudes[i]) is float:
+            if (
+                not type(self.altitudes[i]) is float
+                and type(self.altitudes[i]) is float
+            ):
                 continue
             differences.append(self.altitudes[i] - self.altitudes[i - 1])
         self.total_ascent = sum(x for x in differences if x > 0)
@@ -102,7 +114,7 @@ class HillIdentification(object):
                     break
 
             if self.return_hill(total_ascent):
-                if len(hill_segment) < 3: #Nothing happens...
+                if len(hill_segment) < 3:  # Nothing happens...
                     hill_segment = selected_IDs
                     hill_segment_ascent = total_ascent
                 else:
@@ -113,21 +125,30 @@ class HillIdentification(object):
                         float(length_of_intersection)
                         / float(len(hill_segment))
                     )
-                    if calculation < 0.1: #if less than 10% of nodes repeat
+                    if calculation < 0.1:  # if less than 10% of nodes repeat
 
-                        avg_grade = None
-
-                        is_a_list = isinstance(self.distances, numpy.ndarray) or isinstance(self.distances, list)
+                        is_a_list = isinstance(
+                            self.distances, numpy.ndarray
+                        ) or isinstance(self.distances, list)
                         hill_segment_grade = None
-                        if is_a_list and len(self.distances) == len(self.altitudes):
+                        if is_a_list and len(self.distances) == len(
+                            self.altitudes
+                        ):
                             end_distance = self.distances[hill_segment[-1]]
                             start_distance = self.distances[hill_segment[0]]
-                            hill_segment_distance = end_distance - start_distance
-                            hill_segment_grade = self.__calculate_hill_grade(hill_segment_distance, hill_segment_ascent)
-
+                            hill_segment_distance = (
+                                end_distance - start_distance
+                            )
+                            hill_segment_grade = self.__calculate_hill_grade(
+                                hill_segment_distance, hill_segment_ascent
+                            )
 
                         self.identified_hills.append(
-                            StoredSegments(hill_segment, hill_segment_ascent, hill_segment_grade)
+                            StoredSegments(
+                                hill_segment,
+                                hill_segment_ascent,
+                                hill_segment_grade,
+                            )
                         )
                         hill_segment = []
                         hill_segment_ascent = 0.0
@@ -143,8 +164,12 @@ class HillIdentification(object):
             hills.append(self.identified_hills[i].segment)
         return hills
 
-
-    def __calculate_hill_grade(self, distance: float, ascent: float, unit:GradeUnit = GradeUnit.DEGREES) -> float:
+    def __calculate_hill_grade(
+        self,
+        distance: float,
+        ascent: float,
+        unit: GradeUnit = GradeUnit.DEGREES,
+    ) -> float:
         """
         Calculates angle (grade) of the hill from distance and ascent
         Args:
@@ -162,6 +187,6 @@ class HillIdentification(object):
         elif unit == GradeUnit.DEGREES:
             return math.degrees(math.atan(ascent / distance))
         elif unit == GradeUnit.PERCENTS:
-            return ascent/distance
+            return ascent / distance
         else:
             raise Exception("Invalid GradeUnit")

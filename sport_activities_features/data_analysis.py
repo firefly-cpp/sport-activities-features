@@ -1,11 +1,11 @@
-try: 
+from numpy import uint
+from typing import Iterable
+
+try:
     from niaaml import Pipeline, PipelineOptimizer
     from niaaml.data import CSVDataReader
 except BaseException:
     pass
-
-from numpy import uint
-from typing import Iterable
 
 
 class DataAnalysis(object):

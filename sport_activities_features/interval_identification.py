@@ -19,13 +19,14 @@ class IntervalIdentificationByPower(object):
         minimum_time (int):
             minimum time of an interval given in seconds
     """
+
     def __init__(
         self,
         distances: list,
         timestamps: list,
         altitudes: list,
         mass: int,
-        minimum_time: int = 30
+        minimum_time: int = 30,
     ) -> None:
         """
         Initialisation method for IntervalIdentificationByPower class.\n
@@ -83,7 +84,7 @@ class IntervalIdentificationByPower(object):
             # Calculation of the flat distance
             # (according to the Pythagoras' theorem)
             flat_distance = math.sqrt(
-                abs(distance ** 2 - altitude_change ** 2)
+                abs(distance**2 - altitude_change**2)
             )
 
             if flat_distance == 0.0:
@@ -91,9 +92,7 @@ class IntervalIdentificationByPower(object):
             else:
                 # Gradient in percent is calculated as height
                 # change divided by flat distance
-                gradient = (
-                    altitude_change / flat_distance
-                )
+                gradient = altitude_change / flat_distance
 
                 # Average gravitational force is 9,81 m/s**2, if
                 # multiplied by mass, speed and gradient, the
@@ -201,13 +200,14 @@ class IntervalIdentificationByPower(object):
         number_of_intervals = len(self.intervals)  # Number of intervals
 
         list_duration = [
-            (self.timestamps[item[-1]] - self.timestamps[item[0]]
-             ).total_seconds() for item in self.intervals
+            (
+                self.timestamps[item[-1]] - self.timestamps[item[0]]
+            ).total_seconds()
+            for item in self.intervals
         ]
         min_duration_interval = min(list_duration)
         max_duration_interval = max(list_duration)
-        avg_duration_interval = (sum(list_duration)
-                                 / len(list_duration))
+        avg_duration_interval = sum(list_duration) / len(list_duration)
 
         list_distance = [
             self.distances[item[-1]] - self.distances[item[0]]
@@ -221,13 +221,13 @@ class IntervalIdentificationByPower(object):
 
         # Building a dictionary
         data = {
-            'number_of_intervals': number_of_intervals,
-            'min_duration': min_duration_interval,
-            'max_duration': max_duration_interval,
-            'avg_duration': avg_duration_interval,
-            'min_distance': min_distance_interval,
-            'max_distance': max_distance_interval,
-            'avg_distance': avg_distance_interval,
+            "number_of_intervals": number_of_intervals,
+            "min_duration": min_duration_interval,
+            "max_duration": max_duration_interval,
+            "avg_duration": avg_duration_interval,
+            "min_distance": min_distance_interval,
+            "max_distance": max_distance_interval,
+            "avg_distance": avg_distance_interval,
         }
         return data
 
@@ -255,13 +255,14 @@ class IntervalIdentificationByHeartRate(object):
         minimum_time (int):
             minimum time of an interval given in seconds
     """
+
     def __init__(
         self,
         distances: list,
         timestamps: list,
         altitudes: list,
         heart_rates: list,
-        minimum_time: int = 30
+        minimum_time: int = 30,
     ) -> None:
         """
         Initialisation method for IntervalIdentificationByHeartRate class.\n
@@ -294,20 +295,24 @@ class IntervalIdentificationByHeartRate(object):
         i = 0
         while i < len(self.heart_rates):
             # If the value is number, it is added to sum
-            if isinstance(self.heart_rates[i], int) or isinstance(self.heart_rates[i], numpy.int32):
+            if isinstance(self.heart_rates[i], int) or isinstance(
+                self.heart_rates[i], numpy.int32
+            ):
                 sum_heartrate += self.heart_rates[i]
             else:
                 j = i + 1
                 while True:
-                    if isinstance(self.heart_rates[j], int) or isinstance(self.heart_rates[j], numpy.int32):
+                    if isinstance(self.heart_rates[j], int) or isinstance(
+                        self.heart_rates[j], numpy.int32
+                    ):
                         # If more than 10 seconds pass without a heart
                         # rate, the intervals cannot be identified
                         if (
                             self.timestamps[j] - self.timestamps[i - 1]
                         ).total_seconds() > 10:
                             raise ValueError(
-                                'Input heart rates are not complete,',
-                                'thus intervals cannot be identified.'
+                                "Input heart rates are not complete,",
+                                "thus intervals cannot be identified.",
                             )
                         else:
                             sum_heartrate += (
@@ -335,9 +340,9 @@ class IntervalIdentificationByHeartRate(object):
             # If the heart rate at i is greater than the average
             # heart rate, it belongs to an interval
             if (
-                (isinstance(self.heart_rates[i], int) or isinstance(self.heart_rates[i], numpy.int32))
-                and self.heart_rates[i] > average_heartrate
-            ):
+                isinstance(self.heart_rates[i], int)
+                or isinstance(self.heart_rates[i], numpy.int32)
+            ) and self.heart_rates[i] > average_heartrate:
                 interval.append(i)
             else:
                 if interval:
@@ -358,9 +363,9 @@ class IntervalIdentificationByHeartRate(object):
 
             try:
                 average_heartrate_between = sum(
-                    self.heart_rates[last_element + 1:first_element]
+                    self.heart_rates[last_element + 1: first_element]
                 ) / len(
-                    self.heart_rates[last_element + 1:first_element]
+                    self.heart_rates[last_element + 1: first_element]
                 )  # Calculating the average heart rate between two intervals
             except Exception:
                 pass
@@ -433,9 +438,9 @@ class IntervalIdentificationByHeartRate(object):
             return
 
         list_duration = [
-            (self.timestamps[item[-1]]
-             - self.timestamps[item[0]]
-             ).total_seconds()
+            (
+                self.timestamps[item[-1]] - self.timestamps[item[0]]
+            ).total_seconds()
             for item in self.intervals
         ]  # Time of every interval in list
         min_duration_interval = min(list_duration)
@@ -455,8 +460,8 @@ class IntervalIdentificationByHeartRate(object):
         )  # Average distance of an interval
 
         list_heartrate = [
-            sum(self.heart_rates[item[0]:item[-1] + 1])
-            / len(self.heart_rates[item[0]:item[-1] + 1])
+            sum(self.heart_rates[item[0]: item[-1] + 1])
+            / len(self.heart_rates[item[0]: item[-1] + 1])
             for item in self.intervals
         ]  # Heart rate of every interval in list
         min_heartrate_interval = min(
@@ -471,16 +476,16 @@ class IntervalIdentificationByHeartRate(object):
 
         # Building a dictionary
         data = {
-            'number_of_intervals': number_of_intervals,
-            'min_duration_interval': min_duration_interval,
-            'max_duration_interval': max_duration_interval,
-            'avg_duration_interval': avg_duration_interval,
-            'min_distance_interval': min_distance_interval,
-            'max_distance_interval': max_distance_interval,
-            'avg_distance_interval': avg_distance_interval,
-            'min_heartrate_interval': min_heartrate_interval,
-            'max_heartrate_interval': max_heartrate_interval,
-            'avg_heartrate_interval': avg_heartrate_interval,
+            "number_of_intervals": number_of_intervals,
+            "min_duration_interval": min_duration_interval,
+            "max_duration_interval": max_duration_interval,
+            "avg_duration_interval": avg_duration_interval,
+            "min_distance_interval": min_distance_interval,
+            "max_distance_interval": max_distance_interval,
+            "avg_distance_interval": avg_distance_interval,
+            "min_heartrate_interval": min_heartrate_interval,
+            "max_heartrate_interval": max_heartrate_interval,
+            "avg_heartrate_interval": avg_heartrate_interval,
         }
 
         return data

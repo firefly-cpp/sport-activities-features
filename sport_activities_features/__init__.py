@@ -1,8 +1,4 @@
 from sport_activities_features.classes import StoredSegments
-try:
-    from sport_activities_features.data_analysis import DataAnalysis
-except BaseException:
-    pass
 
 from sport_activities_features.data_extraction import DataExtraction
 from sport_activities_features.data_extraction_from_csv import (
@@ -10,7 +6,7 @@ from sport_activities_features.data_extraction_from_csv import (
 )
 from sport_activities_features.hill_identification import HillIdentification
 from sport_activities_features.interval_identification import (
-    IntervalIdentificationByPower,
+    IntervalIdentificationByPower, IntervalIdentificationByHeartRate,
 )
 from sport_activities_features.plot_data import PlotData
 from sport_activities_features.tcx_manipulation import TCXFile
