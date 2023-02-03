@@ -126,7 +126,9 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/33880044?v=4",
       "profile": "https://github.com/KukovecRok",
       "contributions": [
-        "code"
+        "code",
+        "bug",
+        "test"
       ]
     }
   ],
