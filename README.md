@@ -39,7 +39,8 @@ The sport-activities-features framework is compatible with TCX & GPX activity fi
 - parsing the historical weather data from an external service,
 - extracting the integral metrics of the activity inside the area given with coordinates (distance, heart rate, speed) ([see example](examples/extract_data_inside_area.py)),
 - extracting the activities from CSV file(s) and randomly selecting the specific number of activities ([see example](examples/extract_random_activities_from_csv.py)),
-- extracting the dead ends,
+- extracting the dead ends ([see example](examples/dead_end_extraction.py)),
+- converting TCX to GPX ([see example](examples/convert_tcx_to_gpx.py)),
 - and much more.
 
 The framework comes with two (testing) benchmark datasets, which are freely available to download from: [DATASET1](http://iztok-jr-fister.eu/static/publications/Sport5.zip), [DATASET2](http://iztok-jr-fister.eu/static/css/datasets/Sport.zip).
