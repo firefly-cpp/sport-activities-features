@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/firefly-cpp/sport-activities-features/tree/HEAD)
+## [0.3.10](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.10) (2023-02-20)
 
-[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.9...HEAD)
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.9...0.3.10)
 
 **Fixed bugs:**
 
@@ -11,9 +11,15 @@
 **Closed issues:**
 
 - Tcxreader issue [\#123](https://github.com/firefly-cpp/sport-activities-features/issues/123)
+- Test scenario for dead end detection is missing [\#122](https://github.com/firefly-cpp/sport-activities-features/issues/122)
+- Convert gpx to tcx and vice-versa [\#89](https://github.com/firefly-cpp/sport-activities-features/issues/89)
 
 **Merged pull requests:**
 
+- docs: add KukovecRok as a contributor for bug, and test [\#130](https://github.com/firefly-cpp/sport-activities-features/pull/130) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- Multiple issues fixed.  [\#129](https://github.com/firefly-cpp/sport-activities-features/pull/129) ([KukovecRok](https://github.com/KukovecRok))
+- docs: add KukovecRok as a contributor for code [\#128](https://github.com/firefly-cpp/sport-activities-features/pull/128) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- update example [\#127](https://github.com/firefly-cpp/sport-activities-features/pull/127) ([KukovecRok](https://github.com/KukovecRok))
 - New test scenario for dead end identification [\#124](https://github.com/firefly-cpp/sport-activities-features/pull/124) ([firefly-cpp](https://github.com/firefly-cpp))
 
 ## [0.3.9](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.9) (2023-01-16)
