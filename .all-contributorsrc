@@ -128,7 +128,8 @@
       "contributions": [
         "code",
         "bug",
-        "test"
+        "test",
+        "example"
       ]
     }
   ],
