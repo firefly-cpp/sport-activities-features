@@ -14,10 +14,8 @@ from sport_activities_features import (
 tcx_file = TCXFile()
 activity = tcx_file.read_one_file('../datasets/15.tcx')
 
-activity = tcx_file.extract_integral_metrics('../datasets/15.tcx')
 timestamps = activity['timestamps']
 heart_rates = activity['heartrates']
-
 
 # Calculating Banister TRIMP.
 duration = (timestamps[-1] - timestamps[0]).seconds
