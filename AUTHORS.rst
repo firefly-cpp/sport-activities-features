@@ -7,7 +7,7 @@ Maintainers
 
 * Iztok Fister, Jr.
 
-Contributors
+Contributors (alphabetically)
 ------------
 
 * Dušan Fister
