@@ -8,7 +8,7 @@ Maintainers
 * Iztok Fister, Jr.
 
 Contributors (alphabetically)
-------------
+-----------------------------
 
 * Dušan Fister
 * Nejc Graj
