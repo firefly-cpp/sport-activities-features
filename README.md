@@ -10,6 +10,7 @@
 
 [![PyPI Version](https://img.shields.io/pypi/v/sport-activities-features.svg)](https://pypi.python.org/pypi/sport-activities-features)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/sport-activities-features.svg)
+[![Documentation Status](https://readthedocs.org/projects/sport-activities-features/badge/?version=latest)](https://sport-activities-features.readthedocs.io/en/latest/?badge=latest)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/sport-activities-features.svg)
 [![Downloads](https://pepy.tech/badge/sport-activities-features)](https://pepy.tech/project/sport-activities-features)
 ![GitHub repo size](https://img.shields.io/github/repo-size/firefly-cpp/sport-activities-features?style=flat-square)
