@@ -24,6 +24,12 @@ To install sport-activities-features on Arch Linux, please use an `AUR helper <h
 
     yay -Syyu python-sport-activities-features
 
+To install sport-activities-features on Alpine, use:
+
+.. code:: bash
+
+    apk add py3-sport-activities-features
+
 After the successful installation you are ready to run your first example.
 
 Examples

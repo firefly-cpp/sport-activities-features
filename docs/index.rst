@@ -19,16 +19,17 @@ Detailed insights
 -----------------------
 The sport-activities-features framework is compatible with TCX & GPX activity files and `Overpass API <https://wiki.openstreetmap.org/wiki/Overpass_API>`_ nodes. Current version withholds (but is not limited to) the following functions:
 
-- extracting integral metrics, such as total distance, total duration, calories (`see example <../examples/integral_metrics_extraction.py>`_),
-- extracting topographic features, such as number of hills, the average altitude of identified hills, a total distance of identified hills, climbing ratio, the average ascent of hills, total ascent, total descent (`see example <../examples/hill_data_extraction.py>`_),
-- plotting identified hills (`see example <../examples/draw_map_with_identified_hills.py>`_),
+- extracting integral metrics, such as total distance, total duration, calories (`see example <https://github.com/firefly-cpp/sport-activities-features/blob/main/examples/integral_metrics_extraction.py>`_),
+- extracting topographic features, such as number of hills, the average altitude of identified hills, a total distance of identified hills, climbing ratio, the average ascent of hills, total ascent, total descent (`see example <https://github.com/firefly-cpp/sport-activities-features/blob/main/examples/hill_data_extraction.py>`_),
+- plotting identified hills (`see example <https://github.com/firefly-cpp/sport-activities-features/blob/main/examples/draw_map_with_identified_hills.py>`_),
 - extracting the intervals, such as number of intervals, maximum/minimum/average duration of intervals, maximum/minimum/average distance of intervals, maximum/minimum/average heart rate during intervals,
-- plotting the identified intervals (`see example <../examples/draw_map_with_identified_intervals.py>`_),
-- calculating the training loads, such as Bannister TRIMP, Lucia TRIMP (`see example <../examples/integral_metrics_extraction.py>`_),
+- plotting the identified intervals (`see example <.https://github.com/firefly-cpp/sport-activities-features/blob/main/examples/draw_map_with_identified_intervals.py>`_),
+- calculating the training loads, such as Bannister TRIMP, Lucia TRIMP (`see example <https://github.com/firefly-cpp/sport-activities-features/blob/main/examples/calculate_training_load.py>`_),
 - parsing the historical weather data from an external service,
-- extracting the integral metrics of the activity inside the area given with coordinates (distance, heartrate, speed) (`see example <../examples/extract_data_inside_area.py>`_),
+- extracting the integral metrics of the activity inside the area given with coordinates (distance, heartrate, speed) (`see example <https://github.com/firefly-cpp/sport-activities-features/blob/main/examples/extract_data_inside_area.py>`_),
 - extracting the activities from CSV file(s) and randomly selecting the specific number of activities (`see example <../examples/extract_random_activities_from_csv.py>`_),
-- extracting the dead ends,
+- extracting the dead ends (`see example <https://github.com/firefly-cpp/sport-activities-features/blob/main/examples/dead_end_extraction.py>`_),
+- converting TCX to GPX (`see example <https://github.com/firefly-cpp/sport-activities-features/blob/main/examples/convert_tcx_to_gpx.py>`_),
 - and much more.
 
 The framework comes with two (testing) benchmark datasets, which are freely available to download from: `DATASET1 <http://iztok-jr-fister.eu/static/publications/Sport5.zip>`_, `DATASET2 <http://iztok-jr-fister.eu/static/css/datasets/Sport.zip>`_.
