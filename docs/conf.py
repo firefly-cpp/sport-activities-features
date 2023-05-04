@@ -18,11 +18,11 @@ sys.path.insert(0, os.path.abspath('../'))
 # -- Project information -----------------------------------------------------
 
 project = 'sport-activities-features'
-copyright = '2020-2022, Iztok Fister Jr. et al.'
+copyright = '2020-2023, Iztok Fister Jr. et al.'
 author = 'Iztok Fister Jr., Luka Lukač, Alen Rajšp, Luka Pečnik, Dušan Fister'
 
 # The full version, including alpha/beta/rc tags
-release = '0.3.11'
+release = '0.3.12'
 
 # -- General configuration ---------------------------------------------------
 
