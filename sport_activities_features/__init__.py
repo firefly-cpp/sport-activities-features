@@ -12,7 +12,8 @@ from sport_activities_features.plot_data import PlotData
 from sport_activities_features.tcx_manipulation import TCXFile
 from sport_activities_features.topographic_features import TopographicFeatures
 from sport_activities_features.training_loads import (
-    BanisterTRIMP,
+    BanisterTRIMPv1,
+    BanisterTRIMPv2,
     EdwardsTRIMP,
     LuciaTRIMP
 )
@@ -43,7 +44,8 @@ __all__ = [
     'TCXFile',
     'GPXFile',
     'TopographicFeatures',
-    'BanisterTRIMP',
+    'BanisterTRIMPv1',
+    'BanisterTRIMPv2',
     'EdwardsTRIMP',
     'LuciaTRIMP',
     'Weather',

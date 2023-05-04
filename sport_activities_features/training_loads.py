@@ -1,9 +1,20 @@
+"""This class is used for calculation of training loads."""
+
 import numpy as np
 
+from enum import Enum
 
-class BanisterTRIMP:
+
+class Gender(Enum):
+    """Gender Enum."""
+
+    male = 1
+    female = 2
+
+
+class BanisterTRIMPv1:
     """
-    Class for calculation of Banister's TRIMP.\n
+    Class for calculation of simple Banister's TRIMP.\n
     Reference paper:
         Banister, Eric W. "Modeling elite athletic performance."
         Physiological testing of elite athletes 347 (1991): 403-422.\n
@@ -13,6 +24,7 @@ class BanisterTRIMP:
         average_heart_rate (float):
             average heart rate in beats per minute
     """
+
     def __init__(self, duration: float, average_heart_rate: float) -> None:
         """
         Initialization method for BanisterTRIMP class.\n
@@ -34,6 +46,87 @@ class BanisterTRIMP:
         return self.duration * self.average_heart_rate
 
 
+class BanisterTRIMPv2:
+    """
+    Class for calculation of Banister's TRIMP.\n
+
+    Reference paper:
+        Banister, Eric W. "Modeling elite athletic performance."
+        Physiological testing of elite athletes 347 (1991): 403-422.\n
+    Args:
+        duration (float):
+            total duration in seconds
+        average_heart_rate (float):
+            average heart rate in beats per minute
+        min_heart_rate (float):
+            minimum heart rate in beats per minute
+        max_heart_rate (float):
+            maximum heart rate in beats per minute
+        gender (Gender):
+            gender enum of athlete (default male, female)
+    """
+
+    def __init__(self: 'BanisterTRIMPv2',
+                 duration: float,
+                 average_heart_rate: float,
+                 min_heart_rate: float,
+                 max_heart_rate: float,
+                 gender: Gender = Gender.male,
+                 ) -> None:
+        """Initialize BanisterTRIMP class."""
+        self.duration = duration
+
+        self.average_heart_rate = average_heart_rate
+        self.max_heart_rate = max_heart_rate
+        self.rest_heart_rate = min_heart_rate
+
+        self.b_male = 1.92
+        self.b_female = 1.67
+
+        self.gender = gender
+
+    def calculate_delta_hr_ratio(self: 'BanisterTRIMPv2') -> float:
+        """
+        Calculate the delta heart rate.
+
+        The ratio ranges from a low to a high value (i.e., ~ 0.2 — 1.0)
+        for a low or a high raw heart rate, respectively.
+
+        Returns
+            float: delta heart rate.
+        """
+        return (self.average_heart_rate - self.rest_heart_rate) / \
+            (self.max_heart_rate - self.rest_heart_rate)
+
+    def calculate_weighting_factor(self: 'BanisterTRIMPv2',
+                                   delta_hr_ratio: float,
+                                   ) -> float:
+        """
+        Calculate the weighting factor.
+
+        Returns
+            float: weighting factor (Y).
+        """
+
+        # b defaults to b_male since only males contributed to the dataset
+        b = self.b_female if self.gender is Gender.female else self.b_male
+
+        return np.power(np.e, (b * delta_hr_ratio))
+
+    def calculate_TRIMP(self: 'BanisterTRIMPv2') -> float:
+        """
+        Calculate TRIMP.
+
+        Returns
+            float: Banister TRIMP value.
+        """
+        duration_minutes = self.duration / 60
+        delta_hr_ratio = self.calculate_delta_hr_ratio()
+        weighting_factor = self.calculate_weighting_factor(delta_hr_ratio)
+
+        return duration_minutes * delta_hr_ratio * weighting_factor
+
+
 class EdwardsTRIMP:
     """
     Class for calculation of Edwards TRIMP.\n
@@ -47,6 +140,7 @@ class EdwardsTRIMP:
         max_heart_rate (int):
             maximum heart rate of an athlete
     """
+
     def __init__(
         self,
         heart_rates: list,
@@ -117,6 +211,7 @@ class LuciaTRIMP:
         VT2 (int):
             ventilatory threshold to divide the moderate and the high zone
     """
+
     def __init__(
         self,
         heart_rates: list,

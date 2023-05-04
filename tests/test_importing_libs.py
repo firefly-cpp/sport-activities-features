@@ -106,12 +106,14 @@ def test_topographic_features_import():
 def test_training_loads_import():
     try:
         from sport_activities_features.training_loads import (
-            BanisterTRIMP,
+            BanisterTRIMPv1,
+            BanisterTRIMPv2,
             EdwardsTRIMP,
             LuciaTRIMP,
         )
 
-        assert BanisterTRIMP is not None
+        assert BanisterTRIMPv1 is not None
+        assert BanisterTRIMPv2 is not None
         assert EdwardsTRIMP is not None
         assert LuciaTRIMP is not None
     except ModuleNotFoundError as err:
