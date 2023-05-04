@@ -2,22 +2,23 @@ import os
 from unittest import TestCase
 
 from sport_activities_features import (
-    BanisterTRIMP,
+    BanisterTRIMPv1,
+    BanisterTRIMPv2,
     EdwardsTRIMP,
     LuciaTRIMP,
     TCXFile
 )
 
 
-class BanisterTRIMPTestCase(TestCase):
+class BanisterTRIMPv1TestCase(TestCase):
     """
-    Banister TRIMP test.
+    Banister's simple TRIMP test.
     """
     def setUp(self):
         """
         Setting up the test.
         """
-        self.__banister = BanisterTRIMP(33.44, 165.22)
+        self.__banister = BanisterTRIMPv1(33.44, 165.22)
 
     def test_init_banister_trimp_works_fine(self):
         """
@@ -32,6 +33,36 @@ class BanisterTRIMPTestCase(TestCase):
         """
         val = self.__banister.calculate_TRIMP()
         self.assertEqual(5524.9568, val)
+
+
+class BanisterTRIMPv2TestCase(TestCase):
+    """
+        Banister's TRIMP test.
+    """
+    def setUp(self):
+        """
+        Setting up the test.
+        """
+        self.__banister = BanisterTRIMPv2(duration=3240,
+                                          average_heart_rate=117,
+                                          min_heart_rate=77,
+                                          max_heart_rate=173)
+
+    def test_init_banister_trimp_v2_works_fine(self):
+        """
+        Testing class arguments.
+        """
+        self.assertEqual(3240, self.__banister.duration)
+        self.assertEqual(117, self.__banister.average_heart_rate)
+        self.assertEqual(77, self.__banister.rest_heart_rate)
+        self.assertEqual(173, self.__banister.max_heart_rate)
+
+    def test_calculate_trimp_v2_works_fine(self):
+        """
+        Testing Banister's v2 TRIMP.
+        """
+        val = self.__banister.calculate_TRIMP()
+        self.assertEqual(50.074670891080515, val)
 
 
 class EdwardsTRIMPTestCase(TestCase):
