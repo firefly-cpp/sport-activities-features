@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.3.12](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.12) (2023-05-04)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.11...0.3.12)
+
+**Merged pull requests:**
+
+- Add BanisterTRIMPv2 based on reference paper, its example and test [\#136](https://github.com/firefly-cpp/sport-activities-features/pull/136) ([KukovecRok](https://github.com/KukovecRok))
+- Update calculate\_training\_load.py example [\#135](https://github.com/firefly-cpp/sport-activities-features/pull/135) ([KukovecRok](https://github.com/KukovecRok))
+
+## [0.3.11](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.11) (2023-04-02)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.10...0.3.11)
+
+**Merged pull requests:**
+
+- docs: add KukovecRok as a contributor for example [\#134](https://github.com/firefly-cpp/sport-activities-features/pull/134) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- Update workflow [\#133](https://github.com/firefly-cpp/sport-activities-features/pull/133) ([KukovecRok](https://github.com/KukovecRok))
+- Add examples to convert TCX/GPX file to csv [\#132](https://github.com/firefly-cpp/sport-activities-features/pull/132) ([KukovecRok](https://github.com/KukovecRok))
+
 ## [0.3.10](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.10) (2023-02-20)
 
 [Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.9...0.3.10)
