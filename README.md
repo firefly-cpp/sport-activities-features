@@ -23,6 +23,9 @@
 [![AUR package](https://img.shields.io/aur/version/python-sport-activities-features?color=blue&label=Arch%20Linux&logo=arch-linux)](https://aur.archlinux.org/packages/python-sport-activities-features)
 [![DOI](https://img.shields.io/badge/DOI-10.1109/INES52918.2021.9512927-blue)](https://doi.org/10.1109/INES52918.2021.9512927)
 
+* **Documentation:** https://sport-activities-features.readthedocs.io/en/latest
+* **Tested OS:** Windows, Ubuntu, Fedora, Alpine, Arch, macOS. **However, that does not mean it does not work on others**
+
 ## General outline of the framework
 Monitoring sports activities produce many geographic, topologic, and personalized data, with a vast majority of details hidden. Thus, a rigorous ex-post data analysis and statistic evaluation are required to extract them. Namely, most mainstream solutions for analyzing sports activities files rely on integral metrics, such as total duration, total distance, and average heart rate, which may suffer from the "overall (integral) metrics problem." Among others, such problems are expressed in capturing sports activities in general only (omitting crucial components), calculating potentially fallacious and misleading metrics, not recognizing different stages/phases of the sports activity (warm-up, endurance, intervals), and others.
 
