@@ -37,9 +37,7 @@ jobs:
       if: ${{ matrix.os == 'windows-latest' }}
       run: echo "$APPDATA\Python\Scripts" >> $GITHUB_PATH
     - name: Configure poetry
-      run: |
-        poetry config experimental.new-installer true
-        poetry config virtualenvs.in-project true
+      run: poetry config virtualenvs.in-project true
     - name: Set up cache
       uses: actions/cache@v3
       id: cache
