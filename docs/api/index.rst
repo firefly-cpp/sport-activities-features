@@ -5,4 +5,7 @@ This is the sport-activities-features API documentation, auto generated from the
 
 .. toctree::
 
-    sport_activities_features
+    interval_identification
+    hill_identification
+    tcx_manipulation
+    topographic_features
