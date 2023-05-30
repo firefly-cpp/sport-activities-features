@@ -29,7 +29,7 @@ release = '0.3.12'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx_rtd_theme', 'sphinxcontrib.bibtex']
+extensions = ['sphinx.ext.autodoc', 'sphinx_rtd_theme', 'sphinxcontrib.bibtex', 'sphinx.ext.napoleon']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -59,7 +59,7 @@ bibtex_bibfiles = ['refs.bib']
 bibtex_default_style = 'unsrt'
 
 # Add logo for project
-html_logo = '../.github/logo/sport_activities.png'
+html_logo = '_static/logo.png'
 html_theme_options = {
     'logo_only': True,
     'display_version': False,
