@@ -7,7 +7,7 @@ sport-activities-features is a minimalistic toolbox for extracting features from
 
 * **Free software:** MIT license
 * **Github repository:** https://github.com/firefly-cpp/sport-activities-features
-* **Python versions:** 3.6.x, 3.7.x, 3.8.x, 3.9.x, 3.10.x
+* **Python versions:** 3.6.x, 3.7.x, 3.8.x, 3.9.x, 3.10.x, 3.11.x
 
 General outline of the framework
 ---------------------------------
