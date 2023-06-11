@@ -13,7 +13,10 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath('../'))
+sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('../sport_activities_features/'))
+sys.path.insert(0, os.path.abspath('../sport_activities_features/interruptions'))
+sys.path.insert(0, os.path.abspath('../sport_activities_features/weather_objects'))
 
 # -- Project information -----------------------------------------------------
 
