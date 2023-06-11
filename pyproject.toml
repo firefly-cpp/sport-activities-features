@@ -29,7 +29,7 @@ Sphinx = "^3.5.1"
 sphinx-rtd-theme = "^0.5.1"
 coveralls = "^2.2.0"
 pytest = "^7.1.2"
-ruff = "^0.0.272"
+ruff = "*"
 
 [[tool.poetry.source]]
 name = "saf-poetry"
