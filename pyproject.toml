@@ -24,17 +24,12 @@ pandas = "*"
 niaaml = "^1.1.10"
 tcx2gpx = "^0.1.4"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 Sphinx = "^3.5.1"
 sphinx-rtd-theme = "^0.5.1"
 coveralls = "^2.2.0"
 pytest = "^7.1.2"
-ruff = "*"
-
-[[tool.poetry.source]]
-name = "saf-poetry"
-url = "./saf-poetry/"
-priority = "primary"
+ruff = "^0.0.272"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

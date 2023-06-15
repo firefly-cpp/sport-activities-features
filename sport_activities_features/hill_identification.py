@@ -77,7 +77,7 @@ class HillIdentification(object):
         differences = []
         for i in range(1, len(self.altitudes)):
             if (
-                not type(self.altitudes[i]) is float
+                type(self.altitudes[i]) is not float
                 and type(self.altitudes[i]) is float
             ):
                 continue
