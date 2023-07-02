@@ -1,5 +1,30 @@
 # Changelog
 
+## [Unreleased](https://github.com/firefly-cpp/sport-activities-features/tree/HEAD)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.13...HEAD)
+
+**Closed issues:**
+
+- Invalid configuration [\#144](https://github.com/firefly-cpp/sport-activities-features/issues/144)
+- List of authors in pyproject [\#142](https://github.com/firefly-cpp/sport-activities-features/issues/142)
+- Problems with ruff [\#140](https://github.com/firefly-cpp/sport-activities-features/issues/140)
+
+**Merged pull requests:**
+
+- Fix \#142 , add full ruff settings [\#143](https://github.com/firefly-cpp/sport-activities-features/pull/143) ([KukovecRok](https://github.com/KukovecRok))
+
+## [0.3.13](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.13) (2023-06-15)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.12...0.3.13)
+
+**Merged pull requests:**
+
+- Fix poetry.. \#140 [\#141](https://github.com/firefly-cpp/sport-activities-features/pull/141) ([KukovecRok](https://github.com/KukovecRok))
+- Add full API docs and latex-pdf [\#139](https://github.com/firefly-cpp/sport-activities-features/pull/139) ([KukovecRok](https://github.com/KukovecRok))
+- Solved workflow problem [\#138](https://github.com/firefly-cpp/sport-activities-features/pull/138) ([KukovecRok](https://github.com/KukovecRok))
+- Bump requests from 2.28.2 to 2.31.0 [\#137](https://github.com/firefly-cpp/sport-activities-features/pull/137) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [0.3.12](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.12) (2023-05-04)
 
 [Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.11...0.3.12)
