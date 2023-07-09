@@ -47,7 +47,7 @@ The sport-activities-features framework is compatible with TCX & GPX activity fi
 - converting TCX to GPX ([see example](examples/convert_tcx_to_gpx.py)),
 - and much more.
 
-The framework comes with two (testing) benchmark datasets, which are freely available to download from: [DATASET1](http://iztok-jr-fister.eu/static/publications/Sport5.zip), [DATASET2](http://iztok-jr-fister.eu/static/css/datasets/Sport.zip).
+The framework comes with two (testing) [benchmark datasets](https://github.com/firefly-cpp/sports-activity-dataset-collections), which are freely available to download from: [DATASET1](http://iztok-jr-fister.eu/static/publications/Sport5.zip), [DATASET2](http://iztok-jr-fister.eu/static/css/datasets/Sport.zip).
 
 
 ## Installation
