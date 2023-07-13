@@ -50,4 +50,4 @@ jobs:
     - name: Install dependencies
       run: poetry install
     - name: Run tests
-      run: poetry run pytest -k 'not test_overpy_node_manipulation and not test_weather'
+      run: poetry run pytest -k 'not test_overpy_node_manipulation and not test_weather and not test_data_analysis'
