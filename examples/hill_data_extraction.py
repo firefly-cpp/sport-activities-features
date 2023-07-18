@@ -2,7 +2,6 @@ from sport_activities_features.hill_identification import HillIdentification
 from sport_activities_features.tcx_manipulation import TCXFile
 from sport_activities_features.topographic_features import TopographicFeatures
 
-
 # read TCX file
 tcx_file = TCXFile()
 activity = tcx_file.read_one_file('path_to_the_data')

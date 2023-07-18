@@ -1,6 +1,4 @@
-"""
-Test importing all the modules of the library.
-"""
+"""Test importing all the modules of the library."""
 
 
 def test_classes_import():
@@ -146,8 +144,9 @@ def test_weather_objects_import():
 
 def test_missing_elevation_identification_import():
     try:
-        from sport_activities_features.missing_elevation_identification \
-            import (ElevationIdentification)
+        from sport_activities_features.missing_elevation_identification import (
+            ElevationIdentification,
+        )
 
         assert ElevationIdentification is not None
 
@@ -170,8 +169,9 @@ def test_gpx_manipulation_import():
 
 def test_interruptions_import():
     try:
-        from sport_activities_features.interruptions.interruption_processor \
-            import (InterruptionProcessor)
+        from sport_activities_features.interruptions.interruption_processor import (
+            InterruptionProcessor,
+        )
 
         assert InterruptionProcessor is not None
 

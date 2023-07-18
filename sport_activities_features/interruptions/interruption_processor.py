@@ -1,7 +1,8 @@
 from datetime import timedelta
+from typing import TYPE_CHECKING
+
 from dotmap import DotMap
 from geopy import distance
-import overpy
 
 from sport_activities_features.interruptions.exercise import TrackSegment
 from sport_activities_features.interruptions.exercise_event import (
@@ -14,35 +15,42 @@ from sport_activities_features.interruptions.exercise_event import (
 )
 from sport_activities_features.interruptions.overpass import (
     CoordinatesBox,
-    Overpass
+    Overpass,
 )
+
+if TYPE_CHECKING:
+    import overpy
 
 
 class InterruptionProcessor():
-    """
-    Class for identifying interruption events (events
+
+    """Class for identifying interruption events (events
     where the speed dropped below threshold).
+
     Args:
+    ----
         time_interval: Record x seconds before and after the event
         min_speed: Speed threshold for the event to trigger
                    (min_speed = 2 -> trigger if speed less than 2km/h)
         overpass_api_url: Overpass API url. Self-hosting is prefferable
                           if you want to make a lot of requests.
     """
+
     def __init__(
         self,
         time_interval=60,
         min_speed=2,
-        overpass_api_url="https://lz4.overpass-api.de/api/interpreter"
-    ):
-        """
-        Initialisation method of InterruptionProcessor class.
+        overpass_api_url='https://lz4.overpass-api.de/api/interpreter',
+    ) -> None:
+        """Initialisation method of InterruptionProcessor class.
+
         Args:
+        ----
             time_interval: Record x seconds before and after the event
             min_speed: Speed threshold for the event to trigger
                        (min_speed = 2 -> trigger if speed less than 2km/h)
             overpass_api_url: Overpass API url, self host if you want
-                              to make a lot of requests
+                              to make a lot of requests.
         """
         self.time_interval = time_interval
         self.min_speed = min_speed
@@ -51,12 +59,13 @@ class InterruptionProcessor():
     def __determine_event_type(
         self,
         event_stats: EventStats,
-        lines: list
+        lines: list,
     ):
-        """
-        Method that idenitifies type of interruption event based on
+        """Method that idenitifies type of interruption event based on
         position of the event in regards to the complete training.
+
         Args:
+        ----
             event_stats: EventStats of the identified event
             lines: [TrackSegment] of the event
         Returns:
@@ -71,11 +80,12 @@ class InterruptionProcessor():
             return EventType.EXERCISE_PAUSE
 
     def __data_to_lines(self, tcx_data) -> list:
-        """
-        Method for transforming TCXFile/GPXFile data into [TrackSegment] list.
+        """Method for transforming TCXFile/GPXFile data into [TrackSegment] list.
+
         Args:
+        ----
             tcx_data: TCXData/GPXData generated dictionary
-        Returns: list of TrackSegments
+        Returns: list of TrackSegments.
         """
         lines: list = []
         for i in range(len(tcx_data['positions'])):
@@ -117,14 +127,15 @@ class InterruptionProcessor():
     def events(
         self,
         lines: list,
-        classify=False
+        classify=False,
     ) -> list:
-        """
-        Method that parses events (method parse_events()) and
+        """Method that parses events (method parse_events()) and
         classifies them (classify_events()) if required.
+
         Args:
+        ----
             lines: [TrackSegment] from TCX/GPX data
-            classify: If set to true calls classify_events() method
+            classify: If set to true calls classify_events() method.
 
         Returns: list of [ExerciseEvent], meaning
                  parsed (and classified) events.
@@ -138,11 +149,12 @@ class InterruptionProcessor():
         return events
 
     def parse_events(self, lines: list) -> list:
-        """
-        Parses all events (based on the min_speed parameter in the
+        """Parses all events (based on the min_speed parameter in the
         class initialisation) and returns ExerciseEvent list.
+
         Args:
-            lines: list of TrackSegment objects
+        ----
+            lines: list of TrackSegment objects.
 
         Returns: list of identified ExerciseEvent objects
         """
@@ -154,7 +166,7 @@ class InterruptionProcessor():
             event_stats = EventStats()
             if lines[index].speed.km < self.min_speed:
                 # add event
-                event = ExerciseEvent([], [], [], "", EventType.UNDEFINED)
+                event = ExerciseEvent([], [], [], '', EventType.UNDEFINED)
                 event_stats.index_start = index
                 event_stats.timestamp_mid_start = lines[index].point_a.time
                 while (index < len(lines) and
@@ -170,7 +182,7 @@ class InterruptionProcessor():
                     / 2)
                 event.event_type = self.__determine_event_type(
                     event_stats,
-                    lines
+                    lines,
                 )
                 event_stats.timestamp_post_end = (
                     event_stats.timestamp_mid_end
@@ -200,11 +212,12 @@ class InterruptionProcessor():
         return eventList
 
     def classify_event(self, event: ExerciseEvent):
-        """
-        Method that classifies the sent ExerciseEvent.
+        """Method that classifies the sent ExerciseEvent.
         Currently only identifies events which happened
         in the vicincy of intersections.
+
         Args:
+        ----
             event: ExerciseEvent to be inspected
         Returns: ExerciseEvent on which classification has been performed.
         """
@@ -212,7 +225,6 @@ class InterruptionProcessor():
         event: ExerciseEvent
         box = CoordinatesBox(event=event)
         possible_intersections: overpy.Result = op.identify_intersections(box)
-        # [intersection][point]
         (events, intersections) = (len(event.event),
                                    len(possible_intersections.nodes))
         min_distance = 1000000
@@ -223,11 +235,11 @@ class InterruptionProcessor():
                                   event.event[e].point_a.longitude)
                 intersection_location = (
                     float(possible_intersections.nodes[i].lat),
-                    float(possible_intersections.nodes[i].lon)
+                    float(possible_intersections.nodes[i].lon),
                 )
                 calculated_distance = distance.distance(
                     event_location,
-                    intersection_location
+                    intersection_location,
                 ).meters
                 if (calculated_distance < 22
                         and calculated_distance < min_distance):
@@ -235,8 +247,8 @@ class InterruptionProcessor():
                     event.event_detail = EventDetail(
                         EventLocation(
                             longitude=possible_intersections.nodes[i].lat,
-                            latitude=possible_intersections.nodes[i].lon
+                            latitude=possible_intersections.nodes[i].lon,
                         ),
-                        type=EventDetailType.INTERSECTION
+                        type=EventDetailType.INTERSECTION,
                     )
         return event

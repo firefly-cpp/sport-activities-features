@@ -1,6 +1,5 @@
 from sport_activities_features.tcx_manipulation import TCXFile
 
-
 # read TCX file
 tcx_file = TCXFile()
 # extract integral metrics ans store it in dictionary

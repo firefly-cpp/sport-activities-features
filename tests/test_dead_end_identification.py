@@ -1,9 +1,10 @@
 import os
 from unittest import TestCase
+
 import numpy as np
 
 from sport_activities_features.dead_end_identification import (
-    DeadEndIdentification
+    DeadEndIdentification,
 )
 from sport_activities_features.tcx_manipulation import TCXFile
 
@@ -26,4 +27,4 @@ class TestDeadEndIdentification(TestCase):
                                           minimum_distance=500)
         result = Dead_ends.identify_dead_ends()
 
-        self.assertEqual(result, None)
+        assert result is None

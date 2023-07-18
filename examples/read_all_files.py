@@ -8,7 +8,6 @@ from sport_activities_features.interval_identification import (
 from sport_activities_features.tcx_manipulation import TCXFile
 from sport_activities_features.topographic_features import TopographicFeatures
 
-
 # Retrieving all TCX files in a directory
 tcx_file = TCXFile()
 all_files = tcx_file.read_directory('path_to_the_folder')
@@ -31,7 +30,7 @@ for file in all_files:
 
     activity.update(
         {'number_of_hills': num_hills,
-         'distance_between_hills': distance_between_hills}
+         'distance_between_hills': distance_between_hills},
     )
 
     # Identifying the intervals in the activity by heart rate

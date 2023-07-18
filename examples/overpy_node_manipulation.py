@@ -1,9 +1,8 @@
 import overpy
 
 from sport_activities_features.overpy_node_manipulation import (
-    OverpyNodesReader
+    OverpyNodesReader,
 )
-
 
 # External service Overpass API
 # (https://wiki.openstreetmap.org/wiki/Overpass_API)
@@ -31,9 +30,4 @@ nodes = query.ways[0].get_nodes(resolve_missing=True)
 # and Hill Data Extraction on them)
 overpy_reader = OverpyNodesReader(open_elevation_api=open_elevation_api)
 # Returns {
-#           'positions': positions,
-#           'altitudes': altitudes,
-#           'distances': distances,
-#           'total_distance': total_distance
-#         }
 data = overpy_reader.read_nodes(nodes)

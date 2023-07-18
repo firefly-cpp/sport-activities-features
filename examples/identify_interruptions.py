@@ -1,8 +1,7 @@
 from sport_activities_features.interruptions.interruption_processor import (
-    InterruptionProcessor
+    InterruptionProcessor,
 )
 from sport_activities_features.tcx_manipulation import TCXFile
-
 
 """
 Identify interruption events from a TCX or GPX file.

@@ -1,21 +1,19 @@
 import matplotlib.pyplot as plt
 
-plt.style.use("seaborn-whitegrid")
+plt.style.use('seaborn-whitegrid')
 
 
-class PlotData(object):
-    """
-    Class for plotting the extracted data.
-    """
+class PlotData:
+
+    """Class for plotting the extracted data."""
 
     def get_positions_of_hills(self, identified_hills: list) -> list:
-        """
-        Method for retrieving positions of identified hills.\n
+        """Method for retrieving positions of identified hills.\n
         Args:
             identified_hills (list):
                 list of identified hills
         Returns:
-            list: list of hills
+            list: list of hills.
         """
         points = []
         for i in range(len(identified_hills)):
@@ -24,13 +22,12 @@ class PlotData(object):
         return points
 
     def get_positions_of_intervals(self, identified_intervals: list) -> list:
-        """
-        Method for retrieving positions of identified intervals.\n
+        """Method for retrieving positions of identified intervals.\n
         Args:
             identified_intervals (list):
                 list of identified intervals
         Returns:
-            list: list of intervals
+            list: list of intervals.
         """
         points = []
         for i in range(len(identified_intervals)):
@@ -42,10 +39,9 @@ class PlotData(object):
         self,
         altitude: list,
         distance: list,
-        identified_hills: list
+        identified_hills: list,
     ) -> None:
-        """
-        Method for plotting all hills identified in data
+        """Method for plotting all hills identified in data
         on topographic map and rendering the plot.\n
         Args:
             altitude (list):
@@ -53,7 +49,7 @@ class PlotData(object):
             distance (list):
                 list of distances
             identified_hills (list):
-                list of identified hills
+                list of identified hills.
         """
         plt = self.plot_hills_on_map(altitude, distance, identified_hills)
         plt.show()
@@ -62,10 +58,9 @@ class PlotData(object):
         self,
         timestamp: list,
         distance: list,
-        identified_intervals: list
+        identified_intervals: list,
     ) -> None:
-        """
-        Method for plotting all intervals identified in data
+        """Method for plotting all intervals identified in data
         on topographic map and rendering the plot.\n
         Args:
             timestamp (datetime):
@@ -73,15 +68,13 @@ class PlotData(object):
             distance (float):
                 list of distances
             identified_intervals (list):
-                list of identified intervals
+                list of identified intervals.
         """
         plt = self.plot_intervals_in_map(timestamp, identified_intervals)
         plt.show()
 
     def draw_basic_map(self) -> None:
-        """
-        Method for plotting the whole topographic map and rendering the plot.
-        """
+        """Method for plotting the whole topographic map and rendering the plot."""
         plt = self.plot_basic_map()
         plt.show()
 
@@ -89,10 +82,9 @@ class PlotData(object):
         self,
         altitude: list,
         distance: list,
-        identified_hills: list
+        identified_hills: list,
     ) -> plt:
-        """
-        Method for plotting all hills identified in data on topographic map.\n
+        """Method for plotting all hills identified in data on topographic map.\n
         Args:
             altitude (list):
                 list of altitudes
@@ -101,7 +93,7 @@ class PlotData(object):
             identified_hills (list):
                 list of identified hills
         Returns:
-            plt
+            plt.
         """
         y = []
         x = []
@@ -138,10 +130,9 @@ class PlotData(object):
     def plot_intervals_in_map(
         self,
         timestamp: list,
-        identified_intervals: list
+        identified_intervals: list,
     ) -> plt:
-        """
-        Method for plotting all intervals identified
+        """Method for plotting all intervals identified
         in data on topographic map.\n
         Args:
             timestamp (list):
@@ -149,13 +140,13 @@ class PlotData(object):
             identified_intervals (list):
                 list of identified intervals
         Returns:
-            plt
+            plt.
         """
         x_points = []
         y_points = []
 
         points = self.get_positions_of_intervals(
-            identified_intervals
+            identified_intervals,
         )  # Getting positions of intervals
 
         # Appending points to lists
@@ -202,15 +193,14 @@ class PlotData(object):
         return plt
 
     def plot_basic_map(self, altitude: list, distance: list) -> plt:
-        """
-        Method for plotting the whole topographic map.\n
+        """Method for plotting the whole topographic map.\n
         Args:
             altitude (list):
                 list of altitudes
             distance (list):
                 list of distances
         Returns:
-            plt
+            plt.
         """
         ax = plt.axes()
         y = []
@@ -220,10 +210,10 @@ class PlotData(object):
             y.append(float(altitude[j]))
             x.append(float(distance[j]))
 
-            ax.plot(x[j], y[j], "o", color="b", markersize=2)
+            ax.plot(x[j], y[j], 'o', color='b', markersize=2)
 
         plt.xticks(fontsize=14)
-        plt.title("Topographic map of cycling activity", fontsize=20)
-        plt.xlabel("Distance (m)", fontsize=20)
-        plt.ylabel("Altitude (m)", fontsize=20)
+        plt.title('Topographic map of cycling activity', fontsize=20)
+        plt.xlabel('Distance (m)', fontsize=20)
+        plt.ylabel('Altitude (m)', fontsize=20)
         return plt

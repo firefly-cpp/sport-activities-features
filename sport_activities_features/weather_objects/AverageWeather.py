@@ -2,13 +2,14 @@ from sport_activities_features.weather_objects.Weather import Weather
 
 
 class AveragedType:
-    """
-    Class that contains the name and percentage
+
+    """Class that contains the name and percentage
     (weight) of the weather conditions and types.
     """
-    def __init__(self, name, percentage):
-        """
-        Args:
+
+    def __init__(self, name, percentage) -> None:
+        """Args:
+        ----
             name: Name of the weather conditions or weather type.
             percentage: Weight.
         """
@@ -17,9 +18,7 @@ class AveragedType:
 
 
 def none_to_zero(value):
-    """
-    Helper function that replaces None with 0.
-    """
+    """Helper function that replaces None with 0."""
     if value is None:
         return 0
     else:
@@ -27,9 +26,10 @@ def none_to_zero(value):
 
 
 def weather_none_to_zero(weather: Weather):
-    """
-    Replaces None values with zeroes in a Weather object.
+    """Replaces None values with zeroes in a Weather object.
+
     Args:
+    ----
         weather: Weather object
     Returns:
         Weather object where None values are replaced with zeroes.
@@ -56,36 +56,40 @@ def weather_none_to_zero(weather: Weather):
 
 
 class AverageWeather:
-    """
-    Class for providing average weather from two Weather objects
-    """
+
+    """Class for providing average weather from two Weather objects."""
 
     def __init__(
             self,
             weather_a: Weather = None,
             weather_b: Weather = None,
             weight_a=None,
-    ):
-        """
-        Returns average weather between two dates (e.g. average temperature
+    ) -> None:
+        """Returns average weather between two dates (e.g. average temperature
         between two times). The average weather is linearly calculated.
         weight_a =
-            1 - (before['seconds'] / (after['seconds'] + before['seconds']))
+            1 - (before['seconds'] / (after['seconds'] + before['seconds'])).
+
         Args:
+        ----
             weather_a: Weather before the determined timestamps.
             weather_b: Weather before the determined timestamp.
             weight_a: Weight of the weather_a (0-1), weight_b is (1-weight_a)
+
         Returns:
+        -------
             Average weather between the two timestamps. The average weather
             contains only the following attributes:
             temperature, maximum_temperature, minimum_temperature,
             precipitation, sea_level_pressure, wind_speed, wind_direction,
             visibility, clout_cover, relative_humidity, dew_point,
             weather_type and conditions.
+
         Warnings:
+        --------
             weather_type and conditions in Weather objects are just strings
             for describing them. Here they are both objects of type
-            AveragedType!
+            AveragedType!.
         """
         a = weather_none_to_zero(weather_a)
         b = weather_none_to_zero(weather_b)
@@ -100,13 +104,10 @@ class AverageWeather:
         )
         # self.wind_chill = (
         #   a.wind_chill*weight_a+b.wind_chill*weight_b EXCLUDED
-        # )
         # self.heat_index = (
         #   a.heat_index*weight_a+b.heat_index*weight_b EXCLUDED
-        # )
         # self.solar_radiation = (
         #   a.solar_radiation*weight_a+b.solar_radiation*weight_b EXCLUDED
-        # )
         self.precipitation = (
             a.precipitation * weight_a + b.solar_radiation * weight_b
         )
@@ -115,7 +116,6 @@ class AverageWeather:
         )
         # self.snow_depth = (
         #   a.snow_depth*weight_a+b.solar_radiation*weight_b EXCLUDED
-        # )
         self.wind_speed = (
             a.wind_speed * weight_a + b.solar_radiation * weight_b
         )
@@ -124,7 +124,6 @@ class AverageWeather:
         )
         # self.wind_gust = (
         #   a.wind_gust*weight_a+b.solar_radiation*weight_b EXCLUDED
-        # )
         self.visibility = (
             a.visibility * weight_a + b.solar_radiation * weight_b
         )

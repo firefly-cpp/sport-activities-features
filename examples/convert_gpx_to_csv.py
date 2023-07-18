@@ -1,5 +1,6 @@
 """Convert GPX file to CSV file."""
 import pandas as pd
+
 from sport_activities_features.gpx_manipulation import GPXFile
 
 # Class for reading GPX files
@@ -22,4 +23,4 @@ gpx_to_csv_df = pd.DataFrame.from_dict(data)
 gpx_to_csv_df.index.name = 'row_id'
 
 # Save DataFrame to CSV file with semicolon as separator
-gpx_to_csv_df.to_csv(output_file, sep=";")
+gpx_to_csv_df.to_csv(output_file, sep=';')

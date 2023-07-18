@@ -14,8 +14,8 @@ class TestTCXFile(TestCase):
         self.assertAlmostEqual(self.data['total_distance'], 116366.98, 2)
 
     def test_number_of_positions(self):
-        self.assertEqual(len(self.data['positions']), 7799)
+        assert len(self.data['positions']) == 7799
 
     def test_heartrates(self):
-        self.assertEqual(self.data['heartrates'][0], 94)
-        self.assertEqual(self.data['heartrates'][1], 95)
+        assert self.data['heartrates'][0] == 94
+        assert self.data['heartrates'][1] == 95

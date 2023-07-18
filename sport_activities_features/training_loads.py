@@ -1,11 +1,12 @@
 """This class is used for calculation of training loads."""
 
-import numpy as np
-
 from enum import Enum
+
+import numpy as np
 
 
 class Gender(Enum):
+
     """Gender Enum."""
 
     male = 1
@@ -13,8 +14,8 @@ class Gender(Enum):
 
 
 class BanisterTRIMPv1:
-    """
-    Class for calculation of simple Banister's TRIMP.\n
+
+    """Class for calculation of simple Banister's TRIMP.\n
     Reference paper:
         Banister, Eric W. "Modeling elite athletic performance."
         Physiological testing of elite athletes 347 (1991): 403-422.\n
@@ -22,33 +23,31 @@ class BanisterTRIMPv1:
         duration (float):
             total duration in seconds
         average_heart_rate (float):
-            average heart rate in beats per minute
+            average heart rate in beats per minute.
     """
 
     def __init__(self, duration: float, average_heart_rate: float) -> None:
-        """
-        Initialization method for BanisterTRIMP class.\n
+        """Initialization method for BanisterTRIMP class.\n
         Args:
             duration (float):
                 total duration in seconds
             average_heart_rate (float):
-                average heart rate in beats per minute
+                average heart rate in beats per minute.
         """
         self.duration = duration
         self.average_heart_rate = average_heart_rate
 
     def calculate_TRIMP(self) -> float:
-        """
-        Method for the calculation of the TRIMP.\n
+        """Method for the calculation of the TRIMP.\n
         Returns:
-            float: Banister TRIMP value
+            float: Banister TRIMP value.
         """
         return self.duration * self.average_heart_rate
 
 
 class BanisterTRIMPv2:
-    """
-    Class for calculation of Banister's TRIMP.\n
+
+    """Class for calculation of Banister's TRIMP.\n.
 
     Reference paper:
         Banister, Eric W. "Modeling elite athletic performance."
@@ -86,13 +85,13 @@ class BanisterTRIMPv2:
         self.gender = gender
 
     def calculate_delta_hr_ratio(self: 'BanisterTRIMPv2') -> float:
-        """
-        Calculate the delta heart rate.
+        """Calculate the delta heart rate.
 
         The ratio ranges from a low to a high value (i.e., ~ 0.2 — 1.0)
         for a low or a high raw heart rate, respectively.
 
         Returns
+        -------
             float: delta heart rate.
         """
         return (self.average_heart_rate - self.rest_heart_rate) / \
@@ -101,23 +100,22 @@ class BanisterTRIMPv2:
     def calculate_weighting_factor(self: 'BanisterTRIMPv2',
                                    delta_hr_ratio: float,
                                    ) -> float:
-        """
-        Calculate the weighting factor.
+        """Calculate the weighting factor.
 
         Returns
+        -------
             float: weighting factor (Y).
         """
-
         # b defaults to b_male since only males contributed to the dataset
         b = self.b_female if self.gender is Gender.female else self.b_male
 
         return np.power(np.e, (b * delta_hr_ratio))
 
     def calculate_TRIMP(self: 'BanisterTRIMPv2') -> float:
-        """
-        Calculate TRIMP.
+        """Calculate TRIMP.
 
         Returns
+        -------
             float: Banister TRIMP value.
         """
         duration_minutes = self.duration / 60
@@ -128,8 +126,8 @@ class BanisterTRIMPv2:
 
 
 class EdwardsTRIMP:
-    """
-    Class for calculation of Edwards TRIMP.\n
+
+    """Class for calculation of Edwards TRIMP.\n
     Reference paper:
         https://www.frontiersin.org/articles/10.3389/fphys.2020.00480/full\n
     Args:
@@ -138,34 +136,32 @@ class EdwardsTRIMP:
         timestamps (list[timestamp]):
             list of timestamps
         max_heart_rate (int):
-            maximum heart rate of an athlete
+            maximum heart rate of an athlete.
     """
 
     def __init__(
         self,
         heart_rates: list,
         timestamps: list,
-        max_heart_rate: int = 200
+        max_heart_rate: int = 200,
     ) -> None:
-        """
-        Initialization method for EdwardsTRIMP class.\n
+        """Initialization method for EdwardsTRIMP class.\n
         Args:
             heart_rates (list[int]):
                 list of heart rates in beats per minute
             timestamps (list[timestamp]):
                 list of timestamps
             max_heart_rate (int):
-                maximum heart rate of an athlete
+                maximum heart rate of an athlete.
         """
         self.heart_rates = heart_rates
         self.timestamps = timestamps
         self.max_heart_rate = max_heart_rate
 
     def calculate_TRIMP(self) -> float:
-        """
-        Method for the calculation of the TRIMP.\n
+        """Method for the calculation of the TRIMP.\n
         Returns:
-            float: Edwards TRIMP value
+            float: Edwards TRIMP value.
         """
         TRIMP = 0
 
@@ -197,8 +193,8 @@ class EdwardsTRIMP:
 
 
 class LuciaTRIMP:
-    """
-    Class for calculation of Lucia's TRIMP.\n
+
+    """Class for calculation of Lucia's TRIMP.\n
     Reference:
         https://www.trainingimpulse.com/lucias-trimp-0\n
     Args:
@@ -209,7 +205,7 @@ class LuciaTRIMP:
         VT1 (int):
             ventilatory threshold to divide the low and the moderate zone
         VT2 (int):
-            ventilatory threshold to divide the moderate and the high zone
+            ventilatory threshold to divide the moderate and the high zone.
     """
 
     def __init__(
@@ -217,10 +213,9 @@ class LuciaTRIMP:
         heart_rates: list,
         timestamps: list,
         VT1: int = 160,
-        VT2: int = 180
+        VT2: int = 180,
     ) -> None:
-        """
-        Initialization method for LuciaTRIMP class.\n
+        """Initialization method for LuciaTRIMP class.\n
         Args:
             heart_rates (list[int]):
                 list of heart rates in beats per minute
@@ -229,7 +224,7 @@ class LuciaTRIMP:
             VT1 (int):
                 ventilatory threshold to divide the low and the moderate zone
             VT2 (int):
-                ventilatory threshold to divide the moderate and the high zone
+                ventilatory threshold to divide the moderate and the high zone.
         """
         self.heart_rates = heart_rates
         self.timestamps = timestamps
@@ -237,10 +232,9 @@ class LuciaTRIMP:
         self.VT2 = VT2
 
     def calculate_TRIMP(self) -> float:
-        """
-        Method for the calculation of the TRIMP.\n
+        """Method for the calculation of the TRIMP.\n
         Returns:
-            float: Lucia's TRIMP value
+            float: Lucia's TRIMP value.
         """
         TRIMP = 0
 

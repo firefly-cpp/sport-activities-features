@@ -1,6 +1,5 @@
 from sport_activities_features.tcx_manipulation import TCXFile
 
-
 # get all TCX files in a directory
 tcx_file = TCXFile()
 all_files = tcx_file.read_directory('path_to_the_folder')
