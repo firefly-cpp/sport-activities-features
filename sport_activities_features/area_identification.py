@@ -1,12 +1,13 @@
-import geotiler
 import math
+
+import geotiler
 import matplotlib.pyplot as plt
 import numpy as np
 
 
-class AreaIdentification(object):
-    """
-    Area identification based by coordinates.\n
+class AreaIdentification:
+
+    """Area identification based by coordinates.\n
     Args:
         positions (np.array):
             coordinates of positions as an array of latitudes and longitudes
@@ -24,18 +25,18 @@ class AreaIdentification(object):
         "Extraction and Analysis of Sport Activity Data Inside Certain Area",
         7th Student Computer Science Research Conference StuCoSReC,
         2021, pp. 47-50,
-        doi: https://doi.org/10.18690/978-961-286-516-0.9
+        doi: https://doi.org/10.18690/978-961-286-516-0.9.
     """
+
     def __init__(
         self,
         positions: np.array,
         distances: np.array,
         timestamps: np.array,
         heart_rates: np.array,
-        area_coordinates: np.array
+        area_coordinates: np.array,
     ) -> None:
-        """
-        Initialisation method for AreaIdentification class.\n
+        """Initialisation method for AreaIdentification class.\n
         Args:
             positions (np.array):
                 coordinates of positions as an array of latitudes
@@ -48,7 +49,7 @@ class AreaIdentification(object):
                 heart rates as an array of integers
             area_coordinates (np.array):
                 coordinates of the area where data is analysed as
-                an array of latitudes and longitudes
+                an array of latitudes and longitudes.
         """
         self.positions = positions
         self.distances = distances
@@ -57,8 +58,7 @@ class AreaIdentification(object):
         self.area_coordinates = area_coordinates
 
     def is_equal(self, value_1: float, value_2: float) -> bool:
-        """
-        Method for checking whether the two float values are equal
+        """Method for checking whether the two float values are equal
         with certain tolerance (because of round error).\n
         Args:
             value_1 (float):
@@ -67,7 +67,7 @@ class AreaIdentification(object):
                 second value
         Returns:
             bool:
-                True if the two values are equal, false otherwise
+                True if the two values are equal, false otherwise.
         """
         tolerance = 0.00001
         # If the absolute value of substraction is smaller than
@@ -81,10 +81,9 @@ class AreaIdentification(object):
         p1: np.array,
         p2: np.array,
         p3: np.array,
-        p4: np.array
+        p4: np.array,
     ) -> bool:
-        """
-        Method for checking whether two line segments have
+        """Method for checking whether two line segments have
         an intersection point.\n
         Args:
             p1 (np.array):
@@ -98,7 +97,7 @@ class AreaIdentification(object):
         Returns:
             bool:
                 True if the two lines have an intersection point,
-                False otherwise
+                False otherwise.
         """
         # Initialization of vectors and values.
         v12 = np.array(p2 - p1)
@@ -123,8 +122,7 @@ class AreaIdentification(object):
         return False
 
     def identify_points_in_area(self) -> None:
-        """
-        Method for identifying the measure points of the
+        """Method for identifying the measure points of the
         activity inside of the specified area.
         """
         self.points_in_area = np.array([])
@@ -141,7 +139,7 @@ class AreaIdentification(object):
             for border in np.arange(np.shape(self.area_coordinates)[0]):
                 for j in np.arange(
                     -1,
-                    np.shape(self.area_coordinates[border])[0] - 1
+                    np.shape(self.area_coordinates[border])[0] - 1,
                 ):
                     if self.do_two_line_segments_intersect(
                         self.area_coordinates[border][j],
@@ -161,7 +159,7 @@ class AreaIdentification(object):
                 if currently_in_area:
                     self.points_in_area = np.append(
                         self.points_in_area,
-                        (p1, int(i) - 1)
+                        (p1, int(i) - 1),
                     )
                     p1 = None
                     currently_in_area = False
@@ -170,8 +168,7 @@ class AreaIdentification(object):
         self.points_in_area = np.reshape(self.points_in_area, (-1, 2))
 
     def extract_data_in_area(self) -> dict:
-        """
-        Method for extracting the data of the identified points in area.\n
+        """Method for extracting the data of the identified points in area.\n
         Returns: area_data: {
                     'distance': distance,
                     'time': time,
@@ -179,7 +176,7 @@ class AreaIdentification(object):
                     'minimum_heart_rate': minimum_heart_rate,
                     'maximum_heart_rate': maximum_heart_rate,
                     'average_heart_rate': average_heart_rate
-                }
+                }.
         """
         distance = 0.0
         time = 0.0
@@ -204,7 +201,7 @@ class AreaIdentification(object):
                 not_NaN_values = ~np.isnan(heart_rates_with_NaN)
                 heart_rates = np.append(
                     heart_rates,
-                    heart_rates_with_NaN[not_NaN_values]
+                    heart_rates_with_NaN[not_NaN_values],
                 )
             except Exception:
                 pass
@@ -234,12 +231,12 @@ class AreaIdentification(object):
         return area_data
 
     def plot_map(self) -> None:
-        """
-        Method for plotting the map using Geotiler
+        """Method for plotting the map using Geotiler
         according to the object variables.
         """
         if np.shape(self.positions)[0] == 0:
-            raise Exception('Dataset is empty or invalid.')
+            msg = 'Dataset is empty or invalid.'
+            raise Exception(msg)
 
         # Downloading the map.
         size = 10000
@@ -250,9 +247,9 @@ class AreaIdentification(object):
             extent=(np.min(longitudes),
                     np.min(latitudes),
                     np.max(longitudes),
-                    np.max(latitudes)
+                    np.max(latitudes),
                     ),
-            size=(size, size)
+            size=(size, size),
         )
         image = geotiler.render_map(map)
 
@@ -275,7 +272,7 @@ class AreaIdentification(object):
                 x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in
                              np.arange(
                                  self.points_in_area[i][0],
-                                 self.points_in_area[i][1] + 1))
+                                 self.points_in_area[i][1] + 1)),
                            )
 
                 if i == 0:
@@ -283,14 +280,14 @@ class AreaIdentification(object):
                         x,
                         y,
                         c='red',
-                        label='Part of exercise inside of the area'
+                        label='Part of exercise inside of the area',
                     )
                 else:
                     ax.plot(
                         x,
                         y,
                         c='red',
-                        label='_nolegend_'
+                        label='_nolegend_',
                     )
 
                 if np.shape(self.points_in_area)[0] > i + 1:
@@ -298,7 +295,7 @@ class AreaIdentification(object):
                                  for p in np.arange(
                                     self.points_in_area[i][1],
                                     self.points_in_area[i + 1][0] + 1)
-                                 )
+                                 ),
                                )
                     ax.plot(x, y, c='blue', label='_nolegend_')
 
@@ -306,27 +303,27 @@ class AreaIdentification(object):
             x, y = zip(*(map.rev_geocode(self.positions[p][::-1]) for p in
                          np.arange(
                              self.points_in_area[-1][1],
-                             np.shape(self.positions)[0]
-                         ))
+                             np.shape(self.positions)[0],
+                         )),
                        )
             ax.plot(x, y, c='blue', label='_nolegend_')
         # If there are no points inside of the given area,
         # the whole path is plotted as outside of the given area.
         else:
             x, y = zip(*(map.rev_geocode(self.positions[p][::-1])
-                         for p in np.arange(np.shape(self.positions)[0]))
+                         for p in np.arange(np.shape(self.positions)[0])),
                        )
             ax.plot(
                 x,
                 y,
                 c='blue',
-                label='Part of exercise outside of the area'
+                label='Part of exercise outside of the area',
             )
 
         # Drawing the bounding box of the chosen area.
         for hull in self.area_coordinates:
             x, y = zip(*(map.rev_geocode(hull[i - 1][::-1])
-                         for i in np.arange(np.shape(hull)[0] + 1))
+                         for i in np.arange(np.shape(hull)[0] + 1)),
                        )
             ax.plot(x, y, c='black', label='Area border')
 
@@ -336,26 +333,23 @@ class AreaIdentification(object):
         plt.ylim((size, 0))
 
     def draw_map(self) -> None:
-        """
-        Method for the visualization of the exercise on the map using Geotiler.
-        """
+        """Method for the visualization of the exercise on the map using Geotiler."""
         self.plot_map()
         plt.show()
 
     @staticmethod
     def plot_activities_inside_area_on_map(
         activities: np.array,
-        area_coordinates: np.array
+        area_coordinates: np.array,
     ) -> None:
-        """
-        Static method for plotting the area borders and the activities
+        """Static method for plotting the area borders and the activities
         (or their parts) inside of an area.\n
         Args:
             activities (np.array):
                 array of AreaIdentification objects
             area_coordinates (np.array):
                 border coordinates of an area as an array
-                of latitudes and longitudes
+                of latitudes and longitudes.
         """
         size = 10000
         coordinates = area_coordinates.flatten()
@@ -366,9 +360,9 @@ class AreaIdentification(object):
                 np.min(longitudes),
                 np.min(latitudes),
                 np.max(longitudes),
-                np.max(latitudes)
+                np.max(latitudes),
             ),
-            size=(size, size)
+            size=(size, size),
         )
         image = geotiler.render_map(map)
         colors = [
@@ -379,7 +373,7 @@ class AreaIdentification(object):
             'magenta',
             'yellow',
             'key',
-            'white'
+            'white',
         ]
 
         # Drawing the map as plot.
@@ -394,8 +388,8 @@ class AreaIdentification(object):
                           for p in np.arange(
                               activities[i].points_in_area[j][0],
                               activities[i].points_in_area[j][1] + 1)
-                          )
-                        )
+                          ),
+                        ),
                 )
 
             # Plotting each activity (displayed only once in legend).
@@ -406,7 +400,7 @@ class AreaIdentification(object):
                         x,
                         y,
                         c=colors[i % 8],
-                        label='Activity {}'.format(i + 1)
+                        label=f'Activity {i + 1}',
                     )
                 else:
                     ax.plot(x, y, c=colors[i % 8], label='_nolegend_')
@@ -414,7 +408,7 @@ class AreaIdentification(object):
         # Drawing the bounding box of the chosen area.
         for hull in area_coordinates:
             x, y = zip(*(map.rev_geocode(hull[i - 1][::-1])
-                         for i in np.arange(np.shape(hull)[0] + 1))
+                         for i in np.arange(np.shape(hull)[0] + 1)),
                        )
             ax.plot(x, y, c='black', label='Area border')
 
@@ -426,31 +420,29 @@ class AreaIdentification(object):
     @staticmethod
     def draw_activities_inside_area_on_map(
         activities: np.array,
-        area_coordinates: np.array
+        area_coordinates: np.array,
     ) -> None:
-        """
-        Static method for drawing all the activities
+        """Static method for drawing all the activities
         inside of an area on the map.\n
         Args:
             activities (np.array):
                 array of AreaIdentification objects
             area_coordinates (np.array):
                 border coordinates of an area as an array
-                of latitudes and longitudes
+                of latitudes and longitudes.
         """
         AreaIdentification.plot_activities_inside_area_on_map(
             activities,
-            area_coordinates
+            area_coordinates,
         )
         plt.show()
 
     @staticmethod
     def get_area_coordinates_around_point(
         point: np.array,
-        distance: int
+        distance: int,
     ) -> np.array:
-        """
-        Static method to get area coordinates around the point on Earth
+        """Static method to get area coordinates around the point on Earth
         according to given distance. Area limits consist of 4 border points.\n
         Args:
             point (np.array):
@@ -460,7 +452,7 @@ class AreaIdentification(object):
                 area border points
         Returns:
             np.array:
-                an array of area coordinates
+                an array of area coordinates.
         """
         coordinates = np.empty((1, 4, 2))
         lat, lon = point[0], point[1]

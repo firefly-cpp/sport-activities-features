@@ -1,42 +1,38 @@
 import os
-from tcxreader.tcxreader import TCXTrackPoint, TCXReader
+from pathlib import Path
+
 import numpy as np
 from tcx2gpx import tcx2gpx
-from pathlib import Path
+from tcxreader.tcxreader import TCXReader, TCXTrackPoint
 
 from sport_activities_features.file_manipulation import FileManipulation
 
 
 class TCXFile(FileManipulation):
-    """
-    Class for reading TCX files.
-    """
+
+    """Class for reading TCX files."""
 
     def __init__(self) -> None:
-        """
-        Initialisation method of TCXFile class.
-        """
+        """Initialisation method of TCXFile class."""
         self.all_files = []
 
     def read_directory(self, directory_name: str) -> list:
-        """
-        Method for finding all TCX files in a directory.\n
+        """Method for finding all TCX files in a directory.\n
         Args:
             directory_name (str):
                 name of the directory in which to identify TCX files
         Returns:
-            str: array of paths to the identified files
+            str: array of paths to the identified files.
         """
         files = os.listdir(directory_name)
-        all_files1 = [i for i in files if i.endswith(".tcx")]
+        all_files1 = [i for i in files if i.endswith('.tcx')]
         for j in range(len(all_files1)):
             file = os.path.join(directory_name, all_files1[j])
             self.all_files.append(file)
         return self.all_files
 
     def read_one_file(self, filename: str, numpy_array=False) -> dict:
-        """
-        Method for parsing one TCX file using the TCXReader.\n
+        """Method for parsing one TCX file using the TCXReader.\n
         Args:
             filename (str):
                 name of the TCX file to be read
@@ -53,8 +49,10 @@ class TCXFile(FileManipulation):
                 'timestamps': timestamps,
                 'heartrates': heartrates,
                 'speeds': speeds
-            }
+            }.
+
         Note:
+        ----
             In the case of missing value in raw data, we assign None.
         """
         tcx = TCXReader().read(filename)
@@ -80,7 +78,7 @@ class TCXFile(FileManipulation):
                 if delta_time != 0:
                     heartrates.append(trackpoint.hr_value)
                     positions.append(
-                        (trackpoint.latitude, trackpoint.longitude)
+                        (trackpoint.latitude, trackpoint.longitude),
                     )
                     altitudes.append(trackpoint.elevation)
                     distances.append(trackpoint.distance)
@@ -111,21 +109,20 @@ class TCXFile(FileManipulation):
             speeds = np.array(speeds)
 
         activity = {
-            "activity_type": activity_type,
-            "positions": positions,
-            "altitudes": altitudes,
-            "distances": distances,
-            "total_distance": total_distance,
-            "timestamps": timestamps,
-            "heartrates": heartrates,
-            "speeds": speeds,
-            "start_time": tcx.start_time,
+            'activity_type': activity_type,
+            'positions': positions,
+            'altitudes': altitudes,
+            'distances': distances,
+            'total_distance': total_distance,
+            'timestamps': timestamps,
+            'heartrates': heartrates,
+            'speeds': speeds,
+            'start_time': tcx.start_time,
         }
         return activity
 
     def extract_integral_metrics(self, filename: str) -> dict:
-        """
-        Method for parsing one TCX file and extracting integral metrics.\n
+        """Method for parsing one TCX file and extracting integral metrics.\n
         Args:
             filename (str):
                 name of the TCX file to be read
@@ -144,7 +141,7 @@ class TCXFile(FileManipulation):
                 'ascent': ascent,
                 'descent': descent,
                 'steps' : steps
-            }
+            }.
         """
         tcx = TCXReader().read(filename)
 
@@ -210,30 +207,29 @@ class TCXFile(FileManipulation):
             descent = None
 
         try:
-            steps = tcx.lx_ext["Steps"]
+            steps = tcx.lx_ext['Steps']
         except BaseException:
             steps = None
 
         int_metrics = {
-            "activity_type": activity_type,
-            "distance": distance,
-            "duration": duration,
-            "calories": calories,
-            "hr_avg": hr_avg,
-            "hr_max": hr_max,
-            "hr_min": hr_min,
-            "altitude_avg": altitude_avg,
-            "altitude_max": altitude_max,
-            "altitude_min": altitude_min,
-            "ascent": ascent,
-            "descent": descent,
-            "steps": steps,
+            'activity_type': activity_type,
+            'distance': distance,
+            'duration': duration,
+            'calories': calories,
+            'hr_avg': hr_avg,
+            'hr_max': hr_max,
+            'hr_min': hr_min,
+            'altitude_avg': altitude_avg,
+            'altitude_max': altitude_max,
+            'altitude_min': altitude_min,
+            'ascent': ascent,
+            'descent': descent,
+            'steps': steps,
         }
         return int_metrics
 
     def write_gpx(self, gps_object, output_file_name=None):
-        """
-        Write GPX object to file.
+        """Write GPX object to file.
         if output_file_name is not specified,
         the output file name will be the same
         as the input file name,
@@ -241,16 +237,14 @@ class TCXFile(FileManipulation):
         """
         if output_file_name is None:
             output_file_name = str(gps_object.tcx_path.resolve()).replace(
-                ".tcx", ".gpx"
+                '.tcx', '.gpx',
             )
 
-        with open(output_file_name, "w") as output:
+        with open(output_file_name, 'w') as output:
             output.write(gps_object.gpx.to_xml())
 
     def create_gps_object(self, path_to_the_file):
-        """
-        Convert TCX file to GPX file.
-        """
+        """Convert TCX file to GPX file."""
         gps_object = tcx2gpx.TCX2GPX(tcx_path=path_to_the_file)
         gps_object.read_tcx()
         gps_object.extract_track_points()
@@ -258,7 +252,7 @@ class TCXFile(FileManipulation):
         return gps_object
 
     def convert_tcx_to_gpx(
-        self, local_path_to_original_file: str, output_file_name=None
+        self, local_path_to_original_file: str, output_file_name=None,
     ):
         try:
             """
@@ -269,10 +263,10 @@ class TCXFile(FileManipulation):
             """
             local_path_to_original_file = Path(local_path_to_original_file)
             abs_path_to_directory = str(
-                os.path.split(os.path.abspath(local_path_to_original_file))[0]
+                os.path.split(os.path.abspath(local_path_to_original_file))[0],
             )
             abs_path_to_original_file = str(
-                Path(local_path_to_original_file).resolve()
+                Path(local_path_to_original_file).resolve(),
             )
 
             gps_object = self.create_gps_object(abs_path_to_original_file)
@@ -280,7 +274,7 @@ class TCXFile(FileManipulation):
                 self.write_gpx(gps_object)
             else:
                 output_file_name = (
-                    abs_path_to_directory + "\\" + str(output_file_name)
+                    abs_path_to_directory + '\\' + str(output_file_name)
                 )
                 self.write_gpx(gps_object, output_file_name)
             return gps_object
@@ -298,23 +292,23 @@ class TCXFile(FileManipulation):
                 # Intermediate file
                 if output_file_name is None:
                     path_to_the_fixed_file = str(
-                        abs_path_to_original_file.replace(".tcx", ".gpx")
+                        abs_path_to_original_file.replace('.tcx', '.gpx'),
                     )
                 else:
                     path_to_the_fixed_file = (
-                        abs_path_to_directory + "\\" + str(output_file_name)
+                        abs_path_to_directory + '\\' + str(output_file_name)
                     )
 
                 # Open original file to try fix and convert from tcx to gpx
-                file_to_fix_convert = open(abs_path_to_original_file, "rt")
+                file_to_fix_convert = open(abs_path_to_original_file)
 
                 # Output file - .gpx - to write the result to
-                fixed_file = open(path_to_the_fixed_file, "wt")
+                fixed_file = open(path_to_the_fixed_file, 'w')
 
                 # For every line of the original file
                 for line in file_to_fix_convert:
                     # Read and replace string, write to output file
-                    fixed_file.write(line.replace(".000Z", "Z"))
+                    fixed_file.write(line.replace('.000Z', 'Z'))
 
                 # Close original and fixed file
                 file_to_fix_convert.close()
@@ -326,4 +320,5 @@ class TCXFile(FileManipulation):
                 return gps_object
 
             except ValueError:
-                raise ValueError("Error in converting the file")
+                msg = 'Error in converting the file'
+                raise ValueError(msg)

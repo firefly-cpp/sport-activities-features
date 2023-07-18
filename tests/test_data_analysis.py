@@ -1,9 +1,10 @@
+import contextlib
 import os
 from unittest import TestCase
-try:
+
+with contextlib.suppress(BaseException):
     from sport_activities_features.data_analysis import DataAnalysis
-except BaseException:
-    pass
+
 
 
 class TestDataAnalysis(TestCase):
@@ -21,16 +22,10 @@ class TestDataAnalysis(TestCase):
             ['SelectKBest', 'SelectPercentile', 'ParticleSwarmOptimization'],
             ['Normalizer', 'StandardScaler'],
         )
-        self.assertEqual(
-            "<class 'niaaml.pipeline.Pipeline'>",
-            str(type(pipeline))
-        )
+        assert str(type(pipeline)) == "<class 'niaaml.pipeline.Pipeline'>"
 
     def test_load_pipeline(self):
         pipeline = self.__data_analysis.load_pipeline(
-            os.path.join(os.path.dirname(__file__), "data", "test.ppln")
+            os.path.join(os.path.dirname(__file__), 'data', 'test.ppln'),
         )
-        self.assertEqual(
-            "<class 'niaaml.pipeline.Pipeline'>",
-            str(type(pipeline))
-        )
+        assert str(type(pipeline)) == "<class 'niaaml.pipeline.Pipeline'>"

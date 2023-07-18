@@ -1,6 +1,4 @@
-from sport_activities_features import ElevationIdentification
-from sport_activities_features import TCXFile
-
+from sport_activities_features import ElevationIdentification, TCXFile
 
 tcx_file = TCXFile()
 tcx_data = tcx_file.read_one_file('path_to_the_data')

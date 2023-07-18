@@ -1,5 +1,4 @@
-"""
-This example presents how to calculate Banister,
+"""This example presents how to calculate Banister,
 Edwards and Lucia TRIMP (training impulse).
 """
 from sport_activities_features import (
@@ -7,9 +6,8 @@ from sport_activities_features import (
     BanisterTRIMPv2,
     EdwardsTRIMP,
     LuciaTRIMP,
-    TCXFile
+    TCXFile,
 )
-
 
 # Reading a TCX file.
 tcx_file = TCXFile()

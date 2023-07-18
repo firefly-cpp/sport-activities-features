@@ -1,12 +1,10 @@
-"""
-This example presents how to extract data
+"""This example presents how to extract data
 inside of the area given with coordinates.
 """
 import numpy as np
 
 from sport_activities_features.area_identification import AreaIdentification
 from sport_activities_features.tcx_manipulation import TCXFile
-
 
 # Reading the TCX file.
 tcx_file = TCXFile()

@@ -1,9 +1,7 @@
-"""
-This example presents how to use the DataAnalysis class
+"""This example presents how to use the DataAnalysis class
 along with the NiaAML automated machine learning framework.
 """
 from sport_activities_features import DataAnalysis
-
 
 # Instantiate DataAnalysis object instance.
 data_analysis = DataAnalysis()
@@ -22,7 +20,7 @@ pipeline = data_analysis.analyze_data(
     20,
     400,
     'DifferentialEvolution',
-    ['AdaBoost', 'Bagging', "MultiLayerPerceptron"],
+    ['AdaBoost', 'Bagging', 'MultiLayerPerceptron'],
     ['SelectKBest', 'SelectPercentile', 'ParticleSwarmOptimization'],
     ['Normalizer', 'StandardScaler'],
 )
@@ -35,11 +33,10 @@ pipeline.export_text('<export path>')
 
 # load the exported binary pipeline
 imported_pipeline = data_analysis.load_pipeline(
-    '<path to binary pipeline file>'
+    '<path to binary pipeline file>',
 )
 
 # in order to run classification, the method run should be
 # called using the Pipeline instance:
-# pipeline.run(x),
 # where x is a Pandas DataFrame where each line is an individual
 # to be classified and each row represents the individual's feature

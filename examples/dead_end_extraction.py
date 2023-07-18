@@ -1,13 +1,10 @@
-"""
-This example presents how to extract dead ends from an activity.
-"""
+"""This example presents how to extract dead ends from an activity."""
 import numpy as np
 
 from sport_activities_features.dead_end_identification import (
-    DeadEndIdentification
+    DeadEndIdentification,
 )
 from sport_activities_features.tcx_manipulation import TCXFile
-
 
 # Reading the TCX file.
 tcx_file = TCXFile()

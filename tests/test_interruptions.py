@@ -14,7 +14,7 @@ class TestInterruptionProcessor(TestCase):
         interruptionProcessor = InterruptionProcessor(
             time_interval=60,
             min_speed=2,
-            overpass_api_url='url_to_overpass_api'
+            overpass_api_url='url_to_overpass_api',
         )
         """
         Set to false because we don't have Overpass API avaliable
@@ -25,12 +25,12 @@ class TestInterruptionProcessor(TestCase):
         self.data = interruptionProcessor.events(tcx, False)
 
     def test_number_of_detected_events(self):
-        self.assertEqual(len(self.data), 14)
+        assert len(self.data) == 14
 
     def test_specific_event(self):
-        self.assertEqual(len(self.data[3].pre_event), 25)
-        self.assertEqual(len(self.data[3].post_event), 21)
+        assert len(self.data[3].pre_event) == 25
+        assert len(self.data[3].post_event) == 21
 
     def test_start_end_event(self):
-        self.assertEqual(self.data[0].event_type, EventType.EXERCISE_START)
-        self.assertEqual(self.data[-1].event_type, EventType.EXERCISE_STOP)
+        assert self.data[0].event_type == EventType.EXERCISE_START
+        assert self.data[-1].event_type == EventType.EXERCISE_STOP

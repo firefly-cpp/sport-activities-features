@@ -1,5 +1,4 @@
-"""
-This example presents how to use interval identification
+"""This example presents how to use interval identification
 based by power and by heart rate.
 """
 from sport_activities_features.interval_identification import (
@@ -7,7 +6,6 @@ from sport_activities_features.interval_identification import (
     IntervalIdentificationByPower,
 )
 from sport_activities_features.tcx_manipulation import TCXFile
-
 
 # Reading the TCX file
 tcx_file = TCXFile()
@@ -18,7 +16,7 @@ Intervals = IntervalIdentificationByPower(
     activity['distances'],
     activity['timestamps'],
     activity['altitudes'],
-    mass=70
+    mass=70,
 )
 Intervals.identify_intervals()
 all_intervals = Intervals.return_intervals()

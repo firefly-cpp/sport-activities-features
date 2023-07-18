@@ -1,6 +1,6 @@
-class SportyDataGen(object):
-    """
-    Class that contains selected and modified SportyDataGen methods
+class SportyDataGen:
+
+    """Class that contains selected and modified SportyDataGen methods
     for generation of sports activity collections.\n
     Args:
         **kwargs: various arguments
@@ -22,33 +22,32 @@ class SportyDataGen(object):
         This class is still under developement,
         therefore its methods may not work as expected.
     """
+
     def __init__(self, **kwargs) -> None:
-        """
-        Initialisation method for SportyDataGen class.\n
+        """Initialisation method for SportyDataGen class.\n
         Args:
             **kwargs:
-                various arguments
+                various arguments.
         """
         self._set_parameters(**kwargs)
 
     def _set_parameters(self, **kwargs) -> None:
-        """
-        Method for setting parameters of the instance.\n
+        """Method for setting parameters of the instance.\n
         Args:
             **kwargs:
-                various arguments
+                various arguments.
         """
-        return None
+        return
 
     def random_generation_without_clustering(self, activities) -> None:
-        """
-        Method for the random generation of
+        """Method for the random generation of
         sport activities (without clustering).\n
         Args:
             activities:
 
         Note:
+        ----
             Select n activities randomly without
             any special preprocessing tasks.
         """
-        return None
+        return

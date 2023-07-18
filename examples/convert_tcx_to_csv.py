@@ -1,5 +1,6 @@
 """Convert TCX file to CSV file."""
 import pandas as pd
+
 from sport_activities_features.tcx_manipulation import TCXFile
 
 # Class for reading TCX files
@@ -22,4 +23,4 @@ tcx_to_csv_df = pd.DataFrame.from_dict(data)
 tcx_to_csv_df.index.name = 'row_id'
 
 # Save DataFrame to CSV file with semicolon as separator
-tcx_to_csv_df.to_csv(output_file, sep=";")
+tcx_to_csv_df.to_csv(output_file, sep=';')

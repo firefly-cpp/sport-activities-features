@@ -1,5 +1,6 @@
+from collections.abc import Iterable
+
 from numpy import uint
-from typing import Iterable
 
 try:
     from niaaml import Pipeline, PipelineOptimizer
@@ -8,29 +9,28 @@ except BaseException:
     pass
 
 
-class DataAnalysis(object):
-    """
-    Class for data analysis that uses automated machine
+class DataAnalysis:
+
+    """Class for data analysis that uses automated machine
     learning to analyze extracted sport features.\n
     Args:
         **kwargs:
-            various arguments
+            various arguments.
     """
+
     def __init__(self, **kwargs) -> None:
-        """
-        Initialisation method for DataAnalysis class.\n
+        """Initialisation method for DataAnalysis class.\n
         Args:
             **kwargs:
-                various arguments
+                various arguments.
         """
         self._set_parameters(**kwargs)
 
     def _set_parameters(self, **kwargs) -> None:
-        """
-        Method for setting parameters of the instance.\n
+        """Method for setting parameters of the instance.\n
         Args:
             **kwargs:
-                various arguments
+                various arguments.
         """
 
     def analyze_data(
@@ -45,8 +45,7 @@ class DataAnalysis(object):
         feature_transform_algorithms: Iterable = None,
         imputer: str = None,
     ) -> Pipeline:
-        """
-        Method for running AutoML process using NiaAML
+        """Method for running AutoML process using NiaAML
         PipelineOptimizer class instance.\n
         Args:
             src (str):
@@ -87,14 +86,13 @@ class DataAnalysis(object):
             fitness_name,
             population_size,
             number_of_evaluations,
-            optimization_algorithm
+            optimization_algorithm,
         )
         return pipeline
 
     @staticmethod
     def load_pipeline(file_name: str) -> Pipeline:
-        """
-        Method for loading a NiaAML's pipeline from a binary file.\n
+        """Method for loading a NiaAML's pipeline from a binary file.\n
         Args:
             file_name (str):
                 path to a binary pipeline file

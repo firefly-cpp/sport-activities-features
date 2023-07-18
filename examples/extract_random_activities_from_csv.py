@@ -1,7 +1,6 @@
 from sport_activities_features.data_extraction_from_csv import (
-    DataExtractionFromCSV
+    DataExtractionFromCSV,
 )
-
 
 data_extraction_from_csv = DataExtractionFromCSV()
 # Extract data from CSV file to dataframe

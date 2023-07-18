@@ -10,4 +10,4 @@ class StoredSegmentsTestCase(TestCase):
     def test_init_stored_segments_works_fine(self):
         arr = [3.5, 5.55, 3.44]
         self.assertCountEqual(arr, self.__stored_segments.segment)
-        self.assertEqual(165.22, self.__stored_segments.ascent)
+        assert self.__stored_segments.ascent == 165.22

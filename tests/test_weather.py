@@ -11,7 +11,7 @@ class TestWeather(TestCase):
         weather_external_data = os.path.join(
             os.path.dirname(__file__),
             'data',
-            'weather_test.temp'
+            'weather_test.temp',
         )
         tcx_file = TCXFile()
         self.data = tcx_file.read_one_file(filename)
@@ -22,14 +22,14 @@ class TestWeather(TestCase):
     def test_average_weather_size(self):
         avg_weather = WeatherIdentification.get_average_weather_data(
             timestamps=self.data['timestamps'],
-            weather=self.weather
+            weather=self.weather,
         )
-        self.assertEqual(len(avg_weather), 7799)
+        assert len(avg_weather) == 7799
 
     def test_average_weather_between_two_timestamps(self):
         avg_weather = WeatherIdentification.get_average_weather_data(
             timestamps=self.data['timestamps'],
-            weather=self.weather
+            weather=self.weather,
         )
         self.assertAlmostEqual(avg_weather[38].temperature, 7.807, 2)
         self.assertAlmostEqual(avg_weather[38].sea_level_pressure, 994.063, 2)

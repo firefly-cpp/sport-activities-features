@@ -2,10 +2,11 @@ import datetime
 
 
 class Weather:
-    r"""
-    A class for the Weather object files. Args reported
+
+    r"""A class for the Weather object files. Args reported
     based on VisualCrossing API description.
     """
+
     def __init__(
         self,
         temperature: float = None,
@@ -28,11 +29,12 @@ class Weather:
         conditions: str = None,
         date: datetime = None,
         location=None,
-        index: int = None
-    ):
-        """
-        Initialisation method for Weather objects.
+        index: int = None,
+    ) -> None:
+        """Initialisation method for Weather objects.
+
         Args:
+        ----
             temperature : Average (mean) temperature
                           during the measuring period
             maximum_temperature : Maximum temperature during
@@ -91,7 +93,7 @@ class Weather:
                  https://github.com/visualcrossing/WeatherApi/tree/master/lang)
             date  : Datetime of the weather measuring time.
             location : Latitude, longitude of the measurement.
-            index : Index of the Weather measurement (0, 1, 2)
+            index : Index of the Weather measurement (0, 1, 2).
         """
         self.temperature: float = temperature
         self.maximum_temperature = maximum_temperature

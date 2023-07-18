@@ -1,6 +1,7 @@
-import numpy as np
 import os
 from unittest import TestCase
+
+import numpy as np
 
 from sport_activities_features.area_identification import AreaIdentification
 from sport_activities_features.tcx_manipulation import TCXFile
@@ -21,7 +22,7 @@ class TestAreaIdentification(TestCase):
             [45.445539, 13.736101],
             [45.566894, 13.700517],
             [45.563605, 13.806872],
-            [45.480111, 13.812463]
+            [45.480111, 13.812463],
         ]])
 
         area = AreaIdentification(
@@ -29,7 +30,7 @@ class TestAreaIdentification(TestCase):
             distances,
             timestamps,
             heartrates,
-            area_coordinates
+            area_coordinates,
         )
         area.identify_points_in_area()
         self.data = area.extract_data_in_area()
@@ -47,19 +48,19 @@ class TestAreaIdentification(TestCase):
         self.assertAlmostEqual(
             self.data['minimum_heart_rate'],
             114.0,
-            places=1
+            places=1,
         )
 
     def test_max_heart_rate_correct(self):
         self.assertAlmostEqual(
             self.data['maximum_heart_rate'],
             171.0,
-            places=1
+            places=1,
         )
 
     def test_avg_heart_rate_correct(self):
         self.assertAlmostEqual(
             self.data['average_heart_rate'],
             139.0,
-            places=1
+            places=1,
         )
