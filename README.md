@@ -67,12 +67,12 @@ The framework comes with two (testing) [benchmark datasets](https://github.com/f
 
 ## Installation
 
-### pip3
+### pip
 
-Install sport-activities-features with pip3:
+Install sport-activities-features with pip:
 
 ```sh
-pip3 install sport-activities-features
+pip install sport-activities-features
 ```
 
 ### Alpine Linux
