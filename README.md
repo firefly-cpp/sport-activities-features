@@ -24,7 +24,7 @@
 [![DOI](https://img.shields.io/badge/DOI-10.1109/INES52918.2021.9512927-blue)](https://doi.org/10.1109/INES52918.2021.9512927)
 
 * **Documentation:** https://sport-activities-features.readthedocs.io/en/latest
-* **Tested OS:** Windows, Ubuntu, Fedora, Alpine, Arch, macOS. **However, that does not mean it does not work on others**
+* **Tested OS:** Windows, Ubuntu, Fedora, Alpine, Arch, macOS. **However, that does not mean it does not work on others.**
 
 ## Unleashing the Power of Sports Activity Analysis: A Framework Beyond Ordinary Metrics 🚀
 
