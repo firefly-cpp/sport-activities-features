@@ -106,20 +106,23 @@ class PlotData:
             if j == 0:
                 continue
 
+            color = self.get_color_for_incline(x[j-1], x[j], y[j-1], y[j])
             if (j - 1) in points and j in points:
                 plt.plot(
                     [x[j - 1], x[j]],
                     [y[j - 1], y[j]],
-                    color='r',
+                    color=color,
                     markersize=5,
                 )
+                plt.fill_between([x[j-1], x[j]], [y[j-1], y[j]], 0, color=color, alpha=1)
             else:
                 plt.plot(
                     [x[j - 1], x[j]],
                     [y[j - 1], y[j]],
-                    color='b',
+                    color=color,
                     markersize=5,
                 )
+                plt.fill_between([x[j-1], x[j]], [y[j-1], y[j]], 0, color=color, alpha=1)
 
         plt.xticks(fontsize=14)
         plt.title('Detected hills', fontsize=20)
@@ -217,3 +220,27 @@ class PlotData:
         plt.xlabel('Distance (m)', fontsize=20)
         plt.ylabel('Altitude (m)', fontsize=20)
         return plt
+
+    def get_color_for_incline(self, x1, x2, y1, y2) -> str:
+        dy = y2 - y1
+        dx = x2 - x1
+
+        if dx == 0.0:
+            incline = 0.0
+        else:
+            incline = (dy / dx) * 100
+
+        incline = abs(incline)
+
+        if incline == 0.0:
+            return '#5FD67B'
+        elif 0 < incline <= 2.9:
+            return '#43C160'
+        elif 2.9 < incline <= 5.9:
+            return '#28A745'
+        elif 5.9 < incline <= 8.9:
+            return '#159231'
+        elif incline > 8.9:
+            return '#087621'
+        else:
+            return '#000000'
