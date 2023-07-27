@@ -438,7 +438,7 @@ I. Jr. Fister, L. Lukač, A. Rajšp, I. Fister, L. Pečnik and D. Fister, "[A mi
 
 ## Further read
 
-[1] [https://github.com/firefly-cpp/awesome-computational-intelligence-in-sports](Awesome Computational Intelligence in Sports)
+[1] [Awesome Computational Intelligence in Sports]([Awesome Computational Intelligence in Sports](https://github.com/firefly-cpp/awesome-computational-intelligence-in-sports))
 
 ## Contributors ✨
 
