@@ -88,60 +88,87 @@ class HillIdentification(object):
         hill_segment = []
         hill_segment_ascent = 0.0
 
-        current_ascent = 0
-        current_descent = 0
-
         is_ascent = False
         is_descent = False
 
         ascentX_start = 0
 
-        # TODO: check if distances[1] exists
+        array_of_changes_indexes = []
 
         for i in range(1, len(self.altitudes)):
-
-            if self.altitudes[i] >= self.altitudes[i-1]:
-
-                if is_ascent & is_descent:
-                    is_ascent = False
-                    is_descent = False
-
-                    current_ascent = 0
-                    current_descent = 0
-
-                    # TODO: save result
-                    print("Našli smo vzpon, ki se začne s podatkom ", (ascentX_start - 1), ' in višino ',
-                          self.altitudes[ascentX_start - 1])
+            if self.altitudes[i] >= self.altitudes[i - 1]:
+                if not is_descent and not is_ascent:
+                    is_ascent = True
+                    ascentX_start = i - 1
+                elif is_descent:
+                    ascent_height = self.altitudes[i-1] - self.altitudes[ascentX_start]
+                    array_of_changes_indexes.append([ascentX_start, i-1, ascent_height])
 
                     ascentX_start = i - 1
-
-                current_ascent = current_ascent + (self.altitudes[i] - self.altitudes[i-1])
-                current_descent = current_descent - (self.altitudes[i] - self.altitudes[i-1])
-
-                if current_descent < 0:
-                    current_descent = 0
-
-                if current_ascent >= self.ascent_threshold and not is_ascent:
                     is_ascent = True
+                    is_descent = False
 
             else:
-                current_ascent = current_ascent - abs((self.altitudes[i] - self.altitudes[i-1]))
-                current_descent = current_descent + abs((self.altitudes[i] - self.altitudes[i-1]))
+                if not is_ascent and not is_descent:
+                    is_descent = True
+                    ascentX_start = i - 1
+                elif is_ascent:
+                    descent_height = self.altitudes[i-1] - self.altitudes[ascentX_start]
+                    array_of_changes_indexes.append([ascentX_start, i-1, descent_height])
 
-                if current_ascent < 0:
-                    current_ascent = 0
+                    ascentX_start = i - 1
+                    is_descent = True
+                    is_ascent = False
 
-                if current_descent >= self.ascent_threshold and not is_descent:
+        if is_ascent or is_descent:
+            height_change = self.altitudes[-1] - self.altitudes[ascentX_start]
+            array_of_changes_indexes.append([ascentX_start, len(self.altitudes) - 1, height_change])
+
+        array_of_important_indexes = []
+        array_of_important_indexes.append(0)
+
+        is_ascent = False
+        is_descent = False
+
+        current_ascent = 0
+        current_descent = 0
+
+        starting_index = 0
+        start_x = 0
+
+        if array_of_changes_indexes[0][2] < 0:
+            self.identified_hills.append(
+                StoredSegments(
+                    [array_of_changes_indexes[0][0], array_of_changes_indexes[0][1]],
+                    array_of_changes_indexes[0][2],
+                    0,  # TODO add hill segment grade
+                )
+            )
+            starting_index = starting_index + 1
+            start_x = array_of_changes_indexes[0][1]
+
+        for i in range(starting_index, len(array_of_changes_indexes)):
+
+            if array_of_changes_indexes[i][2] > 0:
+                current_ascent = current_ascent + array_of_changes_indexes[i][2]
+                if current_ascent >= self.ascent_threshold:
+                    is_ascent = True
+            else:
+                current_descent = current_descent + array_of_changes_indexes[i][2]
+                if abs(current_descent) >= self.ascent_threshold:
                     is_descent = True
 
-        print('threshold', self.ascent_threshold)
-
-        if is_ascent:
-            print("Našli smo vzpon, ki se začne s podatkom ", (ascentX_start - 1), ' in višino ', self.altitudes[ascentX_start - 1])
-        elif is_descent:
-            print('Našli smo spust, ki se začne s podatkom ', (ascentX_start - 1), ' in višino ', self.altitudes[ascentX_start - 1])
-        else:
-            print('Nismo našli vzpona')
+            if ((is_ascent and is_descent) and array_of_changes_indexes[i][2] < 0) or i == (len(array_of_changes_indexes) - 1):
+                self.identified_hills.append(StoredSegments(
+                    [start_x, array_of_changes_indexes[i][1]],
+                    array_of_changes_indexes[i][2],
+                    0,  # TODO add hill segment grade
+                ))
+                start_x = array_of_changes_indexes[i][1]
+                is_ascent = False
+                is_descent = False
+                current_ascent = 0
+                current_descent = 0
 
 
 
