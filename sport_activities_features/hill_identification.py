@@ -124,9 +124,6 @@ class HillIdentification(object):
             height_change = self.altitudes[-1] - self.altitudes[ascentX_start]
             array_of_changes_indexes.append([ascentX_start, len(self.altitudes) - 1, height_change])
 
-        array_of_important_indexes = []
-        array_of_important_indexes.append(0)
-
         is_ascent = False
         is_descent = False
 
@@ -169,73 +166,6 @@ class HillIdentification(object):
                 is_descent = False
                 current_ascent = 0
                 current_descent = 0
-
-
-
-        # for i in range(len(differences)):
-        #     total_ascent = 0.0
-        #     selected_IDs = []
-        #     selected_IDs.append(i)
-        #     descent_counter = 0
-        #
-        #     for j in range(i + 1, len(differences)):
-        #         NEXT = differences[j]
-        #         if NEXT >= 0.0:
-        #             total_ascent = total_ascent + NEXT
-        #             selected_IDs.append(j)
-        #
-        #         else:
-        #             if len(selected_IDs) == 1:
-        #                 break
-        #             else:
-        #                 selected_IDs.append(j)
-        #                 descent_counter = descent_counter + 1
-        #
-        #         if descent_counter == 10:
-        #             selected_IDs = selected_IDs[
-        #                 : len(selected_IDs) - descent_counter
-        #             ]
-        #             break
-        #
-        #     if self.return_hill(total_ascent):
-        #         if len(hill_segment) < 3:  # Nothing happens...
-        #             hill_segment = selected_IDs
-        #             hill_segment_ascent = total_ascent
-        #         else:
-        #             length_of_intersection = len(
-        #                 set(hill_segment).intersection(selected_IDs)
-        #             )
-        #             calculation = float(
-        #                 float(length_of_intersection)
-        #                 / float(len(hill_segment))
-        #             )
-        #             if calculation < 0.1:  # if less than 10% of nodes repeat
-        #
-        #                 is_a_list = isinstance(
-        #                     self.distances, numpy.ndarray
-        #                 ) or isinstance(self.distances, list)
-        #                 hill_segment_grade = None
-        #                 if is_a_list and len(self.distances) == len(
-        #                     self.altitudes
-        #                 ):
-        #                     end_distance = self.distances[hill_segment[-1]]
-        #                     start_distance = self.distances[hill_segment[0]]
-        #                     hill_segment_distance = (
-        #                         end_distance - start_distance
-        #                     )
-        #                     hill_segment_grade = self.__calculate_hill_grade(
-        #                         hill_segment_distance, hill_segment_ascent
-        #                     )
-        #
-        #                 self.identified_hills.append(
-        #                     StoredSegments(
-        #                         hill_segment,
-        #                         hill_segment_ascent,
-        #                         hill_segment_grade,
-        #                     )
-        #                 )
-        #                 hill_segment = []
-        #                 hill_segment_ascent = 0.0
 
     def return_hills(self) -> list:
         """
