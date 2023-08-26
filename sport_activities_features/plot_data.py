@@ -98,13 +98,32 @@ class PlotData:
         y = []
         x = []
 
+        current_hill = 0
+
         points = self.get_positions_of_hills(identified_hills)
+
         for j in range(len(distance)):
             y.append(float(altitude[j]))
             x.append(float(distance[j]))
 
             if j == 0:
+                plt.plot(
+                    [x[j], x[j]],
+                    [0, y[j] + 20],
+                    color='#000000',
+                    markersize=5,
+                )
                 continue
+
+            if (j - 1) == identified_hills[current_hill][0]:
+                plt.plot(
+                    [x[j-1], x[j-1]],
+                    [0, y[j-1]+20],
+                    color='#000000',
+                    markersize=5,
+                )
+                if current_hill + 1 < len(identified_hills):
+                    current_hill = current_hill + 1
 
             color = self.get_color_for_incline(x[j-1], x[j], y[j-1], y[j])
             if (j - 1) in points and j in points:
