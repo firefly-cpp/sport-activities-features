@@ -85,9 +85,6 @@ class HillIdentification(object):
         self.total_ascent = sum(x for x in differences if x > 0)
         self.total_descent = sum(-x for x in differences if x < 0)
 
-        hill_segment = []
-        hill_segment_ascent = 0.0
-
         is_ascent = False
         is_descent = False
 
@@ -134,11 +131,30 @@ class HillIdentification(object):
         start_x = 0
 
         if array_of_changes_indexes[0][2] < 0:
+            hill_segment_grade = None
+
+            is_a_list = isinstance(
+                self.distances, numpy.ndarray
+            ) or isinstance(self.distances, list)
+
+            if is_a_list and len(self.distances) == len(
+                    self.altitudes
+            ):
+
+                end_distance = self.distances[array_of_changes_indexes[0][1]]
+                start_distance = self.distances[array_of_changes_indexes[0][0]]
+                hill_segment_distance = (
+                        end_distance - start_distance
+                )
+                hill_segment_grade = self.__calculate_hill_grade(
+                    hill_segment_distance, abs(array_of_changes_indexes[0][2])
+                )
+
             self.identified_hills.append(
                 StoredSegments(
                     [array_of_changes_indexes[0][0], array_of_changes_indexes[0][1]],
                     array_of_changes_indexes[0][2],
-                    0,  # TODO add hill segment grade
+                    hill_segment_grade,
                 )
             )
             starting_index = starting_index + 1
@@ -156,16 +172,41 @@ class HillIdentification(object):
                     is_descent = True
 
             if ((is_ascent and is_descent) and array_of_changes_indexes[i][2] < 0) or i == (len(array_of_changes_indexes) - 1):
+                hill_segment_grade = None
+
+                is_a_list = isinstance(
+                    self.distances, numpy.ndarray
+                ) or isinstance(self.distances, list)
+
+                if is_a_list and len(self.distances) == len(
+                        self.altitudes
+                ):
+                    end_distance = self.distances[array_of_changes_indexes[0][1]]
+                    start_distance = self.distances[array_of_changes_indexes[0][0]]
+                    hill_segment_distance = (
+                            end_distance - start_distance
+                    )
+                    hill_segment_grade = self.__calculate_hill_grade(
+                        hill_segment_distance, current_ascent
+                    )
+
                 self.identified_hills.append(StoredSegments(
                     [start_x, array_of_changes_indexes[i][1]],
                     array_of_changes_indexes[i][2],
-                    0,  # TODO add hill segment grade
+                    hill_segment_grade,
                 ))
+
+                print('hill_segment_grade', hill_segment_grade)
                 start_x = array_of_changes_indexes[i][1]
                 is_ascent = False
                 is_descent = False
                 current_ascent = 0
                 current_descent = 0
+
+        for i in range (len(self.identified_hills)):
+            print(self.identified_hills[i].segment)
+            print(self.identified_hills[i].ascent)
+            print(self.identified_hills[i].average_slope)
 
     def return_hills(self) -> list:
         """
