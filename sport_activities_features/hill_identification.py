@@ -192,21 +192,15 @@ class HillIdentification(object):
 
                 self.identified_hills.append(StoredSegments(
                     [start_x, array_of_changes_indexes[i][1]],
-                    array_of_changes_indexes[i][2],
+                    current_ascent,
                     hill_segment_grade,
                 ))
 
-                print('hill_segment_grade', hill_segment_grade)
                 start_x = array_of_changes_indexes[i][1]
                 is_ascent = False
                 is_descent = False
                 current_ascent = 0
                 current_descent = 0
-
-        for i in range (len(self.identified_hills)):
-            print(self.identified_hills[i].segment)
-            print(self.identified_hills[i].ascent)
-            print(self.identified_hills[i].average_slope)
 
     def return_hills(self) -> list:
         """
