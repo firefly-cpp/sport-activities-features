@@ -181,8 +181,8 @@ class HillIdentification(object):
                 if is_a_list and len(self.distances) == len(
                         self.altitudes
                 ):
-                    end_distance = self.distances[array_of_changes_indexes[0][1]]
-                    start_distance = self.distances[array_of_changes_indexes[0][0]]
+                    end_distance = self.distances[array_of_changes_indexes[i][1]]
+                    start_distance = self.distances[array_of_changes_indexes[i][0]]
                     hill_segment_distance = (
                             end_distance - start_distance
                     )
