@@ -6,7 +6,7 @@ from sport_activities_features.tcx_manipulation import TCXFile
 # read TCX file
 tcx_file = TCXFile()
 
-data = tcx_file.read_one_file('C:/Users/Zala/Documents/sport-activities-features/sport-activities-features/tests/data/15.tcx')
+data = tcx_file.read_one_file('path_to_the_data')
 
 # detect hills in data
 Hill = HillIdentification(data['altitudes'], 30)
