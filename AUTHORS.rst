@@ -13,6 +13,7 @@ Contributors (alphabetically)
 * Dušan Fister
 * Nejc Graj
 * Rok Kukovec
+* Zala Lahovnik
 * Luka Lukač
 * Luka Pečnik
 * Špela Pečnik
