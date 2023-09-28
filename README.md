@@ -103,6 +103,9 @@ $ yay -Syyu python-sport-activities-features
 
 There is a simple API for remote work with the sport-activities-features package available [here](https://github.com/alenrajsp/sport-activities-features-api).
 
+## Graphical User Interface
+
+There is a simple Graphical User Interface for the sport-activities-features package available [here](https://github.com/firefly-cpp/sport-activities-features-gui).
 
 ## Historical weather data
 Weather data parsed is collected from the [Visual Crossing Weather API](https://www.visualcrossing.com/).
