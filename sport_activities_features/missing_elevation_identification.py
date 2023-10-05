@@ -1,7 +1,6 @@
+import http.client
 import json
-
-import requests
-
+import urllib.parse
 
 class ElevationIdentification():
 
@@ -85,11 +84,29 @@ class ElevationIdentification():
         i = 0
         for chunk in chunks:
             payload = {'locations': chunk}
-            json_data = requests.post(
-                url=self.open_elevation_api,
-                json=payload,
-            ).content
-            data = json.loads(json_data)['results']
+            json_payload = json.dumps(payload)  # Convert payload to JSON string
+            headers = {"Content-Type": "application/json"}
+
+            # Split the URL into host and path
+            url_parts = urllib.parse.urlparse(self.open_elevation_api)
+            host = url_parts.netloc
+            path = url_parts.path
+
+            # Establish connection
+            connection = http.client.HTTPSConnection(host)
+
+            # Make the POST request
+            connection.request("POST", path, body=json_payload, headers=headers)
+
+            # Get the response
+            response = connection.getresponse()
+            response_data = response.read().decode('utf-8')
+
+            # Close the connection
+            connection.close()
+
+            # Parse the response data
+            data = json.loads(response_data)['results']
             for result in data:
                 elevations.append(result['elevation'])
             i += 1

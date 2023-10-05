@@ -1,6 +1,7 @@
+import http.client
+import urllib.parse
+import json
 from datetime import datetime, timedelta
-
-import requests
 
 from sport_activities_features.weather_objects.AverageWeather import (
     AverageWeather,
@@ -99,7 +100,7 @@ class WeatherIdentification:
         return weather_list
 
     def __weather_api_call(
-        self, time: datetime, location: tuple, index: int,
+            self, time: datetime, location: tuple, index: int,
     ) -> Weather:
         """Internal method for making a REST request to the VisualCrossing API.\n
         Args:
@@ -118,12 +119,9 @@ class WeatherIdentification:
             Weather(): object of the weather at specified time and location.
         """
         URL = (
-            'https://weather.visualcrossing.com/VisualCrossingWebServices'
-            + '/rest/services/weatherdata/history?'
+            '/VisualCrossingWebServices/rest/services/weatherdata/history?'
         )
         time_start = time.strftime('%Y-%m-%dT%H:%M:%S')
-        # time_end = (time + timedelta(hours=1, seconds=0)
-        # ).strftime('%Y-%m-%dT%H:%M:%S')
         location0_str = f'{location[0]:.5f}'
         location1_str = f'{location[1]:.5f}'
 
@@ -141,11 +139,14 @@ class WeatherIdentification:
             'dataElements': 'all',
             'locations': f'{location0_str}, {location1_str}',
         }
-        # sending get request and saving the response as response object
-        r = requests.get(url=URL, params=PARAMS)
-        # extracting data in json format
-        response_data = r.json()
-        data_values = response_data['location']['values'][0]
+        encoded_params = urllib.parse.urlencode(PARAMS)
+        connection = http.client.HTTPSConnection('weather.visualcrossing.com')
+        connection.request("GET", URL + encoded_params)
+        response = connection.getresponse()
+        response_data = response.read().decode('utf-8')
+        data_values = json.loads(response_data)['location']['values'][0]
+
+        connection.close()
         return Weather(
             temperature=data_values['temp'],
             maximum_temperature=data_values['maxt'],
