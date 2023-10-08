@@ -19,14 +19,14 @@ numpy = "1.24"
 tcxreader = "^0.4.4"
 pandas = "*"
 niaaml = "^1.1.12"
-tcx2gpx = "^0.1.4"
+tcx2gpx = "0.1.4"
 gpxpy = "1.4.2"
 
 [tool.poetry.group.dev.dependencies]
-ruff = "^0.0.272"
+ruff = "^0.0.292"
 
 [tool.poetry.group.test.dependencies]
-pytest = "^7.1.2"
+pytest = "^7.2.2"
 coveralls = "^2.2.0"
 
 [tool.poetry.group.docs.dependencies]
