@@ -21,6 +21,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 [![Fedora package](https://img.shields.io/fedora/v/python3-sport-activities-features?color=blue&label=Fedora%20Linux&logo=fedora)](https://src.fedoraproject.org/rpms/python-sport-activities-features)
 [![AUR package](https://img.shields.io/aur/version/python-sport-activities-features?color=blue&label=Arch%20Linux&logo=arch-linux)](https://aur.archlinux.org/packages/python-sport-activities-features)
+[![Packaging status](https://repology.org/badge/tiny-repos/python:sport-activities-features.svg)](https://repology.org/project/python:sport-activities-features/versions)
 [![DOI](https://img.shields.io/badge/DOI-10.1109/INES52918.2021.9512927-blue)](https://doi.org/10.1109/INES52918.2021.9512927)
 
 * **Documentation:** https://sport-activities-features.readthedocs.io/en/latest
