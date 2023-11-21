@@ -7,6 +7,7 @@ authors = ["Iztok Fister Jr. <iztok@iztok-jr-fister.eu>", "Luka Lukač <luka.luk
 keywords = ['computational intelligence', 'cycling', 'data mining', 'datasets', 'gpx', 'optimization', 'sport activities', 'tcx']
 homepage = "https://github.com/firefly-cpp/sport-activities-features"
 repository = "https://github.com/firefly-cpp/sport-activities-features"
+documentation = "https://sport-activities-features.readthedocs.io/en/latest/"
 readme = "README.md"
 
 [tool.poetry.dependencies]
