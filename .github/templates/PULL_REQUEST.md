@@ -11,4 +11,4 @@ If there's anything else that's important and relevant to your pull
 request, mention that information here. This could include
 benchmarks, or other information.
 
-Thanks for contributing to NiaAML!
+Thanks for contributing to Sport Activities Features!
