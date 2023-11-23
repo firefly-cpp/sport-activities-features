@@ -1,4 +1,4 @@
-# Contributing to Sport Activities Features
+# Contributing to sport-activities-features
 :+1::tada: First off, thanks for taking the time to contribute! :tada::+1:
 
 ## Code of Conduct
