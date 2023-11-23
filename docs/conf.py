@@ -25,7 +25,7 @@ copyright = '2020-2023, Iztok Fister Jr. et al.'
 author = 'Iztok Fister Jr., Luka Lukač, Alen Rajšp, Luka Pečnik, Dušan Fister'
 
 # The full version, including alpha/beta/rc tags
-release = '0.3.16'
+release = '0.3.17'
 
 # -- General configuration ---------------------------------------------------
 
