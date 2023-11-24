@@ -39,7 +39,7 @@ All of the project's dependencies should be installed and the project ready for 
 | geopy      | ^2.0.0  |   All    |
 | overpy     | ^0.6    |   All    |
 | geotiler   | ^0.14.5 |   All    |
-| numpy      | 1.24    |   All    |
+| numpy      | *       |   All    |
 | tcxreader  | ^0.4.4  |   All    |
 | pandas     | *       |   All    |
 | niaaml     | ^1.1.12 |   All    |
@@ -63,8 +63,8 @@ All of the project's dependencies should be installed and the project ready for 
 
 | Package              | Version | Platform |
 |----------------------|:-------:|:--------:|
-| sphinx               | ^4.4.0  |   Any    |
-| sphinx-rtd-theme     | ^1.0.0  |   Any    |
+| sphinx               | ^3.5.1  |   Any    |
+| sphinx-rtd-theme     | ^0.5.1  |   Any    |
 
 ## Development Tasks
 
