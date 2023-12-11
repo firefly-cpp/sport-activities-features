@@ -446,6 +446,10 @@ I. Jr. Fister, L. Lukač, A. Rajšp, I. Fister, L. Pečnik and D. Fister, "[A mi
 
 [1] [Awesome Computational Intelligence in Sports](https://github.com/firefly-cpp/awesome-computational-intelligence-in-sports)
 
+## Related frameworks
+
+[1] [AST-Monitor: A wearable Raspberry Pi computer for cyclists](https://github.com/firefly-cpp/AST-Monitor)
+
 ## Contributors ✨
 
 Thanks go to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
