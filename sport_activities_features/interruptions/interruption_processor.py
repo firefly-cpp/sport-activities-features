@@ -1,7 +1,6 @@
-from datetime import timedelta
+from datetime import timedelta, datetime
 from typing import TYPE_CHECKING
 
-from dotmap import DotMap
 from geopy import distance
 
 from sport_activities_features.interruptions.exercise import TrackSegment
@@ -20,6 +19,18 @@ from sport_activities_features.interruptions.overpass import (
 
 if TYPE_CHECKING:
     import overpy
+
+class IntersectionHelperPoint:
+    latitude: float
+    longitude: float
+    time: datetime
+    elevation: float = None
+    heartrate: int = None
+    distance: float = None
+    speed: float = None
+
+    def __repr__(self):
+        return f"<IntersectionHelperPoint lat={self.latitude} lon={self.longitude} time={self.time}>"
 
 
 class InterruptionProcessor():
@@ -90,8 +101,8 @@ class InterruptionProcessor():
         lines: list = []
         for i in range(len(tcx_data['positions'])):
             if (i != 0):
-                point_a = DotMap()
-                point_b = DotMap()
+                point_a = IntersectionHelperPoint()
+                point_b = IntersectionHelperPoint()
                 point_a.latitude = tcx_data['positions'][i - 1][0]
                 point_a.longitude = tcx_data['positions'][i - 1][1]
                 point_a.time = tcx_data['timestamps'][i - 1]

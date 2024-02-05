@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-plt.style.use('seaborn-whitegrid')
+plt.style.use('seaborn-v0_8-whitegrid')
 
 
 class PlotData:

@@ -90,7 +90,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/21283014?v=4",
       "profile": "http://carlosal1015.github.io",
       "contributions": [
-        "maintenance"
+        "maintenance",
+        "bug"
       ]
     },
     {
@@ -141,6 +142,15 @@
       "contributions": [
         "doc",
         "code"
+      ]
+    },
+    {
+      "login": "lahovniktadej",
+      "name": "Tadej Lahovnik",
+      "avatar_url": "https://avatars.githubusercontent.com/u/57890734?v=4",
+      "profile": "https://github.com/lahovniktadej",
+      "contributions": [
+        "doc"
       ]
     }
   ],
