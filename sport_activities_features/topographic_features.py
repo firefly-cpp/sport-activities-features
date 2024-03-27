@@ -59,11 +59,21 @@ class TopographicFeatures:
         total_distance = 0.0
         for i in range(len(self.identified_hills)):
             current = self.identified_hills[i]
+
+            index_range = []
+
+            start = current[0] + 1
+            if current[0] == 0:
+                start = 0
+
+            for index in range(start, current[1]):
+                index_range.append(index)
+
             distance = 0.0
             if len(positions) < 5:
                 total_distance = 0.0
             else:
-                for _j in range(len(current) - 1):
+                for _j in range(len(index_range) - 1):
                     distance = distance + self.calculate_distance(
                         positions[i][0],
                         positions[i + 1][0],

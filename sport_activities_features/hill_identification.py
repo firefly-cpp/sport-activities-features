@@ -171,7 +171,8 @@ class HillIdentification(object):
                 if abs(current_descent) >= self.ascent_threshold:
                     is_descent = True
 
-            if ((is_ascent and is_descent) and array_of_changes_indexes[i][2] < 0) or i == (len(array_of_changes_indexes) - 1):
+            if (((is_ascent and is_descent) and array_of_changes_indexes[i][2] < 0)
+                    or i == (len(array_of_changes_indexes) - 1)):
                 hill_segment_grade = None
 
                 is_a_list = isinstance(
@@ -181,8 +182,8 @@ class HillIdentification(object):
                 if is_a_list and len(self.distances) == len(
                         self.altitudes
                 ):
-                    end_distance = self.distances[array_of_changes_indexes[0][1]]
-                    start_distance = self.distances[array_of_changes_indexes[0][0]]
+                    end_distance = self.distances[array_of_changes_indexes[i][1]]
+                    start_distance = self.distances[start_x]
                     hill_segment_distance = (
                             end_distance - start_distance
                     )
@@ -192,21 +193,15 @@ class HillIdentification(object):
 
                 self.identified_hills.append(StoredSegments(
                     [start_x, array_of_changes_indexes[i][1]],
-                    array_of_changes_indexes[i][2],
+                    current_ascent,
                     hill_segment_grade,
                 ))
 
-                print('hill_segment_grade', hill_segment_grade)
                 start_x = array_of_changes_indexes[i][1]
                 is_ascent = False
                 is_descent = False
                 current_ascent = 0
                 current_descent = 0
-
-        for i in range (len(self.identified_hills)):
-            print(self.identified_hills[i].segment)
-            print(self.identified_hills[i].ascent)
-            print(self.identified_hills[i].average_slope)
 
     def return_hills(self) -> list:
         """
