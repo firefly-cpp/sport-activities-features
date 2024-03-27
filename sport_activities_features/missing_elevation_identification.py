@@ -93,8 +93,11 @@ class ElevationIdentification():
             path = url_parts.path
 
             # Establish connection
-            connection = http.client.HTTPSConnection(host)
-
+            if self.open_elevation_api.startswith("http://"):
+                connection = http.client.HTTPConnection(host)
+            else:
+                connection = http.client.HTTPSConnection(host)
+                
             # Make the POST request
             connection.request("POST", path, body=json_payload, headers=headers)
 
