@@ -171,7 +171,8 @@ class HillIdentification(object):
                 if abs(current_descent) >= self.ascent_threshold:
                     is_descent = True
 
-            if ((is_ascent and is_descent) and array_of_changes_indexes[i][2] < 0) or i == (len(array_of_changes_indexes) - 1):
+            if (((is_ascent and is_descent) and array_of_changes_indexes[i][2] < 0)
+                    or i == (len(array_of_changes_indexes) - 1)):
                 hill_segment_grade = None
 
                 is_a_list = isinstance(
@@ -182,7 +183,7 @@ class HillIdentification(object):
                         self.altitudes
                 ):
                     end_distance = self.distances[array_of_changes_indexes[i][1]]
-                    start_distance = self.distances[array_of_changes_indexes[i][0]]
+                    start_distance = self.distances[start_x]
                     hill_segment_distance = (
                             end_distance - start_distance
                     )

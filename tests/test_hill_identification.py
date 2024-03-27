@@ -38,27 +38,24 @@ class TestHillIdentification(TestCase):
             places=1,
         )
 
-    @pytest.mark.skip(reason="need manual verification")
     def test_distance_of_hills_correct(self):
         self.assertAlmostEqual(
             self.top.distance_of_hills(self.activity["positions"]),
-            20.0,
+            40.1,
             places=1,
         )
 
-    @pytest.mark.skip(reason="need manual verification")
     def test_share_of_hills_correct(self):
         distance_hills = self.top.distance_of_hills(self.activity["positions"])
         self.assertAlmostEqual(
             self.top.share_of_hills(
                 distance_hills, self.activity["total_distance"]
             ),
-            0.17,
+            0.34,
             places=2,
         )
 
-    @pytest.mark.skip(reason="need manual verification")
     def test_avg_grade_of_hill(self):
         self.assertAlmostEqual(
-            self.hill.identified_hills[0].average_slope, 2.336246, 5
+            self.hill.identified_hills[0].average_slope, 1.554688, 5
         )
