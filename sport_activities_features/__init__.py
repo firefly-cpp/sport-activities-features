@@ -72,4 +72,4 @@ __all__ = [
     'weather_identification',
 ]
 
-__version__ = '0.3.15.1'
+__version__ = '0.3.18'

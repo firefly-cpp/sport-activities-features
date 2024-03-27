@@ -21,10 +21,13 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 [![Fedora package](https://img.shields.io/fedora/v/python3-sport-activities-features?color=blue&label=Fedora%20Linux&logo=fedora)](https://src.fedoraproject.org/rpms/python-sport-activities-features)
 [![AUR package](https://img.shields.io/aur/version/python-sport-activities-features?color=blue&label=Arch%20Linux&logo=arch-linux)](https://aur.archlinux.org/packages/python-sport-activities-features)
+[![Packaging status](https://repology.org/badge/tiny-repos/python:sport-activities-features.svg)](https://repology.org/project/python:sport-activities-features/versions)
 [![DOI](https://img.shields.io/badge/DOI-10.1109/INES52918.2021.9512927-blue)](https://doi.org/10.1109/INES52918.2021.9512927)
 
+* **Free software:** MIT license
+* **Python versions:** 3.8.x, 3.9.x, 3.10.x, 3.11.x, 3.12.x
 * **Documentation:** https://sport-activities-features.readthedocs.io/en/latest
-* **Tested OS:** Windows, Ubuntu, Fedora, Alpine, Arch, macOS. **However, that does not mean it does not work on others.**
+* **Tested OS:** Windows, Ubuntu, Debian, Fedora, Alpine, Arch, macOS. **However, that does not mean it does not work on others.**
 
 ## Unleashing the Power of Sports Activity Analysis: A Framework Beyond Ordinary Metrics 🚀
 
@@ -443,6 +446,10 @@ I. Jr. Fister, L. Lukač, A. Rajšp, I. Fister, L. Pečnik and D. Fister, "[A mi
 
 [1] [Awesome Computational Intelligence in Sports](https://github.com/firefly-cpp/awesome-computational-intelligence-in-sports)
 
+## Related frameworks
+
+[1] [AST-Monitor: A wearable Raspberry Pi computer for cyclists](https://github.com/firefly-cpp/AST-Monitor)
+
 ## Contributors ✨
 
 Thanks go to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
@@ -467,6 +474,7 @@ Thanks go to these wonderful people ([emoji key](https://allcontributors.org/doc
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Mtvrt123"><img src="https://avatars.githubusercontent.com/u/50879568?v=4?s=100" width="100px;" alt="MlinaricNejc"/><br /><sub><b>MlinaricNejc</b></sub></a><br /><a href="https://github.com/firefly-cpp/sport-activities-features/issues?q=author%3AMtvrt123" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/KukovecRok"><img src="https://avatars.githubusercontent.com/u/33880044?v=4?s=100" width="100px;" alt="Tatookie"/><br /><sub><b>Tatookie</b></sub></a><br /><a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=KukovecRok" title="Code">💻</a> <a href="https://github.com/firefly-cpp/sport-activities-features/issues?q=author%3AKukovecRok" title="Bug reports">🐛</a> <a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=KukovecRok" title="Tests">⚠️</a> <a href="#example-KukovecRok" title="Examples">💡</a> <a href="#maintenance-KukovecRok" title="Maintenance">🚧</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/zala-lahovnik"><img src="https://avatars.githubusercontent.com/u/105444201?v=4?s=100" width="100px;" alt="Zala Lahovnik"/><br /><sub><b>Zala Lahovnik</b></sub></a><br /><a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=zala-lahovnik" title="Documentation">📖</a> <a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=zala-lahovnik" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/lahovniktadej"><img src="https://avatars.githubusercontent.com/u/57890734?v=4?s=100" width="100px;" alt="Tadej Lahovnik"/><br /><sub><b>Tadej Lahovnik</b></sub></a><br /><a href="https://github.com/firefly-cpp/sport-activities-features/commits?author=lahovniktadej" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>
