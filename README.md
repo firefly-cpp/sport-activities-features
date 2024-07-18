@@ -2,32 +2,48 @@
   <img width="200" src="https://raw.githubusercontent.com/firefly-cpp/sport-activities-features/main/.github/logo/sport_activities.png">
 </p>
 
----
+<h1 align="center">
+sport-activities-features --- A minimalistic toolbox for extracting features from sports activity files written in Python
+</h1>
 
-# sport-activities-features --- A minimalistic toolbox for extracting features from sports activity files written in Python
+<p align="center">
+  <img alt="PyPI Version" src="https://img.shields.io/pypi/v/sport-activities-features.svg" href="https://pypi.python.org/pypi/sport-activities-features">
+  <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/sport-activities-features.svg">
+  <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/sport-activities-features.svg">
+  <img alt="Fedora package" src="https://img.shields.io/fedora/v/python3-sport-activities-features?color=blue&label=Fedora%20Linux&logo=fedora" href="https://src.fedoraproject.org/rpms/python-sport-activities-features">
+  <img alt="AUR package" src="https://img.shields.io/aur/version/python-sport-activities-features?color=blue&label=Arch%20Linux&logo=arch-linux" href="https://aur.archlinux.org/packages/python-sport-activities-features">
+  <img alt="Packaging status" src="https://repology.org/badge/tiny-repos/python:sport-activities-features.svg" href="https://repology.org/project/python:sport-activities-features/versions">
+  <img alt="Downloads" src="https://pepy.tech/badge/sport-activities-features" href="https://pepy.tech/project/sport-activities-features">
+  <img alt="GitHub license" src="https://img.shields.io/github/license/firefly-cpp/sport-activities-features.svg" href="https://github.com/firefly-cpp/sport-activities-features/blob/master/LICENSE">
+  <img alt="Documentation Status" src="https://readthedocs.org/projects/sport-activities-features/badge/?version=latest" href="https://sport-activities-features.readthedocs.io/en/latest/?badge=latest">
+</p>
 
----
+<p align="center">
+  <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/firefly-cpp/sport-activities-features">
+  <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/w/firefly-cpp/sport-activities-features.svg">
+  <img alt="Average time to resolve an issue" src="http://isitmaintained.com/badge/resolution/firefly-cpp/sport-activities-features.svg" href="http://isitmaintained.com/project/firefly-cpp/sport-activities-features">
+  <img alt="Percentage of issues still open" src="http://isitmaintained.com/badge/open/firefly-cpp/sport-activities-features.svg" href="http://isitmaintained.com/project/firefly-cpp/sport-activities-features">
+  <img alt="All Contributors" src="https://img.shields.io/badge/all_contributors-6-orange.svg" href="#-contributors">
+</p>
 
-[![PyPI Version](https://img.shields.io/pypi/v/sport-activities-features.svg)](https://pypi.python.org/pypi/sport-activities-features)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/sport-activities-features.svg)
-[![Documentation Status](https://readthedocs.org/projects/sport-activities-features/badge/?version=latest)](https://sport-activities-features.readthedocs.io/en/latest/?badge=latest)
-![PyPI - Downloads](https://img.shields.io/pypi/dm/sport-activities-features.svg)
-[![Downloads](https://pepy.tech/badge/sport-activities-features)](https://pepy.tech/project/sport-activities-features)
-![GitHub repo size](https://img.shields.io/github/repo-size/firefly-cpp/sport-activities-features?style=flat-square)
-[![GitHub license](https://img.shields.io/github/license/firefly-cpp/sport-activities-features.svg)](https://github.com/firefly-cpp/sport-activities-features/blob/master/LICENSE)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/w/firefly-cpp/sport-activities-features.svg)
-[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/firefly-cpp/sport-activities-features.svg)](http://isitmaintained.com/project/firefly-cpp/sport-activities-features "Average time to resolve an issue")
-[![Percentage of issues still open](http://isitmaintained.com/badge/open/firefly-cpp/sport-activities-features.svg)](http://isitmaintained.com/project/firefly-cpp/sport-activities-features "Percentage of issues still open")
-[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
-[![Fedora package](https://img.shields.io/fedora/v/python3-sport-activities-features?color=blue&label=Fedora%20Linux&logo=fedora)](https://src.fedoraproject.org/rpms/python-sport-activities-features)
-[![AUR package](https://img.shields.io/aur/version/python-sport-activities-features?color=blue&label=Arch%20Linux&logo=arch-linux)](https://aur.archlinux.org/packages/python-sport-activities-features)
-[![Packaging status](https://repology.org/badge/tiny-repos/python:sport-activities-features.svg)](https://repology.org/project/python:sport-activities-features/versions)
-[![DOI](https://img.shields.io/badge/DOI-10.1109/INES52918.2021.9512927-blue)](https://doi.org/10.1109/INES52918.2021.9512927)
+<p align="center">
+  <img alt="DOI" src="https://img.shields.io/badge/DOI-10.1109/INES52918.2021.9512927-blue" href="https://doi.org/10.1109/INES52918.2021.9512927">
+</p>
 
-* **Free software:** MIT license
-* **Python versions:** 3.8.x, 3.9.x, 3.10.x, 3.11.x, 3.12.x
-* **Documentation:** https://sport-activities-features.readthedocs.io/en/latest
-* **Tested OS:** Windows, Ubuntu, Debian, Fedora, Alpine, Arch, macOS. **However, that does not mean it does not work on others.**
+<p align="center">
+  <a href="#-detailed-insights">🔍 Detailed insights</a> •
+  <a href="#-installation">📦 Installation</a> •
+  <a href="#-api">📮 API</a> •
+  <a href="#-graphical-user-interface">💻 Graphical User Interface</a> •
+  <a href="#️-historical-weather-data">🌦️ Historical weather data</a> •
+  <a href="#-overpass-api--open-elevation-api-integration">🧩 Overpass API & Open Elevation API integration</a> •
+  <a href="#-examples">🚀 Examples</a> •
+  <a href="#-license">🔑 License</a> •
+  <a href="#-cite-us">📄 Cite us</a> •
+  <a href="#-further-read">📖 Further read</a> •
+  <a href="#-related-frameworks">🔗 Related frameworks</a> •
+  <a href="#-contributors">🫂 Contributors</a>
+</p>
 
 ## Unleashing the Power of Sports Activity Analysis: A Framework Beyond Ordinary Metrics 🚀
 
@@ -39,7 +55,12 @@ Fortunately, our sport-activities-framework rises above these limitations, revea
 
 For those seeking to venture further, we invite you to explore the realms of scientific papers on data mining that delve into these captivating topics. Discover how our framework complements the world of generating and predicting automated sport training sessions, creating a harmonious synergy between theory and practice. 📚🔬💡
 
-## Detailed insights 🔍
+* **Free software:** MIT license
+* **Python versions:** 3.8.x, 3.9.x, 3.10.x, 3.11.x, 3.12.x
+* **Documentation:** https://sport-activities-features.readthedocs.io/en/latest
+* **Tested OS:** Windows, Ubuntu, Debian, Fedora, Alpine, Arch, macOS. **However, that does not mean it does not work on others.**
+
+## 🔍 Detailed insights
 
 Prepare to be astounded by the capabilities of the sport-activities-features framework. It effortlessly handles TCX & GPX activity files and harnesses the power of the [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API) nodes. Presenting the range of functions at your disposal:
 
@@ -68,7 +89,7 @@ And that's just the beginning! The sport-activities-framework holds countless ot
 The framework comes with two (testing) [benchmark datasets](https://github.com/firefly-cpp/sports-activity-dataset-collections), which are freely available to download from: [DATASET1](http://iztok-jr-fister.eu/static/publications/Sport5.zip), [DATASET2](http://iztok-jr-fister.eu/static/css/datasets/Sport.zip).
 
 
-## Installation
+## 📦 Installation
 
 ### pip
 
@@ -102,28 +123,28 @@ To install sport-activities-features on Arch Linux, please use an [AUR helper](h
 $ yay -Syyu python-sport-activities-features
 ```
 
-## API
+## 📮 API
 
 There is a simple API for remote work with the sport-activities-features package available [here](https://github.com/alenrajsp/sport-activities-features-api).
 
-## Graphical User Interface
+## 💻 Graphical User Interface
 
 There is a simple Graphical User Interface for the sport-activities-features package available [here](https://github.com/firefly-cpp/sport-activities-features-gui).
 
-## Historical weather data
+## 🌦️ Historical weather data
 Weather data parsed is collected from the [Visual Crossing Weather API](https://www.visualcrossing.com/).
 Please note that this is an external unaffiliated service, and users must register to use the API.
 The service has a free tier (1000 Weather reports/day) but is otherwise operating on a pay-as-you-go model.
 For pricing and terms of use, please read the [official documentation](https://www.visualcrossing.com/weather-data-editions) of the API provider.
 
-## Overpass API & Open Elevation API integration
+## 🧩 Overpass API & Open Elevation API integration
 Without performing activities, we can use the [OpenStreetMap](https://www.openstreetmap.org/) for the identification of hills,
 total ascent, and descent. This is done using the [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API)
 which is a read-only API that allows querying of OSM map data. In addition to that altitude, data is retrieved by using the
 [Open-Elevation API](https://open-elevation.com/) which is an open-source and free alternative to the Google Elevation API.
 Both of the solutions can be used by using free publicly acessible APIs ([Overpass](https://wiki.openstreetmap.org/wiki/Overpass_API), [Open-Elevation](https://open-elevation.com/#public-api)) or can be self hosted on a server or as a Docker container ([Overpass](https://wiki.openstreetmap.org/wiki/Overpass_API/Installation), [Open-Elevation](https://github.com/Jorl17/open-elevation/blob/master/docs/host-your-own.md)).
 
-## CODE EXAMPLES:
+## 🚀 Examples
 
 ### Reading files
 
@@ -154,8 +175,6 @@ data = gpx_file.read_one_file("path_to_the_file") # Represents data as dictionar
 data = gpx_file.read_one_file("path_to_the_file", numpy_array= True) # Represents data as dictionary of numpy.arrays
 
 ```
-
-
 
 ### Extraction of topographic features
 ```python
@@ -384,7 +403,6 @@ Generate TCXFile parsed like data object from overpy.Node objects
 import overpy
 from sport_activities_features.overpy_node_manipulation import OverpyNodesReader
 
-
 # External service Overpass API (https://wiki.openstreetmap.org/wiki/Overpass_API) (can be self-hosted)
 overpass_api = "https://lz4.overpass-api.de/api/interpreter"
 
@@ -430,7 +448,7 @@ tcx_data.update({'elevations':elevations})
 ### Example of visualization of dead-end identification
 ![Dead End Figure](https://imgur.com/LgZzCFS.png)
 
-## License
+## 🔑 License
 
 This package is distributed under the MIT License. This license can be found online at <http://www.opensource.org/licenses/MIT>.
 
@@ -438,15 +456,15 @@ This package is distributed under the MIT License. This license can be found onl
 
 This framework is provided as-is, and there are no guarantees that it fits your purposes or that it is bug-free. Use it at your own risk!
 
-## Cite us
+## 📄 Cite us
 
 I. Jr. Fister, L. Lukač, A. Rajšp, I. Fister, L. Pečnik and D. Fister, "[A minimalistic toolbox for extracting features from sport activity files](http://iztok-jr-fister.eu/static/publications/294.pdf)", 2021 IEEE 25th International Conference on Intelligent Engineering Systems (INES), 2021, pp. 121-126, doi: [10.1109/INES52918.2021.9512927](http://dx.doi.org/10.1109/INES52918.2021.9512927).
 
-## Further read
+## 📖 Further read
 
 [1] [Awesome Computational Intelligence in Sports](https://github.com/firefly-cpp/awesome-computational-intelligence-in-sports)
 
-## Related frameworks
+## 🔗 Related frameworks
 
 [1] [AST-Monitor: A wearable Raspberry Pi computer for cyclists](https://github.com/firefly-cpp/AST-Monitor)
 
@@ -454,7 +472,7 @@ I. Jr. Fister, L. Lukač, A. Rajšp, I. Fister, L. Pečnik and D. Fister, "[A mi
 
 [3] [TCXWriter: A Tiny Library for writing/creating TCX files on Arduino](https://github.com/firefly-cpp/tcxwriter)
 
-## Contributors ✨
+## 🫂 Contributors
 
 Thanks go to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
