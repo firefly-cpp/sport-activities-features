@@ -36,7 +36,7 @@ sport-activities-features --- A minimalistic toolbox for extracting features fro
   <a href="#-api">📮 API</a> •
   <a href="#-graphical-user-interface">💻 Graphical User Interface</a> •
   <a href="#️-historical-weather-data">🌦️ Historical weather data</a> •
-  <a href="#-overpass-api--open-elevation-api-integration">🧩 Overpass API & Open Elevation API integration</a> •
+  <a href="#-overpass-api-open-elevation-api--opentopodata-integration">🧩 Overpass API, Open Elevation API & OpenTopoData integration</a>
   <a href="#-examples">🚀 Examples</a> •
   <a href="#-license">🔑 License</a> •
   <a href="#-cite-us">📄 Cite us</a> •
@@ -137,12 +137,12 @@ Please note that this is an external unaffiliated service, and users must regist
 The service has a free tier (1000 Weather reports/day) but is otherwise operating on a pay-as-you-go model.
 For pricing and terms of use, please read the [official documentation](https://www.visualcrossing.com/weather-data-editions) of the API provider.
 
-## 🧩 Overpass API & Open Elevation API integration
+## 🧩 Overpass API, Open Elevation API & OpenTopoData integration
 Without performing activities, we can use the [OpenStreetMap](https://www.openstreetmap.org/) for the identification of hills,
 total ascent, and descent. This is done using the [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API)
 which is a read-only API that allows querying of OSM map data. In addition to that altitude, data is retrieved by using the
-[Open-Elevation API](https://open-elevation.com/) which is an open-source and free alternative to the Google Elevation API.
-Both of the solutions can be used by using free publicly acessible APIs ([Overpass](https://wiki.openstreetmap.org/wiki/Overpass_API), [Open-Elevation](https://open-elevation.com/#public-api)) or can be self hosted on a server or as a Docker container ([Overpass](https://wiki.openstreetmap.org/wiki/Overpass_API/Installation), [Open-Elevation](https://github.com/Jorl17/open-elevation/blob/master/docs/host-your-own.md)).
+[Open-Elevation API](https://open-elevation.com/) or [OpenTopoData API](https://www.opentopodata.org/)  which are open-source and free alternatives to the Google Elevation API.
+Both of the solutions can be used by using free publicly acessible APIs ([Overpass](https://wiki.openstreetmap.org/wiki/Overpass_API), [Open-Elevation](https://open-elevation.com/#public-api), [OpenTopoData](https://www.opentopodata.org/#public-api)) or can be self hosted on a server or as a Docker container ([Overpass](https://wiki.openstreetmap.org/wiki/Overpass_API/Installation), [Open-Elevation](https://github.com/Jorl17/open-elevation/blob/master/docs/host-your-own.md), [OpenTopoData](https://www.opentopodata.org/server/)).
 
 ## 🚀 Examples
 
