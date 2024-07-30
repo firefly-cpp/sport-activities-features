@@ -13,7 +13,7 @@ from sport_activities_features.interval_identification import (
     IntervalIdentificationByPower,
 )
 from sport_activities_features.missing_elevation_identification import (
-    ElevationIdentification,
+    ElevationIdentification, ElevationApiType
 )
 from sport_activities_features.plot_data import PlotData
 from sport_activities_features.tcx_manipulation import TCXFile
