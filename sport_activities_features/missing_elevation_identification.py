@@ -102,7 +102,6 @@ class ElevationIdentification():
         Returns:
             list[int]: list of elevations for the given positions.
         """
-        open_topo_nodes = []
         chunks = self.__divide_chunks(self.positions, 100) # into 100 because of the default limit of the API
         elevations = []
 
@@ -120,7 +119,7 @@ class ElevationIdentification():
             path = url_parts.path
 
             # Establish connection
-            if self.open_elevation_api.startswith("http://"):
+            if self.open_topo_data_api.startswith("http://"):
                 connection = http.client.HTTPConnection(host)
             else:
                 connection = http.client.HTTPSConnection(host)

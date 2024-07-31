@@ -1,7 +1,7 @@
 import os
 from unittest import TestCase
 from unittest.mock import patch, MagicMock
-from sport_activities_features import ElevationIdentification, ElevationApiType  # Make sure to import your class from its module
+from sport_activities_features import ElevationIdentification, ElevationApiType
 import json
 
 class TestMissingElevationIdentification(TestCase):
