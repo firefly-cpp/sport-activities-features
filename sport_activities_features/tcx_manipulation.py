@@ -140,7 +140,11 @@ class TCXFile(FileManipulation):
                 'altitude_min': altitude_min,
                 'ascent': ascent,
                 'descent': descent,
-                'steps' : steps
+                'steps' : steps,
+                'cadence_avg': cadence_avg,
+                'cadence_max': cadence_max,
+                'watts_avg': watts_avg,
+                'watts_max': watts_max
             }.
         """
         tcx = TCXReader().read(filename)
@@ -210,6 +214,27 @@ class TCXFile(FileManipulation):
             steps = tcx.lx_ext['Steps']
         except BaseException:
             steps = None
+            
+        try:
+            cadence_avg = tcx.cadence_avg
+        except BaseException:
+            cadence_avg = None
+            
+        try:
+            cadence_max = tcx.cadence_max
+        except BaseException:
+            cadence_max = None  
+            
+        try:
+            watts_avg = tcx.tpx_ext_stats['Watts']['avg']
+        except BaseException:
+            watts_avg = None
+            
+        try:
+            watts_max = tcx.tpx_ext_stats['Watts']['max']
+        except BaseException:
+            watts_max = None     
+            
 
         int_metrics = {
             'activity_type': activity_type,
@@ -225,6 +250,10 @@ class TCXFile(FileManipulation):
             'ascent': ascent,
             'descent': descent,
             'steps': steps,
+            'cadence_avg': cadence_avg,
+            'cadence_max': cadence_max,
+            'watts_avg': watts_avg,
+            'watts_max': watts_max,
         }
         return int_metrics
 
