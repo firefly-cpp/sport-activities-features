@@ -161,6 +161,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "MihaMi27",
+      "name": "Miha Mirt",
+      "avatar_url": "https://avatars.githubusercontent.com/u/82605811?v=4",
+      "profile": "https://github.com/MihaMi27",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
