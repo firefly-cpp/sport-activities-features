@@ -69,6 +69,7 @@ __all__ = [
     'tcx_manipulation',
     'topographic_features',
     'training_loads',
+    'training_metrics',
     'weather_identification',
 ]
 
