@@ -7,27 +7,60 @@ class TrainingMetrics():
     def __init__(self) -> None:        
         return
     
+    def prepare_functional_threshold_power_data(self, tcx: TCXExercise, window_size: float = 30, offset: float = 0) -> float:
+        """Method for extracting average power from trackpoints.\n
+        Args:
+            tcx (TCXExercise):
+                TCXExercise object which contains data for one session
+            window_size (float):
+                number of seconds to use for sampling data [s]
+            offset (float):
+                number of seconds to skip from the start time [s]
+        Returns:
+            avg_watts (float):
+                average value of watts/power during a test / training session [W]
+        """
+        trackpoints = tcx.trackpoints
+        power_data = []
+        for tpx in trackpoints:
+            if tpx.tpx_ext['Watts'] is not None:
+                if tpx.tpx_ext['Watts'] > 0:
+                    power_data.append({
+                        'time': tpx.time,
+                        'power': tpx.tpx_ext['Watts']
+                    })
+        
+        if power_data:
+            start_time = np.datetime64(power_data[0]['time']) + np.timedelta64(int(offset), 's')
+            end_time = start_time + np.timedelta64(window_size, 's')
+            power_data = [entry['power'] for entry in power_data if start_time <= np.datetime64(entry['time']) <= end_time]
+        
+        avg_watts = np.mean(power_data) if power_data else 0
+        return avg_watts
+    
     def functional_threshold_power(self,avg_watts:float) -> float:        
         """Method for calculating functional threshold power (FTP).\n
         Args:
             avg_watts (float):
                 average value of watts/power during a test / training session [W]            
         Returns:
-            float: value of functional threshold power in watts W.
+            float: value of functional threshold power in watts [W].
         """        
         ftp = (avg_watts*0.95)
         return float(round(ftp,2))
     
-    def prepare_normalized_power_data(self,tcx: TCXExercise, window_size=30) -> list:
+    def prepare_normalized_power_data(self,tcx: TCXExercise, window_size:float = 30, offset: float = 0) -> list:
         """Method for extracting timestamps and power from trackpoints.\n
         Args:
             tcx (TCXExercise):
                 TCXExercise object which contains data for one session   
-            window_size (int):
+            window_size (float):
                 number of seconds to use for sampling data
+            offset (float):
+                number of seconds to skip from the start time
         Returns:
             power_data (list):
-                list of power values within *window_size* seconds from the start time.
+                list of power values within *window_size* seconds from the start time + offset.
         """
         trackpoints = tcx.trackpoints
         power_data: list = []
@@ -40,23 +73,23 @@ class TrainingMetrics():
                     })
         
         if power_data:
-            start_time = np.datetime64(power_data[0]['time'])
+            start_time = np.datetime64(power_data[0]['time']) + np.timedelta64(int(offset), 's')
             end_time = start_time + np.timedelta64(window_size, 's')
-            power_data = [entry['power'] for entry in power_data if entry['time'] <= end_time]            
+            power_data = [entry['power'] for entry in power_data if start_time <= np.datetime64(entry['time']) <= end_time]
         
         return power_data
     
-    def normalized_power(self, tcx: TCXExercise, window_size: int) -> float|None:        
+    def normalized_power(self, power_data: list, window_size: int) -> float|None:        
         """Method for calculating normalized power (NP).\n
         Args:
-            tcx (TCXExercise):
-                TCXExercise object which contains data for one session
+            power_data (list):
+                List of power values within *window_size* seconds from the start time + offset\n
+                Use prepare_normalized_power_data method to get the data from a TCXExercise object.
             window_size (int):
-                number of seconds to use for sampling data
+                Number of trackpoints to use for sampling data
         Returns:
             float: value of normalized power [W].
-        """
-        power_data = self.prepare_normalized_power_data(tcx,window_size)
+        """        
         try:
             # Step 1: Calculate the rolling average
             rolling_average = []
@@ -80,17 +113,25 @@ class TrainingMetrics():
             return None    
     
     def calculate_intensity_factor(self, normalized_power: float, ftp: float) -> float:
+        """
+        Calculate the intensity factor of a training session.
+        Args:
+            normalized_power (float): The normalized power of the workout. [W]
+            ftp (float): The functional threshold power of the athlete. [W]
+        Returns:
+            float: The intensity factor, which is the ratio of normalized power to FTP.
+        """
         return (normalized_power / ftp)
     
-    def training_score_stress(self,duration:int, normalized_power:float, ftp:float) -> float:
-        """Method for calculating training score stress (TSS).\n
+    def training_stress_score(self,duration:int, normalized_power:float, ftp:float) -> float:
+        """Method for calculating training stress score (TSS).\n
         Args:
             duration (int):
                 duration of an training session in seconds [s]
             normalized_power (float):
                 value of normalized power from a training session in watts [W]
             ftp (float):
-                value of functional threshold power in watts per kilogram [W/kg].                
+                value of functional threshold power in watts [W].                
         Returns:
             float: value of training score stress.
         """
