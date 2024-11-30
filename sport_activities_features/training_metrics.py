@@ -49,12 +49,15 @@ class TrainingMetrics():
                 average value of watts/power during a test / training session [W]            
         Returns:
             float: value of functional threshold power in watts [W].
+        Function:
+            .. math::
+                FTP = Average Watts \\cdot 0.95
         """        
         ftp = (avg_watts*0.95)
         return float(round(ftp,2))
     
     def functional_threshold_power_with_mass(self,avg_watts:float,mass:float) -> float:        
-        """Method for calculating functional threshold power (FTP).\n
+        """Method for calculating functional threshold power with mass (FTP).\n
         Args:
             avg_watts (float):
                 average value of watts/power during a test / training session [W]            
@@ -62,6 +65,10 @@ class TrainingMetrics():
                 value of an athlete's mass in kilograms [kg]
         Returns:
             float: value of functional threshold power in power to weight ratio [W/kg].
+        Function:
+            .. math::
+                FTP = \\frac{Average Watts \\cdot 0.95}{Mass}
+        
         """        
         ftp = (avg_watts*0.95)/mass
         return float(round(ftp,2))
@@ -106,6 +113,12 @@ class TrainingMetrics():
                 Number of trackpoints to use for sampling data
         Returns:
             float: value of normalized power [W].
+        Function:            
+            1. Calculate the rolling average of the power data.
+            2. Calculate the fourth power of the values from the previous step.
+            3. Calculate the average of the values from the previous step.
+            4. Take the fourth root of the average from the previous step.
+            
         """        
         try:
             # Step 1: Calculate the rolling average
@@ -137,8 +150,12 @@ class TrainingMetrics():
             ftp (float):
                 The functional threshold power of the athlete. [W]
         Returns:
-            float: The intensity factor, which is the ratio of normalized power to FTP.
-        """
+            float: The intensity factor, which is the ratio of normalized power to FTP.        
+        Function:
+            .. math::
+                IF = \\frac{NP}{FTP}
+        
+        """        
         return (normalized_power / ftp)
     
     def training_stress_score(self,duration:int, normalized_power:float, ftp:float) -> float:
@@ -152,6 +169,10 @@ class TrainingMetrics():
                 value of functional threshold power in watts [W].                
         Returns:
             float: value of training score stress.
+        Function:
+            .. math::
+                TSS = \\frac{Duration \\cdot NP \\cdot IF}{FTP \\cdot 3600} \\cdot 100 = \\frac{Duration \\cdot NP \\cdot IF}{FTP \\cdot 36}
+            
         """
         intensity_factor = self.calculate_intensity_factor(normalized_power,ftp)
         tss = ((duration * normalized_power * intensity_factor) / (ftp * 36))
