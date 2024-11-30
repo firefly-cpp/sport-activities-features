@@ -15,17 +15,21 @@ class TestTrainingMetrics(TestCase):
         
     def test_functional_threshold_power(self):
         tm_instance = TrainingMetrics()
-        ftp = tm_instance.functional_threshold_power(self.data['watts_avg'],70)
-        self.assertAlmostEqual(ftp, 204.3, 3)
+        power_data = tm_instance.prepare_functional_threshold_power_data(self.raw_data,30,0)
+        ftp = tm_instance.functional_threshold_power(power_data)
+        self.assertAlmostEqual(ftp, 72.48, 3)
         
     def test_normalized_power(self):
         tm_instance = TrainingMetrics()
-        normalized_power = tm_instance.normalized_power(self.raw_data,30)
-        self.assertGreater(0,normalized_power)
+        power_data = tm_instance.prepare_normalized_power_data(self.raw_data,30,0)
+        normalized_power = tm_instance.normalized_power(power_data,30)
+        self.assertAlmostEqual(normalized_power,75.57,3)
         
-    def test_training_score_stress(self):
+    def test_training_stress_score(self):
         tm_instance = TrainingMetrics()
-        ftp = tm_instance.functional_threshold_power(self.data['watts_avg'],70)
-        normalized_power = tm_instance.normalized_power(self.raw_data,30)
-        tss = tm_instance.training_score_stress(30,normalized_power,ftp)
-        self.assertAlmostEqual(tss, 558.1, 3)
+        power_data = tm_instance.prepare_functional_threshold_power_data(self.raw_data,30,0)
+        n_power_data = tm_instance.prepare_normalized_power_data(self.raw_data,30,0)
+        ftp = tm_instance.functional_threshold_power(power_data)
+        normalized_power = tm_instance.normalized_power(n_power_data,30)
+        tss = tm_instance.training_stress_score(30,normalized_power,ftp)        
+        self.assertAlmostEqual(tss, 0.91, 3)
