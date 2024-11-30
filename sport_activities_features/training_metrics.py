@@ -3,7 +3,11 @@ import numpy as np
 
 
 class TrainingMetrics():
-    """ Class for TrainingMetrics."""
+    r"""Class for TrainingMetrics.
+    
+    Reference paper:
+        Allen, H., & Coggan, A. R. (2019). Training and racing with a power meter: Third edition (3rd ed.). Boulder, CO: VeloPress.
+    """
     def __init__(self) -> None:        
         return
     
@@ -126,11 +130,12 @@ class TrainingMetrics():
             return None    
     
     def calculate_intensity_factor(self, normalized_power: float, ftp: float) -> float:
-        """
-        Calculate the intensity factor of a training session.
+        """Calculate the intensity factor of a training session.\n
         Args:
-            normalized_power (float): The normalized power of the workout. [W]
-            ftp (float): The functional threshold power of the athlete. [W]
+            normalized_power (float):
+                The normalized power of the workout. [W]
+            ftp (float):
+                The functional threshold power of the athlete. [W]
         Returns:
             float: The intensity factor, which is the ratio of normalized power to FTP.
         """
