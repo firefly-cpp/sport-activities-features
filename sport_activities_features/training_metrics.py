@@ -103,7 +103,7 @@ class TrainingMetrics():
         
         return power_data
     
-    def normalized_power(self, power_data: list, window_size: int) -> float|None:        
+    def normalized_power(self, power_data: list, window_size: int) -> float:
         """Method for calculating normalized power (NP).\n
         Args:
             power_data (list):
