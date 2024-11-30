@@ -49,6 +49,19 @@ class TrainingMetrics():
         ftp = (avg_watts*0.95)
         return float(round(ftp,2))
     
+    def functional_threshold_power_with_mass(self,avg_watts:float,mass:float) -> float:        
+        """Method for calculating functional threshold power (FTP).\n
+        Args:
+            avg_watts (float):
+                average value of watts/power during a test / training session [W]            
+            mass (float):
+                value of an athlete's mass in kilograms [kg]
+        Returns:
+            float: value of functional threshold power in power to weight ratio [W/kg].
+        """        
+        ftp = (avg_watts*0.95)/mass
+        return float(round(ftp,2))
+    
     def prepare_normalized_power_data(self,tcx: TCXExercise, window_size:float = 30, offset: float = 0) -> list:
         """Method for extracting timestamps and power from trackpoints.\n
         Args:
