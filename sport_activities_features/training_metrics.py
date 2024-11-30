@@ -7,7 +7,7 @@ class TrainingMetrics():
     def __init__(self) -> None:        
         return
     
-    def functional_threshold_power(self,avg_watts:float, mass:float) -> float:        
+    def functional_threshold_power(self,avg_watts:float) -> float:        
         """Method for calculating functional threshold power (FTP).\n
         Args:
             avg_watts (float):
