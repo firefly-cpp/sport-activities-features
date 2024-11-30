@@ -21,4 +21,5 @@ This is the sport-activities-features API documentation, auto generated from the
     tcx_manipulation
     topographic_features
     training_loads
+    trainingmetrics
     weather_identification
