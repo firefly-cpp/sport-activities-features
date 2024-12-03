@@ -144,7 +144,9 @@ class TCXFile(FileManipulation):
                 'cadence_avg': cadence_avg,
                 'cadence_max': cadence_max,
                 'watts_avg': watts_avg,
-                'watts_max': watts_max
+                'watts_max': watts_max,
+                'speed_avg': speed_avg,
+                'speed_max': speed_max
             }.
         """
         tcx = TCXReader().read(filename)
@@ -235,6 +237,17 @@ class TCXFile(FileManipulation):
         except BaseException:
             watts_max = None     
             
+        try:
+            speed_avg = tcx.avg_speed
+        except BaseException:
+            speed_avg = None     
+
+        try:
+            speed_max = tcx.max_speed
+        except BaseException:
+            speed_max = None     
+
+
 
         int_metrics = {
             'activity_type': activity_type,
@@ -254,6 +267,8 @@ class TCXFile(FileManipulation):
             'cadence_max': cadence_max,
             'watts_avg': watts_avg,
             'watts_max': watts_max,
+            'speed_avg': speed_avg,
+            'speed_max': speed_max
         }
         return int_metrics
 
