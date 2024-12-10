@@ -96,6 +96,8 @@ class DataAnalysis:
         Args:
             file_name (str):
                 path to a binary pipeline file
+        Returns:
+            Pipeline: instance of Pipeline object from the NiaAML framework
         Note:
             See NiaAML's documentation for more details
             on the use of the Pipeline class.

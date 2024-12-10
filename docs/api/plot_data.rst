@@ -1,4 +1,4 @@
-Plot data
+Plot Data
 =========
 
 .. automodule:: sport_activities_features.plot_data

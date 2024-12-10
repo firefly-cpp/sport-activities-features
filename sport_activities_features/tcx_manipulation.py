@@ -22,7 +22,7 @@ class TCXFile(FileManipulation):
             directory_name (str):
                 name of the directory in which to identify TCX files
         Returns:
-            str: array of paths to the identified files.
+            list: array of paths to the identified files.
         """
         files = os.listdir(directory_name)
         all_files1 = [i for i in files if i.endswith('.tcx')]
@@ -37,10 +37,10 @@ class TCXFile(FileManipulation):
             filename (str):
                 name of the TCX file to be read
             numpy_array (bool):
-                if set to true dictionary lists are
-                   transformed into numpy.arrays
+                if set to True dictionary lists are transformed into numpy arrays
         Returns:
-            activity = {
+            dict:
+            {
                 'activity_type': activity_type,
                 'positions': positions,
                 'altitudes': altitudes,
@@ -52,7 +52,6 @@ class TCXFile(FileManipulation):
             }.
 
         Note:
-        ----
             In the case of missing value in raw data, we assign None.
         """
         tcx = TCXReader().read(filename)
@@ -127,7 +126,8 @@ class TCXFile(FileManipulation):
             filename (str):
                 name of the TCX file to be read
         Returns:
-            int_metrics = {
+            dict:
+            {
                 'activity_type': activity_type,
                 'distance': distance,
                 'duration': duration,
@@ -273,11 +273,18 @@ class TCXFile(FileManipulation):
         return int_metrics
 
     def write_gpx(self, gps_object, output_file_name=None):
-        """Write GPX object to file.
-        if output_file_name is not specified,
-        the output file name will be the same
-        as the input file name,
-        but with .gpx extension.
+        """
+        Write GPX object to file.\n
+        Args:
+            gps_object:
+                TCX2GPX object from tcx2gpx
+            output_file_name (str):
+                name of the output file
+        Note:
+            If output_file_name is not specified,
+            the output file name will be the same
+            as the input file name,
+            but with .gpx extension.
         """
         if output_file_name is None:
             output_file_name = str(gps_object.tcx_path.resolve()).replace(
@@ -288,16 +295,38 @@ class TCXFile(FileManipulation):
             output.write(gps_object.gpx.to_xml())
 
     def create_gps_object(self, path_to_the_file):
-        """Convert TCX file to GPX file."""
+        """
+        Convert TCX file to GPX file.\n
+        Args:
+            path_to_the_file (str):
+                path to the TCX file
+        Returns:
+            gps_object (tcx2gpx.TCX2GPX):
+                TCX2GPX object from tcx2gpx
+        """
         gps_object = tcx2gpx.TCX2GPX(tcx_path=path_to_the_file)
         gps_object.read_tcx()
         gps_object.extract_track_points()
         gps_object.create_gpx()
         return gps_object
 
-    def convert_tcx_to_gpx(
-        self, local_path_to_original_file: str, output_file_name=None,
-    ):
+    def convert_tcx_to_gpx(self, local_path_to_original_file: str, output_file_name=None):
+        """
+        Convert TCX file to GPX file.\n
+        Args:
+            local_path_to_original_file (str):
+                path to the TCX file
+            output_file_name (str):
+                name of the output file
+        Returns:
+            gps_object (tcx2gpx.TCX2GPX):
+                TCX2GPX object from tcx2gpx
+        Note:
+            If output_file_name is not specified,
+            the output file name will be the same
+            as the input file name,
+            but with .gpx extension.
+        """
         try:
             """
             This is a try-except block.

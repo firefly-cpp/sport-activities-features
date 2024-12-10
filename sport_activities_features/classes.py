@@ -8,8 +8,7 @@ class StoredSegments:
 
         average_slope():
 
-    Note:
-    ----
+    Note:    
         [WIP]
         This class is still under developement,
         therefore its methods may not work as expected.

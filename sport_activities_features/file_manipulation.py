@@ -11,11 +11,10 @@ class FileManipulation:
     def count_missing_values(self, list):
         """Counts the number of elements with value Nona.
 
-        Args:
-        ----
+        Args:        
             list (list/ndarray): list to check
         Returns:
-            (int): number of elements with value None in list.
+            int: number of elements with value None in list.
         """
         count = 0
         for i in list:
@@ -24,13 +23,14 @@ class FileManipulation:
         return count
 
     def __missing_from_to(self, lst, start):
-        """Finds to which index the values are missing
+        """Finds to which index the values are missing.
         Args:
-            lst (list/ndarray): list on which to search
-            for consecutive missing values
-            start(int): index from where to search forward
+            lst (list/ndarray):
+                list on which to search for consecutive missing values
+            start(int):
+                index from where to search forward
         Returns:
-            (int): ending index of consecutive missing values.
+            int: ending index of consecutive missing values.
         """
         index = start
         while index < len(lst):
@@ -44,8 +44,7 @@ class FileManipulation:
         """Private method that changes the value into
         baseline type (chooses between int and float).
 
-        Args:
-        ----
+        Args:       
             baseline: who to compare to
             value: who to compare
         Returns:
@@ -64,16 +63,16 @@ class FileManipulation:
         """Function that lineary fills missing values, if the
         successive missing values are up to (max_seconds) apart.
 
-        Args:
-        ----
-            activity: TCXReader read file
-            key (str): dictionary key (e.g. 'heartrates', 'distances', ...)
-            max_seconds (int): maximum time between two valid values,
-            to still fill the missing values.
+        Args:        
+            activity:
+                TCXReader read file
+            key (str):
+                dictionary key (e.g. 'heartrates', 'distances', ...)
+            max_seconds (int):
+                maximum time between two valid values, to still fill the missing values.
 
-        Returns:
-        -------
-            / Transforms the sent array / list.
+        Returns:        
+            Transformed sent array / list.
         """
         index = 0
         count = len(activity[key])

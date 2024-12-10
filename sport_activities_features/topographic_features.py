@@ -6,14 +6,14 @@ class TopographicFeatures:
     """Class for feature extraction from topographic maps.\n
     Args:
         identified_hills (list):
-            identified hills are now passed to this class.
+            list of identified hills.
     """
 
     def __init__(self, identified_hills: list) -> None:
         """Initialisation method of TopographicFeatures class.\n
         Args:
             identified_hills (list):
-                identified hills are now passed to this class.
+                list of identified hills.
         """
         self.identified_hills = identified_hills
         self.features = []

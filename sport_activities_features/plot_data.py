@@ -93,7 +93,8 @@ class PlotData:
             identified_hills (list):
                 list of identified hills
         Returns:
-            plt.
+            plt (matplotlib.pyplot):
+                plot of all hills idenitified in data on topographic map.
         """
         y = []
         x = []
@@ -162,7 +163,8 @@ class PlotData:
             identified_intervals (list):
                 list of identified intervals
         Returns:
-            plt.
+            plt (matplotlib.pyplot):
+                plot of all intervals identified in data on topographic map.
         """
         x_points = []
         y_points = []
@@ -222,7 +224,8 @@ class PlotData:
             distance (list):
                 list of distances
         Returns:
-            plt.
+            plt (matplotlib.pyplot):
+                plot of the whole topographic map.
         """
         ax = plt.axes()
         y = []

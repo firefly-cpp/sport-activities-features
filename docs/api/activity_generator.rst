@@ -1,4 +1,4 @@
-Activity generator
+Activity Generator
 ==================
 
 .. automodule:: sport_activities_features.activity_generator

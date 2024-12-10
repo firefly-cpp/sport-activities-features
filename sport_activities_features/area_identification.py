@@ -12,7 +12,7 @@ class AreaIdentification:
         positions (np.array):
             coordinates of positions as an array of latitudes and longitudes
         distances (np.array):
-            cummulative distances as an array of floats
+            cumulative distances as an array of floats
         timestamps (np.array):
             information about time as an array of datetimes
         heart_rates (np.array):
@@ -42,7 +42,7 @@ class AreaIdentification:
                 coordinates of positions as an array of latitudes
                 and longitudes
             distances (np.array):
-                cummulative distances as an array of floats
+                cumulative distances as an array of floats
             timestamps (np.array):
                 information about time as an array of datetimes
             heart_rates (np.array):
@@ -58,8 +58,7 @@ class AreaIdentification:
         self.area_coordinates = area_coordinates
 
     def is_equal(self, value_1: float, value_2: float) -> bool:
-        """Method for checking whether the two float values are equal
-        with certain tolerance (because of round error).\n
+        """Method for checking whether the two float values are equal with certain tolerance (because of round error).\n
         Args:
             value_1 (float):
                 first value
@@ -99,7 +98,7 @@ class AreaIdentification:
                 True if the two lines have an intersection point,
                 False otherwise.
         """
-        # Initialization of vectors and values.
+        # Initialisation of vectors and values.
         v12 = np.array(p2 - p1)
         v34 = np.array(p4 - p3)
         v31 = np.array(p1 - p3)
@@ -169,14 +168,16 @@ class AreaIdentification:
 
     def extract_data_in_area(self) -> dict:
         """Method for extracting the data of the identified points in area.\n
-        Returns: area_data: {
-                    'distance': distance,
-                    'time': time,
-                    'average_speed': average_speed,
-                    'minimum_heart_rate': minimum_heart_rate,
-                    'maximum_heart_rate': maximum_heart_rate,
-                    'average_heart_rate': average_heart_rate
-                }.
+        Returns:
+            dict:
+              {
+                'distance': distance,
+                'time': time,
+                'average_speed': average_speed,
+                'minimum_heart_rate': minimum_heart_rate,
+                'maximum_heart_rate': maximum_heart_rate,
+                'average_heart_rate': average_heart_rate
+              }.
         """
         distance = 0.0
         time = 0.0

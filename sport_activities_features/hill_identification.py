@@ -8,7 +8,10 @@ import numpy
 class GradeUnit(Enum):
     """
     Enum for selecting the type of data we want returned in
-    hill slope calculation (degrees / radians or gradient (%))
+    hill slope calculations.\n
+     - degrees 
+     - radians
+     - percents [%] (gradient)
     """
 
     DEGREES = 1
@@ -25,7 +28,7 @@ class HillIdentification(object):
         ascent_threshold (float):
             parameter that defines the hill (hill >= ascent_threshold)
         distances (list):
-            optional, allows calculation of hill grades (steepnes)
+            optional, allows calculation of hill grades (steepness)
     """
 
     def __init__(
