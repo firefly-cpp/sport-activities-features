@@ -16,6 +16,7 @@ Contributors (alphabetically)
 * Tadej Lahovnik
 * Zala Lahovnik
 * Luka Lukač
+* Miha Mirt
 * Luka Pečnik
 * Špela Pečnik
 * Alen Rajšp
