@@ -10,8 +10,7 @@ class SportyDataGen:
         Brezočnik, L.,
         Podgorelec, V.,
         & Fister, I. (2018).
-        SportyDataGen: An Online Generator of Endurance
-                       Sports Activity Collections.
+            SportyDataGen: An Online Generator of Endurance Sports Activity Collections.
         In Central European Conference on Information
         and Intelligent Systems (pp. 171-178).
         Faculty of Organization and Informatics Varazdin.
@@ -21,6 +20,7 @@ class SportyDataGen:
         [WIP]
         This class is still under developement,
         therefore its methods may not work as expected.
+
     """
 
     def __init__(self, **kwargs) -> None:

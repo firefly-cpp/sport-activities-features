@@ -19,12 +19,12 @@ class DataExtractionFromCSV:
         """
         self.activities = activities
 
-    def from_file(self, path: str) -> list:
+    def from_file(self, path: str) -> pd.DataFrame:
         """Method for extracting data from CSV file to dataframe.\n
         Args:
             path (str): absolute path to the CSV file
         Returns:
-            list: list of activities.
+            pandas.DataFrame: pandas DataFrame of activities.
         """
         with open(
             path + '.csv'
@@ -47,7 +47,7 @@ class DataExtractionFromCSV:
             path (str):
                 absolute path to the folder with CSV files
         Returns:
-            list: list of activities.
+            list: list of pandas DataFrames.
         """
         if not path.endswith('/'):
             path = path + '/'

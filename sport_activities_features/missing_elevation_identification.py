@@ -4,6 +4,11 @@ import urllib.parse
 from enum import Enum
 
 class ElevationApiType(Enum):
+    """Enum for selecting the type of Elevation API to be used.\n
+    - OPEN_ELEVATION_API
+    - OPEN_TOPO_DATA_API
+    
+    """
     OPEN_ELEVATION_API = 1
     OPEN_TOPO_DATA_API = 2
 
@@ -12,10 +17,9 @@ class ElevationIdentification():
     """Class for retrieving elevation data using Elevation Api, Open-Elevation API and OpenTopoData API supported.\n
     Args:
         open_elevation_api (str):
-            address of the Api,
-            default https://api.open-elevation.com/api/v1/lookup
+            address of the Api, default https://api.open-elevation.com/api/v1/lookup
         positions (list[(lat1, lon1), (lat2, lon2) ...]):
-            list of tuples of latitudes and longitudes.
+            list of coordinates in the form of tuples of latitudes and longitudes.
     """
 
     def __init__(
@@ -30,8 +34,7 @@ class ElevationIdentification():
         """Initialisation method for ElevationIdentification class.\n
         Args:
         open_elevation_api (str):
-            address of the Elevation Api,
-            default https://api.open-elevation.com/api/v1/lookup
+            address of the Elevation Api, default https://api.open-elevation.com/api/v1/lookup
         positions (list[(lat1, lon1), (lat2, lon2) ...]):
             list of tuples of latitudes and longitudes.
         open_topo_data_api (str):
@@ -51,7 +54,8 @@ class ElevationIdentification():
             position (tuple):
                 tuple of latitude and longitude
         Returns:
-            JSON like object {
+            dict:
+            {
                 'latitude': float(position[0]),
                 'longitude': float(position[1]),
             }.
@@ -77,15 +81,13 @@ class ElevationIdentification():
             yield elements[i:i + n]
 
     def fetch_elevation_data(self, payload_formatting: bool = True) -> list:
-        """Method for making requests to the Elevation API
-               to retrieve elevation data.\n
-               Args:
-                   payload_formatting (bool):
-                       True -> break into chunks,
-                       False -> don't break self.positions into chunks
-               Returns:
-                   list[int]: list of elevations for the given positions.
-               """
+        """Method for making requests to the Elevation API to retrieve elevation data.\n
+        Args:
+            payload_formatting (bool):
+                if True, then break into chunks, otherwise don't break self.positions into chunks. 
+        Returns:
+            list: list of ints representing elevations for the given positions.
+        """
         if self.elevation_api_type == ElevationApiType.OPEN_ELEVATION_API:
             return self.fetch_open_elevation_data(payload_formatting)
         elif self.elevation_api_type == ElevationApiType.OPEN_TOPO_DATA_API:
@@ -93,14 +95,12 @@ class ElevationIdentification():
         else:
             raise ValueError("Invalid Elevation API Type")
     def fetch_open_topo_data(self, payload_formatting: bool = True) -> list:
-        """Method for making requests to the Open Topo Data API
-        to retrieve elevation data.\n
+        """Method for making requests to the Open Topo Data API to retrieve elevation data.\n
         Args:
             payload_formatting (bool):
-                True -> break into chunks,
-                False -> don't break self.positions into chunks
+                if True, then break into chunks, otherwise don't break self.positions into chunks.                
         Returns:
-            list[int]: list of elevations for the given positions.
+            list: list of ints representing elevations for the given positions.
         """
         chunks = self.__divide_chunks(self.positions, 100) # into 100 because of the default limit of the API
         elevations = []
@@ -142,14 +142,12 @@ class ElevationIdentification():
 
 
     def fetch_open_elevation_data(self, payload_formatting: bool = True) -> list:
-        """Method for making requests to the Open Elevation API
-        to retrieve elevation data.\n
+        """Method for making requests to the Open Elevation API to retrieve elevation data.\n
         Args:
             payload_formatting (bool):
-                True -> break into chunks,
-                False -> don't break self.positions into chunks
+                if True, then break into chunks, otherwise don't break self.positions into chunks.                
         Returns:
-            list[int]: list of elevations for the given positions.
+            list: list of ints representing elevations for the given positions.
         """
         open_elevation_nodes = []
         if payload_formatting:

@@ -25,18 +25,19 @@ class OverpyNodesReader:
         Args:
             open_elevation_api (str):
                 address of Open Elevation API, if a lot of altitudes
-                are needed, self hosting is prefferable.
+                are needed, self hosting is preferrable.
         """
         self.open_elevation_api = open_elevation_api
 
     def __map_payload(self, node: tuple) -> dict:
-        """Method that converts touple into JSON like object
-        for equerying the Open Elevation API.\n
+        """Method that converts tuple into JSON like object
+        for querying the Open Elevation API.\n
         Args:
             position (tuple):
                 tuple of latitude and longitude
         Returns:
-            JSON like object {
+            dict:
+            {
                 'latitude': float(position[0]),
                 'longitude': float(position[1]),
             }.
@@ -61,7 +62,8 @@ class OverpyNodesReader:
                 distance + distance between the nodes,
                 else tells actual distance between two points.
 
-        Returns: dictionary of nodes.
+        Returns:
+            dictionary of nodes:
             {
                 'activity_type': str,
                 'positions': [...],

@@ -7,7 +7,11 @@ import numpy as np
 
 class Gender(Enum):
 
-    """Gender Enum."""
+    """
+    Gender Enum for the BanisterTRIMPv2 class.\n
+    - MALE
+    - FEMALE
+    """
 
     male = 1
     female = 2
@@ -27,7 +31,7 @@ class BanisterTRIMPv1:
     """
 
     def __init__(self, duration: float, average_heart_rate: float) -> None:
-        """Initialization method for BanisterTRIMP class.\n
+        """Initialisation method for BanisterTRIMP class.\n
         Args:
             duration (float):
                 total duration in seconds
@@ -47,11 +51,11 @@ class BanisterTRIMPv1:
 
 class BanisterTRIMPv2:
 
-    """Class for calculation of Banister's TRIMP.\n.
-
+    """Class for calculation of Banister's TRIMP.\n
     Reference paper:
         Banister, Eric W. "Modeling elite athletic performance."
         Physiological testing of elite athletes 347 (1991): 403-422.\n
+
     Args:
         duration (float):
             total duration in seconds
@@ -90,20 +94,18 @@ class BanisterTRIMPv2:
         The ratio ranges from a low to a high value (i.e., ~ 0.2 — 1.0)
         for a low or a high raw heart rate, respectively.
 
-        Returns
-        -------
+        Returns:
             float: delta heart rate.
         """
         return (self.average_heart_rate - self.rest_heart_rate) / \
             (self.max_heart_rate - self.rest_heart_rate)
 
-    def calculate_weighting_factor(self: 'BanisterTRIMPv2',
-                                   delta_hr_ratio: float,
-                                   ) -> float:
-        """Calculate the weighting factor.
-
-        Returns
-        -------
+    def calculate_weighting_factor(self: 'BanisterTRIMPv2', delta_hr_ratio: float) -> float:
+        """Calculate the weighting factor.\n
+        Args:
+            delta_hr_ratio (float):
+                delta heart rate ratio.
+        Returns:
             float: weighting factor (Y).
         """
         # b defaults to b_male since only males contributed to the dataset
@@ -114,8 +116,7 @@ class BanisterTRIMPv2:
     def calculate_TRIMP(self: 'BanisterTRIMPv2') -> float:
         """Calculate TRIMP.
 
-        Returns
-        -------
+        Returns:
             float: Banister TRIMP value.
         """
         duration_minutes = self.duration / 60
@@ -131,9 +132,9 @@ class EdwardsTRIMP:
     Reference paper:
         https://www.frontiersin.org/articles/10.3389/fphys.2020.00480/full\n
     Args:
-        heart_rates (list[int]):
-            list of heart rates in beats per minute
-        timestamps (list[timestamp]):
+        heart_rates (list):
+            list of ints representing heart rates in beats per minute
+        timestamps (list):
             list of timestamps
         max_heart_rate (int):
             maximum heart rate of an athlete.
@@ -145,11 +146,11 @@ class EdwardsTRIMP:
         timestamps: list,
         max_heart_rate: int = 200,
     ) -> None:
-        """Initialization method for EdwardsTRIMP class.\n
+        """Initialisation method for EdwardsTRIMP class.\n
         Args:
-            heart_rates (list[int]):
-                list of heart rates in beats per minute
-            timestamps (list[timestamp]):
+            heart_rates (list):
+                list of ints representing heart rates in beats per minute
+            timestamps (list):
                 list of timestamps
             max_heart_rate (int):
                 maximum heart rate of an athlete.
@@ -198,9 +199,9 @@ class LuciaTRIMP:
     Reference:
         https://www.trainingimpulse.com/lucias-trimp-0\n
     Args:
-        heart_rates (list[int]):
-            list of heart rates in beats per minute
-        timestamps (list[timestamp]):
+        heart_rates (list):
+            list of ints representing heart rates in beats per minute
+        timestamps (list):
             list of timestamps
         VT1 (int):
             ventilatory threshold to divide the low and the moderate zone
@@ -215,11 +216,11 @@ class LuciaTRIMP:
         VT1: int = 160,
         VT2: int = 180,
     ) -> None:
-        """Initialization method for LuciaTRIMP class.\n
+        """Initialisation method for LuciaTRIMP class.\n
         Args:
-            heart_rates (list[int]):
-                list of heart rates in beats per minute
-            timestamps (list[timestamp]):
+            heart_rates (list):
+                list of ints representing heart rates in beats per minute
+            timestamps (list):
                 list of timestamps
             VT1 (int):
                 ventilatory threshold to divide the low and the moderate zone

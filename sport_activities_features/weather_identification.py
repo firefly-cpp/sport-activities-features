@@ -246,8 +246,8 @@ class WeatherIdentification:
             weather (list[Weather]):
                 list of weather objects retrieved from VisualCrossing API
         Returns:
-            list[AverageWeather]: list which is an AverageWeather object
-                                  for each of the given timestamps.
+            list[AverageWeather]:
+              list which is an AverageWeather object for each of the given timestamps.
         """
         weather_list = weather
         extended_weather_list = []

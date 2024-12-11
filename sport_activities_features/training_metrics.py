@@ -146,9 +146,9 @@ class TrainingMetrics():
         """Calculate the intensity factor of a training session.\n
         Args:
             normalized_power (float):
-                The normalized power of the workout. [W]
+                The normalized power of the workout in watts. [W]
             ftp (float):
-                The functional threshold power of the athlete. [W]
+                The functional threshold power of the athlete in watts. [W]
         Returns:
             float: The intensity factor, which is the ratio of normalized power to FTP.        
         Function:

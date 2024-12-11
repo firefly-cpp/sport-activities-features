@@ -86,18 +86,18 @@ class GPXTrackPoint:
         watts: int = None,
     ) -> None:
         """Helper method for initialising GPXTrackPoint
-        from the gpxpy.gpx.GpxTrackPoint.\n
+        from the gpxpy.gpx.GPXTrackPoint.\n
         Args:
             gpx (gpxpy.gpx.GPXTrackPoint):
-                gpxpy.gpx.GPXTrackPoint not to be confused
-                with class of the same name used in
-                gpx_manipulation
+                gpxpy.gpx.GPXTrackPoint to extract data from
             hr_value (int):
                 heart beats per minute at given recording
             cadence (int):
                 cadence
             watts (int):
                 watts power rating.
+        Note:
+            Parameter gpx and its type gpxpy.gpx.GPXTrackPoint should not be confused with the class of the same name used in gpx_manipulation
         """
         self.elevation = gpx.elevation
         self.latitude = gpx.latitude
@@ -109,7 +109,6 @@ class GPXTrackPoint:
 
 
 class GPXFile(FileManipulation):
-
     """Class for reading GPX files."""
 
     def __init__(self) -> None:
@@ -165,21 +164,21 @@ class GPXFile(FileManipulation):
             filename (str):
                 name of the TCX file to be read
             numpy_array (bool):
-                if set to true dictionary lists are
-                transformed into numpy.arrays
-        Returns: activity: {
-                    'activity_type': activity_type,
-                    'positions': positions,
-                    'altitudes': altitudes,
-                    'distances': distances,
-                    'total_distance': total_distance,
-                    'timestamps': timestamps,
-                    'heartrates': heartrates,
-                    'speeds': speeds
-                 }.
+                if set to true dictionary lists are transformed into numpy arrays
+        Returns:
+          activity (dict):
+            {
+                'activity_type': activity_type,
+                'positions': positions,
+                'altitudes': altitudes,
+                'distances': distances,
+                'total_distance': total_distance,
+                'timestamps': timestamps,
+                'heartrates': heartrates,
+                'speeds': speeds
+            }
 
-        Note:
-        ----
+        Note:        
             In the case of missing value in raw data, we assign None.
         """
         NAMESPACE = '{http://www.garmin.com/xmlschemas/TrackPointExtension/v1}'
@@ -288,20 +287,25 @@ class GPXFile(FileManipulation):
 
     def extract_integral_metrics(self, filename) -> dict:
         """Method for parsing one GPX file and extracting integral metrics.\n
-        Returns: int_metrics: {
-                    "activity_type": activity_type,
-                    "distance": distance,
-                    "duration": duration,
-                    "calories": calories,
-                    "hr_avg": hr_avg,
-                    "hr_max": hr_max,
-                    "hr_min": hr_min,
-                    "altitude_avg": altitude_avg,
-                    "altitude_max": altitude_max,
-                    "altitude_min": altitude_min,
-                    "ascent": ascent,
-                    "descent": descent,
-                }.
+        Args:
+            filename (str):
+                name of the GPX file to be read
+        Returns:
+          int_metrics (dict): 
+            {
+                "activity_type": activity_type,
+                "distance": distance,
+                "duration": duration,
+                "calories": calories,
+                "hr_avg": hr_avg,
+                "hr_max": hr_max,
+                "hr_min": hr_min,
+                "altitude_avg": altitude_avg,
+                "altitude_max": altitude_max,
+                "altitude_min": altitude_min,
+                "ascent": ascent,
+                "descent": descent,
+            }.
         """
         gpx = self.read_one_file(filename)
 

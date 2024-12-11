@@ -16,17 +16,15 @@ class DeadEndIdentification:
         positions (np.array):
             array of positions as pairs of latitudes and longitudes
         distances (np.array):
-            array of cummulative distances
+            array of cumulative distances
         tolerance_degrees (float):
-            tolerance of driving the same route in
-            the opposite direction given in degrees
+            tolerance of driving the same route in the opposite direction given in degrees
         tolerance_position (float):
             tolerance of positions given in meters
         minimum_distance (int):
             minimum distance of a dead end
         U_turn_allowed_distance (int):
-            maximum distance of a U-turn while
-            turning around and starting a dead end
+            maximum distance of a U-turn while turning around and starting a dead end
     Note:
         [WIP]
         This class is still under developement, therefore
@@ -49,17 +47,15 @@ class DeadEndIdentification:
             positions (np.array):
                 array of positions as pairs of latitudes and longitudes
             distances (np.array):
-                array of cummulative distances
+                array of cumulative distances
             tolerance_degrees (float):
-                tolerance of driving the same route in
-                the opposite direction given in degrees
+                tolerance of driving the same route in the opposite direction given in degrees
             tolerance_position (float):
                 tolerance of positions given in meters
             minimum_distance (int):
                 minimum distance of a dead end
             U_turn_allowed_distance (int):
-                maximum distance of a U-turn while
-                turning around and starting a dead end.
+                maximum distance of a U-turn while turning around and starting a dead end.
         """
         # Reorganizing the exercise data in order to achieve better results.
         self.reorganize_exercise_data(
@@ -84,7 +80,7 @@ class DeadEndIdentification:
             positions (np.array):
                 array of positions as pairs of latitudes and longitudes
             distances (np.array):
-                array of cummulative distances
+                array of cumulative distances
             interval_distance (int):
                 desired distance between two neighboring points.
         """
@@ -143,8 +139,8 @@ class DeadEndIdentification:
             tolerance_azimuth (float):
                 difference tolerance of the two azimuths
         Returns:
-            bool: True if given azimuths are within the given tolerance,
-                  False otherwise.
+            bool:
+              True, if given azimuths are within the given tolerance, False otherwise.
         """
         if abs(180 - abs(azimuth_1 - azimuth_2)) < tolerance_azimuth:
             return True
@@ -159,11 +155,12 @@ class DeadEndIdentification:
         long enough to be a dead end.\n
         Args:
             start_distance (float):
-                cummulative distance at the start of the dead end
+                cumulative distance at the start of the dead end
             finish_distance (float):
-                cummulative distance at the end of the dead end
+                cumulative distance at the end of the dead end
         Returns:
-            bool: True if dead end is long enough, False otherwise.
+            bool:
+              True, if dead end is long enough, False otherwise.
         """
         if finish_distance - start_distance < self.minimum_distance:
             return False
@@ -184,8 +181,8 @@ class DeadEndIdentification:
             tolerance_coordinates (float):
                 the tolerance between the two positions in meters
         Returns:
-            bool: True if a track segment is a part of dead end,
-                  False otherwise.
+            bool:
+                True, if a track segment is a part of dead end, False otherwise.
         """
         print(geopy.distance.distance(position1, position2).m)
         if (geopy.distance.distance(position1, position2).m
@@ -299,9 +296,9 @@ class DeadEndIdentification:
     def show_map(self) -> plt:
         """Method for plotting the exercise with dead ends.
 
-        Returns
-        -------
-            plt.
+        Returns:        
+            plt (matplotlib.pyplot):
+                plot of the exercise with dead ends.
         """
         if np.shape(self.positions)[0] == 0:
             msg = 'Dataset is empty or invalid.'

@@ -9,7 +9,7 @@ class IntervalIdentificationByPower(object):
     Class for identifying intervals based on power.\n
     Args:
         distances (list):
-            list of cummulative distances
+            list of cumulative distances
         timestamps (list):
             list of timestamps
         altitudes (list):
@@ -32,7 +32,7 @@ class IntervalIdentificationByPower(object):
         Initialisation method for IntervalIdentificationByPower class.\n
         Args:
             distances (list):
-                list of cummulative distances
+                list of cumulative distances
             timestamps (list):
                 list of timestamps
             altitudes (list):
@@ -187,7 +187,8 @@ class IntervalIdentificationByPower(object):
         """
         Method for calculating interval statistics.\n
         Returns:
-            data = {
+            dict: 
+            {
                 'number_of_intervals': number_of_intervals,
                 'min_duration': min_duration_interval,
                 'max_duration': max_duration_interval,
@@ -245,7 +246,7 @@ class IntervalIdentificationByHeartRate(object):
     Class for identifying intervals based on heart rate.\n
     Args:
         distances (list):
-            list of cummulative distances
+            list of cumulative distances
         timestamps (list):
             list of timestamps
         altitudes (list):
@@ -412,7 +413,8 @@ class IntervalIdentificationByHeartRate(object):
         """
         Method for calculating interval statistics.\n
         Returns:
-            data = {
+            dict:
+            {
                 'number_of_intervals': number_of_intervals,
                 'min_duration_interval': min_duration_interval,
                 'max_duration_interval': max_duration_interval,

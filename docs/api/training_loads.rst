@@ -1,4 +1,4 @@
-Training loads
+Training Loads
 ==============
 
 .. automodule:: sport_activities_features.training_loads
