@@ -24,7 +24,7 @@ Intervals = IntervalIdentificationByPower(distances, timestamps, altitudes, 70)
 Intervals.identify_intervals()
 all_intervals = Intervals.return_intervals()
 Map = PlotData()
-Map.draw_intervals_in_map(timestamps, distances, all_intervals)
+Map.show_intervals_on_map(timestamps, distances, all_intervals)
 
 # Identifying the intervals in the activity by heart rate and drawing the map
 Intervals = IntervalIdentificationByHeartRate(
@@ -33,4 +33,4 @@ Intervals = IntervalIdentificationByHeartRate(
 Intervals.identify_intervals()
 all_intervals = Intervals.return_intervals()
 Map = PlotData()
-Map.draw_intervals_in_map(timestamps, distances, all_intervals)
+Map.show_intervals_on_map(timestamps, distances, all_intervals)

@@ -16,4 +16,4 @@ all_hills = Hill.return_hills()
 # draw detected hills
 Map = PlotData()
 
-Map.draw_hills_in_map(data['altitudes'], data['distances'], all_hills)
+Map.show_hills_on_map(data['altitudes'], data['distances'], all_hills)
