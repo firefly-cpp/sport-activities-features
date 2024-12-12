@@ -21,4 +21,4 @@ Dead_ends = DeadEndIdentification(positions,
                                   tolerance_position=2,
                                   minimum_distance=500)
 Dead_ends.identify_dead_ends()
-Dead_ends.draw_map()
+Dead_ends.show_map()

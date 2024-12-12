@@ -35,14 +35,14 @@ class PlotData:
                 points.append(identified_intervals[i][j])
         return points
 
-    def draw_hills_in_map(
+    def show_hills_on_map(
         self,
         altitude: list,
         distance: list,
         identified_hills: list,
     ) -> None:
-        """Method for plotting all hills identified in data
-        on topographic map and rendering the plot.\n
+        """Method for rendering all hills identified in data
+        on topographic map plot.\n
         Args:
             altitude (list):
                 list of altitudes
@@ -54,14 +54,14 @@ class PlotData:
         plt = self.plot_hills_on_map(altitude, distance, identified_hills)
         plt.show()
 
-    def draw_intervals_in_map(
+    def show_intervals_on_map(
         self,
         timestamp: list,
         distance: list,
         identified_intervals: list,
     ) -> None:
-        """Method for plotting all intervals identified in data
-        on topographic map and rendering the plot.\n
+        """Method for rendering all intervals identified in data
+        on topographic map plot.\n
         Args:
             timestamp (datetime):
                 list of timestamps
@@ -73,8 +73,8 @@ class PlotData:
         plt = self.plot_intervals_in_map(timestamp, identified_intervals)
         plt.show()
 
-    def draw_basic_map(self) -> None:
-        """Method for plotting the whole topographic map and rendering the plot."""
+    def show_basic_map(self) -> None:
+        """Method for rendering the whole topographic map plot."""
         plt = self.plot_basic_map()
         plt.show()
 

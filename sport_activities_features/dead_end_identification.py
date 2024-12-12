@@ -288,12 +288,12 @@ class DeadEndIdentification:
 
         print('\rProgress: 100 %')
 
-    def draw_map(self) -> None:
+    def show_map(self) -> None:
         """Method for visualisation of the exercise with identified dead ends."""
-        plot = self.show_map()
+        plot = self.plot_map()
         plot.show()
 
-    def show_map(self) -> plt:
+    def plot_map(self) -> plt:
         """Method for plotting the exercise with dead ends.
 
         Returns:        
