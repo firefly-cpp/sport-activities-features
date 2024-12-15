@@ -3,7 +3,7 @@ from pathlib import Path
 
 import numpy as np
 from tcx2gpx import tcx2gpx
-from tcxreader.tcxreader import TCXReader, TCXTrackPoint
+from tcxreader.tcxreader import TCXReader, TCXTrackPoint, TCXExercise
 
 from sport_activities_features.file_manipulation import FileManipulation
 
@@ -31,13 +31,29 @@ class TCXFile(FileManipulation):
             self.all_files.append(file)
         return self.all_files
 
-    def read_one_file(self, filename: str, numpy_array=False) -> dict:
-        """Method for parsing one TCX file using the TCXReader.\n
+    def read_one_file(self, filename: str) -> dict:
+        """Method for reading a TCXExercise object using the TCXReader.\n
         Args:
             filename (str):
                 name of the TCX file to be read
+        Returns:
+            tcx (TCXExercise):
+                TCXExercise object with all the data from the file.
+
+        Note:
+            In the case of missing value in raw data, we assign None.
+        """
+        tcx = TCXReader().read(filename)
+        return tcx
+        
+
+    def extract_activity_data(self, tcx: TCXExercise, numpy_array = False) -> dict:
+        """Method for parsing one TCX file using the TCXReader.\n
+        Args:
+            tcx (TCXExercise):
+                TCXExercise object to be read
             numpy_array (bool):
-                if set to True dictionary lists are transformed into numpy arrays
+                if True, dictionary lists are transformed into numpy arrays
         Returns:
             dict:
             {
@@ -54,8 +70,6 @@ class TCXFile(FileManipulation):
         Note:
             In the case of missing value in raw data, we assign None.
         """
-        tcx = TCXReader().read(filename)
-
         # handling missing data - should be improved in original tcxparser
         try:
             activity_type = tcx.activity_type
@@ -119,12 +133,12 @@ class TCXFile(FileManipulation):
             'start_time': tcx.start_time,
         }
         return activity
-
-    def extract_integral_metrics(self, filename: str) -> dict:
-        """Method for parsing one TCX file and extracting integral metrics.\n
+    
+    def extract_integral_metrics(self, tcx_exercise: TCXExercise) -> dict:
+        """Method for extracting integral metrics from a TCXExercise.\n
         Args:
-            filename (str):
-                name of the TCX file to be read
+            tcx_exercise (TCXExercise):
+                TCXExercise object to be read
         Returns:
             dict:
             {
@@ -149,101 +163,100 @@ class TCXFile(FileManipulation):
                 'speed_max': speed_max
             }.
         """
-        tcx = TCXReader().read(filename)
 
         # handling missing data in raw files
         try:
-            activity_type = tcx.activity_type
+            activity_type = tcx_exercise.activity_type
         except BaseException:
             activity_type = None
 
         try:
-            distance = tcx.distance
+            distance = tcx_exercise.distance
         except BaseException:
             distance = None
 
         try:
-            duration = tcx.duration
+            duration = tcx_exercise.duration
         except BaseException:
             duration = None
 
         try:
-            calories = tcx.calories
+            calories = tcx_exercise.calories
         except BaseException:
             calories = None
 
         try:
-            hr_avg = tcx.hr_avg
+            hr_avg = tcx_exercise.hr_avg
         except BaseException:
             hr_avg = None
 
         try:
-            hr_max = tcx.hr_max
+            hr_max = tcx_exercise.hr_max
         except BaseException:
             hr_max = None
 
         try:
-            hr_min = tcx.hr_min
+            hr_min = tcx_exercise.hr_min
         except BaseException:
             hr_min = None
 
         try:
-            altitude_avg = tcx.altitude_avg
+            altitude_avg = tcx_exercise.altitude_avg
         except BaseException:
             altitude_avg = None
 
         try:
-            altitude_max = tcx.altitude_max
+            altitude_max = tcx_exercise.altitude_max
         except BaseException:
             altitude_max = None
 
         try:
-            altitude_min = tcx.altitude_min
+            altitude_min = tcx_exercise.altitude_min
         except BaseException:
             altitude_min = None
 
         try:
-            ascent = tcx.ascent
+            ascent = tcx_exercise.ascent
         except BaseException:
             ascent = None
 
         try:
-            descent = tcx.descent
+            descent = tcx_exercise.descent
         except BaseException:
             descent = None
 
         try:
-            steps = tcx.lx_ext['Steps']
+            steps = tcx_exercise.lx_ext['Steps']
         except BaseException:
             steps = None
             
         try:
-            cadence_avg = tcx.cadence_avg
+            cadence_avg = tcx_exercise.cadence_avg
         except BaseException:
             cadence_avg = None
             
         try:
-            cadence_max = tcx.cadence_max
+            cadence_max = tcx_exercise.cadence_max
         except BaseException:
             cadence_max = None  
             
         try:
-            watts_avg = tcx.tpx_ext_stats['Watts']['avg']
+            watts_avg = tcx_exercise.tpx_ext_stats['Watts']['avg']
         except BaseException:
             watts_avg = None
             
         try:
-            watts_max = tcx.tpx_ext_stats['Watts']['max']
+            watts_max = tcx_exercise.tpx_ext_stats['Watts']['max']
         except BaseException:
             watts_max = None     
             
         try:
-            speed_avg = tcx.avg_speed
+            speed_avg = tcx_exercise.avg_speed
         except BaseException:
             speed_avg = None     
 
         try:
-            speed_max = tcx.max_speed
+            speed_max = tcx_exercise.max_speed
         except BaseException:
             speed_max = None     
 

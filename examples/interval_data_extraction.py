@@ -9,7 +9,8 @@ from sport_activities_features.tcx_manipulation import TCXFile
 
 # Reading the TCX file
 tcx_file = TCXFile()
-activity = tcx_file.read_one_file('path_to_the_data')
+tcx_exercise = tcx_file.read_one_file('path_to_the_data')
+activity = tcx_file.extract_activity_data(tcx_exercise)
 
 # Identifying the intervals in the activity by power
 Intervals = IntervalIdentificationByPower(

@@ -9,7 +9,8 @@ class TestInterruptionProcessor(TestCase):
     def setUp(self):
         filename = os.path.join(os.path.dirname(__file__), 'data', '15.tcx')
         tcx_file = TCXFile()
-        tcx = tcx_file.read_one_file(filename)
+        tcx_exercise = tcx_file.read_one_file(filename)
+        tcx = tcx_file.extract_activity_data(tcx_exercise)
 
         interruptionProcessor = InterruptionProcessor(
             time_interval=60,

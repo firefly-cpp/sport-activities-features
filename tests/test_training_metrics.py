@@ -10,8 +10,9 @@ class TestTrainingMetrics(TestCase):
     def setUp(self):
         filename = os.path.join(os.path.dirname(__file__), 'data', '11.tcx')
         self.tcx_file = TCXFile()
-        self.data = self.tcx_file.extract_integral_metrics(filename)
-        self.raw_data = TCXReader().read(filename)
+        tcx_exercise = self.tcx_file.read_one_file(filename)        
+        self.data = self.tcx_file.extract_integral_metrics(tcx_exercise)
+        self.raw_data = tcx_exercise
         
     def test_functional_threshold_power(self):
         tm_instance = TrainingMetrics()

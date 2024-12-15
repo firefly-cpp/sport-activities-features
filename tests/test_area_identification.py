@@ -11,7 +11,8 @@ class TestAreaIdentification(TestCase):
     def setUp(self):
         filename = os.path.join(os.path.dirname(__file__), 'data', '15.tcx')
         tcx_file = TCXFile()
-        self.activity = tcx_file.read_one_file(filename)
+        tcx_exercise = tcx_file.read_one_file(filename)
+        self.activity = tcx_file.extract_activity_data(tcx_exercise)
 
         # Converting the read data to arrays.
         positions = np.array([*self.activity['positions']])

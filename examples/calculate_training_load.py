@@ -11,7 +11,8 @@ from sport_activities_features import (
 
 # Reading a TCX file.
 tcx_file = TCXFile()
-activity = tcx_file.read_one_file('../datasets/15.tcx')
+tcx_exercise = tcx_file.read_one_file('../datasets/15.tcx')
+activity = tcx_file.extract_activity_data(tcx_exercise)
 
 timestamps = activity['timestamps']
 heart_rates = activity['heartrates']

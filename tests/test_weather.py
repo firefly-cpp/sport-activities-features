@@ -14,7 +14,8 @@ class TestWeather(TestCase):
             'weather_test.temp',
         )
         tcx_file = TCXFile()
-        self.data = tcx_file.read_one_file(filename)
+        tcx_exercise = tcx_file.read_one_file(filename)
+        self.data = tcx_file.extract_activity_data(tcx_exercise)
         self.weather = None
         with open(weather_external_data, 'rb') as input:
             self.weather = pickle.load(input)
