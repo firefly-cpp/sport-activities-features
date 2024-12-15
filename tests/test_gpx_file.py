@@ -10,7 +10,8 @@ class TestGPXFile(TestCase):
             os.path.dirname(__file__), 'data', 'riderx3.gpx',
         )
         self.gpx_file = GPXFile()
-        self.data = self.gpx_file.read_one_file(filename)
+        gpx_exercise = self.gpx_file.read_one_file(filename)
+        self.data = self.gpx_file.extract_activity_data(gpx_exercise)
 
     def test_total_distance(self):
         self.assertAlmostEqual(self.data['total_distance'], 5774.703, 2)
@@ -39,7 +40,8 @@ class TestGPXFile(TestCase):
         ]
         for index, f in enumerate(utf8_filenames):
             filename = os.path.join(os.path.dirname(__file__), 'data', f)
-            data = self.gpx_file.read_one_file(filename)
+            gpx_exercise = self.gpx_file.read_one_file(filename)
+            data = self.gpx_file.extract_activity_data(gpx_exercise)
             self.assertAlmostEqual(
                 data['total_distance'], utf8_distances[index], places=5,
             )

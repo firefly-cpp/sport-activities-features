@@ -12,8 +12,9 @@ input_file = 'path_to_original_file'
 output_file = 'path_to_output_file'
 
 # Read GPX file
-data = gpx_file.read_one_file(
-    input_file,
+gpx_exercise = gpx_file.read_one_file(input_file)
+data = gpx_file.extract_activity_data(
+    gpx_exercise,
 )  # Represents data as dictionary of lists
 
 # Convert dictionary of lists to pandas DataFrame

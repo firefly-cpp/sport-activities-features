@@ -170,10 +170,11 @@ from sport_activities_features.gpx_manipulation import GPXFile
 gpx_file=GPXFile()
 
 # Read the file and generate a dictionary with 
-data = gpx_file.read_one_file("path_to_the_file") # Represents data as dictionary of lists
+gpx_exercise = gpx_file.read_one_file("path_to_the_file")
+data = gpx_file.extract_activity_data(gpx_exercise) # Represents data as dictionary of lists
 
 # Alternative choice
-data = gpx_file.read_one_file("path_to_the_file", numpy_array= True) # Represents data as dictionary of numpy.arrays
+data = gpx_file.extract_activity_data(gpx_exercise, numpy_array= True) # Represents data as dictionary of numpy.arrays
 
 ```
 
