@@ -10,7 +10,7 @@ UTF8 formatted Gpx files testing (Thanks Luka Koprivc for donating these test fi
 - cross-country-skiing_activity_1.tcx: an activity that represents cross-country skiing activity
 written in the tcx file
 
-- nodes-test.temp: pickled array of position nodes retrieved from dictionary TcxFile.read_one_file(filename)['positions'] 
+- nodes-test.temp: pickled array of position nodes retrieved from dictionary TCXFile.extract_activity_data(tcx_exercise)['positions'] 
 
 - pool_swim-activity_1.tcx: an activity that represents pool swim activity
 written in the tcx file

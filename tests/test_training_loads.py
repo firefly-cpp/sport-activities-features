@@ -61,7 +61,8 @@ class EdwardsTRIMPTestCase(TestCase):
         """Setting up the test."""
         filename = os.path.join(os.path.dirname(__file__), 'data', '15.tcx')
         tcx_file = TCXFile()
-        activity = tcx_file.read_one_file(filename)
+        tcx_exercise = tcx_file.read_one_file(filename)
+        activity = tcx_file.extract_activity_data(tcx_exercise)
         timestamps = activity['timestamps']
         heart_rates = activity['heartrates']
         self.__edwards = EdwardsTRIMP(heart_rates, timestamps, 200)
@@ -86,7 +87,8 @@ class LuciaTRIMPTestCase(TestCase):
         """Setting up the test."""
         filename = os.path.join(os.path.dirname(__file__), 'data', '15.tcx')
         tcx_file = TCXFile()
-        activity = tcx_file.read_one_file(filename)
+        tcx_exercise = tcx_file.read_one_file(filename)
+        activity = tcx_file.extract_activity_data(tcx_exercise)
         timestamps = activity['timestamps']
         heart_rates = activity['heartrates']
         self.__lucia = LuciaTRIMP(heart_rates, timestamps, VT1=160, VT2=180)

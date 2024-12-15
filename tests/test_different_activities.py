@@ -8,7 +8,9 @@ class TestTCXFile(TestCase):
     def setUp(self):
         filename = os.path.join(os.path.dirname(__file__), 'data', '15.tcx')
         self.tcx_file = TCXFile()
-        self.data = self.tcx_file.read_one_file(filename)
+        tcx_exercise = self.tcx_file.read_one_file(filename)
+        self.data = self.tcx_file.extract_activity_data(tcx_exercise)
+        
 
     def test_total_distance(self):
         self.assertAlmostEqual(self.data['total_distance'], 116366.98, 2)
@@ -29,7 +31,8 @@ class TestSupTCXFile(TestCase):
             os.path.dirname(__file__), 'data', 'sup_activity_1.tcx',
         )
         self.tcx_file = TCXFile()
-        self.data = self.tcx_file.extract_integral_metrics(filename)
+        tcx_exercise = self.tcx_file.read_one_file(filename)
+        self.data = self.tcx_file.extract_integral_metrics(tcx_exercise)
 
     def test_total_steps(self):
         assert self.data['steps'] == 491
@@ -43,7 +46,8 @@ class TestSwimmingTCXFile(TestCase):
             os.path.dirname(__file__), 'data', 'swimming_activity_1.tcx',
         )
         self.tcx_file = TCXFile()
-        self.data = self.tcx_file.extract_integral_metrics(filename)
+        tcx_exercise = self.tcx_file.read_one_file(filename)
+        self.data = self.tcx_file.extract_integral_metrics(tcx_exercise)
 
     def test_total_calories(self):
         assert self.data['calories'] == 284
@@ -62,7 +66,8 @@ class TestCrossCountryTCXFile(TestCase):
             'cross-country-skiing_activity_1.tcx',
         )
         self.tcx_file = TCXFile()
-        self.data = self.tcx_file.extract_integral_metrics(filename)
+        tcx_exercise = self.tcx_file.read_one_file(filename)
+        self.data = self.tcx_file.extract_integral_metrics(tcx_exercise)
 
     def test_total_calories(self):
         assert self.data['calories'] == 532
@@ -79,7 +84,8 @@ class TestWalkingTCXFile(TestCase):
             os.path.dirname(__file__), 'data', 'walking_activity_1.tcx',
         )
         self.tcx_file = TCXFile()
-        self.data = self.tcx_file.extract_integral_metrics(filename)
+        tcx_exercise = self.tcx_file.read_one_file(filename)
+        self.data = self.tcx_file.extract_integral_metrics(tcx_exercise)
 
     def test_total_calories(self):
         assert self.data['calories'] == 329
@@ -96,7 +102,8 @@ class TestPoolSwimmingTCXFile(TestCase):
             os.path.dirname(__file__), 'data', 'pool_swim-activity_1.tcx',
         )
         self.tcx_file = TCXFile()
-        self.data = self.tcx_file.extract_integral_metrics(filename)
+        tcx_exercise = self.tcx_file.read_one_file(filename)
+        self.data = self.tcx_file.extract_integral_metrics(tcx_exercise)
 
     def test_total_calories(self):
         assert self.data['calories'] == 329

@@ -4,7 +4,8 @@ from sport_activities_features.topographic_features import TopographicFeatures
 
 # read TCX file
 tcx_file = TCXFile()
-activity = tcx_file.read_one_file('path_to_the_data')
+tcx_exercise = tcx_file.read_one_file('path_to_the_data')
+activity = tcx_file.extract_activity_data(tcx_exercise)
 
 # detect hills in data
 Hill = HillIdentification(activity['altitudes'], 30)

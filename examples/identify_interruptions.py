@@ -9,7 +9,8 @@ Identify interruption events from a TCX or GPX file.
 
 # read TCX file (also works with GPX files)
 tcx_file = TCXFile()
-tcx_data = tcx_file.read_one_file('path_to_the_data')
+tcx_exercise = tcx_file.read_one_file('path_to_the_data')
+tcx_data = tcx_file.extract_activity_data(tcx_exercise)
 
 """
 Time interval = time before and after the start of an event

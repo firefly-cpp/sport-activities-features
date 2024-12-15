@@ -154,10 +154,11 @@ from sport_activities_features.tcx_manipulation import TCXFile
 
 # Class for reading TCX files
 tcx_file=TCXFile()
-data = tcx_file.read_one_file("path_to_the_file") # Represents data as dictionary of lists
+tcx_exercise = tcx_file.read_one_file("path_to_the_file")
+data = tcx_file.extract_activity_data(tcx_exercise) # Represents data as dictionary of lists
 
 # Alternative choice
-data = tcx_file.read_one_file("path_to_the_file", numpy_array= True) # Represents data as dictionary of numpy.arrays
+data = tcx_file.extract_activity_data(tcx_exercise, numpy_array= True) # Represents data as dictionary of numpy.arrays
 
 ```
 
@@ -169,10 +170,11 @@ from sport_activities_features.gpx_manipulation import GPXFile
 gpx_file=GPXFile()
 
 # Read the file and generate a dictionary with 
-data = gpx_file.read_one_file("path_to_the_file") # Represents data as dictionary of lists
+gpx_exercise = gpx_file.read_one_file("path_to_the_file")
+data = gpx_file.extract_activity_data(gpx_exercise) # Represents data as dictionary of lists
 
 # Alternative choice
-data = gpx_file.read_one_file("path_to_the_file", numpy_array= True) # Represents data as dictionary of numpy.arrays
+data = gpx_file.extract_activity_data(gpx_exercise, numpy_array= True) # Represents data as dictionary of numpy.arrays
 
 ```
 
@@ -185,7 +187,8 @@ from sport_activities_features.plot_data import PlotData
 
 # Read TCX file
 tcx_file = TCXFile()
-activity = tcx_file.read_one_file("path_to_the_file")
+tcx_exercise = tcx_file.read_one_file("path_to_the_file")
+activity = tcx_file.extract_activity_data(tcx_exercise)
 
 # Detect hills in data
 Hill = HillIdentification(activity['altitudes'], 30)
@@ -211,7 +214,8 @@ from sport_activities_features.tcx_manipulation import TCXFile
 
 # Reading the TCX file
 tcx_file = TCXFile()
-activity = tcx_file.read_one_file("path_to_the_data")
+tcx_exercise = tcx_file.read_one_file("path_to_the_file")
+activity = tcx_file.extract_activity_data(tcx_exercise)
 
 # Identifying the intervals in the activity by power
 Intervals = IntervalIdentificationByPower(activity["distances"], activity["timestamps"], activity["altitudes"], 70)
@@ -231,7 +235,8 @@ from sport_activities_features import TCXFile
 
 # Read TCX file
 tcx_file = TCXFile()
-tcx_data = tcx_file.read_one_file("path_to_file")
+tcx_exercise = tcx_file.read_one_file("path_to_the_file")
+tcx_data = tcx_file.extract_activity_data(tcx_exercise)
 
 # Configure visual crossing api key
 visual_crossing_api_key = "weather_api_key" # https://www.visualcrossing.com/weather-api
@@ -285,8 +290,8 @@ from sport_activities_features.tcx_manipulation import TCXFile
 
 # Read TCX file
 tcx_file = TCXFile()
-
-integral_metrics = tcx_file.extract_integral_metrics("path_to_the_file")
+tcx_exercise = tcx_file.read_one_file("path_to_the_file")
+integral_metrics = tcx_file.extract_integral_metrics(tcx_exercise)
 
 print(integral_metrics)
 
@@ -299,7 +304,9 @@ from sport_activities_features.tcx_manipulation import TCXFile
 
 #read TCX file
 tcx_file = TCXFile()
-tcx_data = tcx_file.read_one_file("path_to_the_file")
+tcx_exercise = tcx_file.read_one_file("path_to_the_file")
+tcx_data = tcx_file.extract_activity_data(tcx_exercise)
+
 
 #configure visual crossing api key
 visual_crossing_api_key = "API_KEY" # https://www.visualcrossing.com/weather-api
@@ -351,7 +358,8 @@ from sport_activities_features.tcx_manipulation import TCXFile
 
 # Reading the TCX file.
 tcx_file = TCXFile()
-activity = tcx_file.read_one_file('path_to_the_data')
+tcx_exercise = tcx_file.read_one_file("path_to_the_file")
+activity = tcx_file.extract_activity_data(tcx_exercise)
 
 # Converting the read data to arrays.
 positions = np.array([*activity['positions']])
@@ -381,7 +389,8 @@ Identify interruption events from a TCX or GPX file.
 
 # read TCX file (also works with GPX files)
 tcx_file = TCXFile()
-tcx_data = tcx_file.read_one_file("path_to_the_data")
+tcx_exercise = tcx_file.read_one_file("path_to_the_file")
+tcx_data = tcx_file.extract_activity_data(tcx_exercise)
 
 """
 Time interval = time before and after the start of an event
@@ -434,7 +443,8 @@ from sport_activities_features import ElevationIdentification
 from sport_activities_features import TCXFile
 
 tcx_file = TCXFile()
-tcx_data = tcx_file.read_one_file('path_to_file')
+tcx_exercise = tcx_file.read_one_file("path_to_the_file")
+tcx_data = tcx_file.extract_activity_data(tcx_exercise)
 
 elevations = ElevationIdentification(tcx_data['positions'])
 """Adds tcx_data['elevation'] = eg. [124, 21, 412] for each position"""

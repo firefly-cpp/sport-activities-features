@@ -14,7 +14,8 @@ class TestDeadEndIdentification(TestCase):
         # Reading the TCX file.
         filename = os.path.join(os.path.dirname(__file__), 'data', '15.tcx')
         tcx_file = TCXFile()
-        self.activity = tcx_file.read_one_file(filename)
+        tcx_exercise = tcx_file.read_one_file(filename)
+        self.activity = tcx_file.extract_activity_data(tcx_exercise)
 
         self.positions = np.array([*self.activity['positions']])
         self.distances = np.array([*self.activity['distances']])

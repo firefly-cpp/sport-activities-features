@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 
 import geopy
 import gpxpy
+import gpxpy.gpx
 import numpy as np
 
 from sport_activities_features.file_manipulation import FileManipulation
@@ -107,14 +108,115 @@ class GPXTrackPoint:
         self.cadence = cadence
         self.watts = watts
 
+class GPXExercise:
+    """Class for storing exercise data from a GPX file.\n
+    Args:
+        raw_data (GPX):
+            raw data from the GPX file.
+        trackpoints (list):
+            list of GPXTrackPoint objects.        
+        activity_type (str):
+            type of the activity (e.g. Biking).
+        distance (float):
+            total distance of exercise in meters.
+        duration (float):
+            duration of exercise in seconds.
+        calories (int):
+            calories burned during the exercise.
+        hr_avg (float):
+            average heart rate during the exercise.
+        hr_max (int):
+            maximum heart rate during the exercise.
+        hr_min (int):
+            minimum heart rate during the exercise.
+        altitude_avg (float):
+            average altitude in meters.
+        altitude_max (float):
+            maximum altitude in meters.
+        altitude_min (float):
+            minimum altitude in meters.
+        ascent (float):
+            total ascent in meters.
+        descent (float):
+            total descent in meters.
+    """
 
-class GPXFile(FileManipulation):
-    """Class for reading GPX files."""
+    def __init__(self, raw_data: gpxpy.gpx.GPX, trackpoints: list = None) -> None:
+        """Initialisation method for GPXExercise class.\n
+        Args:
+            raw_data (GPX):
+                raw data from the GPX file.
+            trackpoints (list):
+                list of GPXTrackPoint objects.
+        """
+        if trackpoints is None:
+            trackpoints = []
+        self.trackpoints = trackpoints
+        self.raw_data = raw_data
+        self._calculate_values()
+        
+    def _calculate_values(self):
+        gpx = self.raw_data
+        try:
+            self.activity_type = gpx.tracks[0].type
+        except BaseException:
+            self.activity_type = None
 
-    def __init__(self) -> None:
-        """Initialisation method for GPXFile class."""
-        self.all_files = []
+        try:
+            self.distance = gpx['total_distance']
+        except BaseException:
+            self.distance = None
 
+        try:
+            self.duration = gpx['timestamps'][-1] - gpx['timestamps'][0]
+        except BaseException:
+            self.duration = None
+
+        try:
+            self.calories = None
+        except BaseException:
+            self.calories = None
+
+        try:
+            self.hr_avg = sum(gpx['heartrates']) / len(gpx['heartrates'])
+        except BaseException:
+            self.hr_avg = None
+
+        try:
+            self.hr_max = max(gpx['heartrates'])
+        except BaseException:
+            self.hr_max = None
+
+        try:
+            self.hr_min = min(gpx['heartrates'])
+        except BaseException:
+            self.hr_min = None
+
+        try:
+            self.altitude_avg = sum(gpx['altitudes']) / len(gpx['altitudes'])
+        except BaseException:
+            self.altitude_avg = None
+
+        try:
+            self.altitude_max = max(gpx['altitudes'])
+        except BaseException:
+            self.altitude_max = None
+
+        try:
+            self.altitude_min = min(gpx['altitudes'])
+        except BaseException:
+            self.altitude_min = None
+
+        try:
+            self.ascent = self.__ascent(gpx['altitudes'])
+        except BaseException:
+            self.ascent = None
+
+        try:
+            self.descent = self.__descent(gpx['altitudes'])
+        except BaseException:
+            self.descent = None
+            
     def __ascent(self, altitudes: list) -> int:
         """Method for calculating the total ascent from a list of altitudes.\n
         Args:
@@ -143,6 +245,15 @@ class GPXFile(FileManipulation):
                 descent += altitudes[index - 1] - altitude
         return descent
 
+
+class GPXFile(FileManipulation):
+    """Class for reading GPX files."""
+
+    def __init__(self) -> None:
+        """Initialisation method for GPXFile class."""
+        self.all_files = []
+   
+
     def read_directory(self, directory_name: str) -> list:
         """Method for finding all GPX files in a directory.\n
         Args:
@@ -158,13 +269,11 @@ class GPXFile(FileManipulation):
             self.all_files.append(file)
         return self.all_files
 
-    def read_one_file(self, filename, numpy_array=False):
+    def read_one_file(self, filename: str) -> GPXExercise:
         """Method for parsing one GPX file.\n
         Args:
             filename (str):
                 name of the TCX file to be read
-            numpy_array (bool):
-                if set to true dictionary lists are transformed into numpy arrays
         Returns:
           activity (dict):
             {
@@ -183,7 +292,7 @@ class GPXFile(FileManipulation):
         """
         NAMESPACE = '{http://www.garmin.com/xmlschemas/TrackPointExtension/v1}'
         points = []
-        gpx = None
+        gpx = None        
         try:
             gpx_file = open(filename, encoding='utf-8')
             gpx = gpxpy.parse(gpx_file)
@@ -238,9 +347,36 @@ class GPXFile(FileManipulation):
                     previous_point = trackpoint
 
         gpx_file.close()
+        gpx_exercise = GPXExercise(gpx,points)
+        return gpx_exercise
+
+
+    def extract_activity_data(self, gpx: GPXExercise, numpy_array = False) -> dict:
+        """Method for parsing one GPX file.\n
+        Args:
+            gpx (GPXExercise):
+                GPXExercise object to be read
+            numpy_array (bool):
+                if True, dictionary lists are transformed into numpy arrays
+        Returns:
+          activity (dict):
+            {
+                'activity_type': activity_type,
+                'positions': positions,
+                'altitudes': altitudes,
+                'distances': distances,
+                'total_distance': total_distance,
+                'timestamps': timestamps,
+                'heartrates': heartrates,
+                'speeds': speeds
+            }
+
+        Note:        
+            In the case of missing value in raw data, we assign None.
+        """
         # handling missing data - should be improved in original
         try:
-            activity_type = gpx.tracks[0].type
+            activity_type = gpx.raw_data.tracks[0].type
         except BaseException:
             activity_type = None
 
@@ -250,8 +386,8 @@ class GPXFile(FileManipulation):
         timestamps = []
         heartrates = []
         speeds = []
-        trackpoint: TCXTrackPoint
-        for trackpoint in points:
+        trackpoint: GPXTrackPoint
+        for trackpoint in gpx.trackpoints:
             positions.append((trackpoint.latitude, trackpoint.longitude))
             altitudes.append(trackpoint.elevation)
             distances.append(trackpoint.distance)
@@ -284,8 +420,8 @@ class GPXFile(FileManipulation):
         }
 
         return activity
-
-    def extract_integral_metrics(self, filename) -> dict:
+    
+    def extract_integral_metrics(self, gpx_exercise: GPXExercise) -> dict:
         """Method for parsing one GPX file and extracting integral metrics.\n
         Args:
             filename (str):
@@ -306,67 +442,66 @@ class GPXFile(FileManipulation):
                 "ascent": ascent,
                 "descent": descent,
             }.
-        """
-        gpx = self.read_one_file(filename)
+        """        
 
         # handling missing data in raw files
         try:
-            activity_type = gpx.tracks[0].type
+            activity_type = gpx_exercise.activity_type
         except BaseException:
             activity_type = None
 
         try:
-            distance = gpx['total_distance']
+            distance = gpx_exercise.distance
         except BaseException:
             distance = None
 
         try:
-            duration = gpx['timestamps'][-1] - gpx['timestamps'][0]
+            duration = gpx_exercise.duration
         except BaseException:
             duration = None
 
         try:
-            calories = None
+            calories = gpx_exercise.calories
         except BaseException:
             calories = None
 
         try:
-            hr_avg = sum(gpx['heartrates']) / len(gpx['heartrates'])
+            hr_avg = gpx_exercise.hr_avg
         except BaseException:
             hr_avg = None
 
         try:
-            hr_max = max(gpx['heartrates'])
+            hr_max = gpx_exercise.hr_max
         except BaseException:
             hr_max = None
 
         try:
-            hr_min = min(gpx['heartrates'])
+            hr_min = gpx_exercise.hr_min
         except BaseException:
             hr_min = None
 
         try:
-            altitude_avg = sum(gpx['altitudes']) / len(gpx['altitudes'])
+            altitude_avg = gpx_exercise.altitude_avg
         except BaseException:
             altitude_avg = None
 
         try:
-            altitude_max = max(gpx['altitudes'])
+            altitude_max = gpx_exercise.altitude_max
         except BaseException:
             altitude_max = None
 
         try:
-            altitude_min = min(gpx['altitudes'])
+            altitude_min = gpx_exercise.altitude_min
         except BaseException:
             altitude_min = None
 
         try:
-            ascent = self.__ascent(gpx['altitudes'])
+            ascent = gpx_exercise.ascent
         except BaseException:
             ascent = None
 
         try:
-            descent = self.__descent(gpx['altitudes'])
+            descent = gpx_exercise.descent
         except BaseException:
             descent = None
 

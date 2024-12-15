@@ -12,8 +12,9 @@ input_file = 'path_to_original_file'
 output_file = 'path_to_output_file'
 
 # Read TCX file
-data = tcx_file.read_one_file(
-    input_file,
+tcx_exercise = tcx_file.read_one_file(input_file)
+data = tcx_file.extract_activity_data(
+    tcx_exercise,
 )  # Represents data as dictionary of lists
 
 # Convert dictionary of lists to pandas DataFrame

@@ -15,9 +15,10 @@ all_files = tcx_file.read_directory('path_to_the_folder')
 # Extracting the data of all files
 activities = []
 for file in all_files:
+    tcx_exercise = tcx_file.read_one_file(file)
     activity = {'ID': os.path.splitext(os.path.split(file)[-1])[0]}
-    activity.update(tcx_file.read_one_file(file))
-    activity.update(tcx_file.extract_integral_metrics(file))
+    activity.update(tcx_file.extract_activity_data(tcx_exercise))
+    activity.update(tcx_file.extract_integral_metrics(tcx_exercise))
 
     # Hills
     Hill = HillIdentification(activity['altitudes'], 30)

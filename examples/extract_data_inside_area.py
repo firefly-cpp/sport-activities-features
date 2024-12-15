@@ -16,7 +16,8 @@ progress = 0.0
 # Reading all files in filder.
 for file in all_files:
     print('\rProgress: ', int(progress), '%', end='')
-    activity = tcx_file.read_one_file(file)
+    tcx_exercise = tcx_file.read_one_file(file)
+    activity = tcx_file.extract_activity_data(tcx_exercise)
 
     # Converting the read data to arrays.
     positions = np.array([*activity['positions']])
