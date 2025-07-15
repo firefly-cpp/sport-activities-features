@@ -3,7 +3,7 @@ import math
 import overpy
 from geopy import distance
 
-from sport_activities_features import ElevationIdentification
+from sport_activities_features import ElevationIdentification, ElevationApiType
 
 
 class OverpyNodesReader:
@@ -20,20 +20,28 @@ class OverpyNodesReader:
         self,
         open_elevation_api:
             str = 'https://api.open-elevation.com/api/v1/lookup?',
+        open_topo_data_api: str = 'https://api.opentopodata.org/v1/srtm90m',
+        elevation_api_type: ElevationApiType = ElevationApiType.OPEN_ELEVATION_API,
     ) -> None:
         """Initialisation method for OverpyNodesReader.\n
         Args:
             open_elevation_api (str):
-                address of Open Elevation API, if a lot of altitudes
-                are needed, self hosting is preferrable.
+                Address of Open Elevation API. If a lot of altitudes
+                are needed, self-hosting is preferable.
+            open_topo_data_api (str):
+                Address of Open Topo Data API for elevation data.
+            elevation_api_type (ElevationApiType):
+                Type of elevation API to use (e.g., Open Elevation API or Open Topo Data API).
         """
         self.open_elevation_api = open_elevation_api
+        self.open_topo_data_api = open_topo_data_api
+        self.elevation_api_type = elevation_api_type
 
     def __map_payload(self, node: tuple) -> dict:
         """Method that converts tuple into JSON like object
         for querying the Open Elevation API.\n
         Args:
-            position (tuple):
+            node (tuple):
                 tuple of latitude and longitude
         Returns:
             dict:
@@ -83,6 +91,8 @@ class OverpyNodesReader:
         elevation_identification = ElevationIdentification(
             open_elevation_api=self.open_elevation_api,
             positions=nodes,
+            open_topo_data_api=self.open_topo_data_api,
+            elevation_api_type=self.elevation_api_type,
         )
         altitudes = elevation_identification.fetch_elevation_data(
             payload_formatting=False,
