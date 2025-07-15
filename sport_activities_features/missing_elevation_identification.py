@@ -106,7 +106,7 @@ class ElevationIdentification():
         elevations = []
 
         for chunk in chunks:
-            coordinate_string = '|'.join([','.join(map(str, coord)) for coord in chunk])
+            coordinate_string = '|'.join([f"{coord['latitude']},{coord['longitude']}" for coord in chunk])
             payload = {"locations": coordinate_string,
                        "interpolation": "cubic"}
             json_payload = json.dumps(payload)  # Convert payload to JSON string

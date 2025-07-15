@@ -2,12 +2,13 @@ import os
 import pickle
 from unittest import TestCase
 
+from sport_activities_features import ElevationApiType
 from sport_activities_features.overpy_node_manipulation import (
     OverpyNodesReader,
 )
 
 
-class TestWeather(TestCase):
+class TestOverpyNodeManipulation(TestCase):
     def setUp(self):
         filename = os.path.join(
             os.path.dirname(__file__),
@@ -22,8 +23,11 @@ class TestWeather(TestCase):
         # also be noted that API must be ONLINE)
         overpy_reader = OverpyNodesReader(
             open_elevation_api='https://api.open-elevation.com/api/v1/lookup?',
+            elevation_api_type= ElevationApiType.OPEN_ELEVATION_API,
         )
         self.data = overpy_reader.read_nodes(nodes)
+
+
 
     def test_generated_object_properties(self):
         assert len(list(self.data.keys())) == 5
