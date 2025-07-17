@@ -39,10 +39,33 @@ class TestMissingElevationIdentification(TestCase):
     def test_fetch_elevation_data_open_topo_data_api(self, MockHTTPSConnection):
         mock_response = MagicMock()
         mock_response.read.return_value = json.dumps({
-            'results': [
-                {'elevation': 8, 'location': {'lat': 39.7391536, 'lng': -104.9847034}},
-                {'elevation': 147, 'location': {'lat': 40.748817, 'lng': -73.985428}}
-            ]
+          "results": [
+            {
+              "dataset": "test-dataset",
+              "elevation": -34.074440002441406,
+              "location": {
+                "lat": 37.4219999,
+                "lng": -122.0840575
+              }
+            },
+            {
+              "dataset": "test-dataset",
+              "elevation": 1033.801513671875,
+              "location": {
+                "lat": 36.778259,
+                "lng": -119.417931
+              }
+            },
+            {
+              "dataset": "test-dataset",
+              "elevation": 209.28993225097656,
+              "location": {
+                "lat": 34.052235,
+                "lng": -118.243683
+              }
+            }
+          ],
+          "status": "OK"
         }).encode('utf-8')
         mock_response.getresponse.return_value = mock_response
 
@@ -50,5 +73,5 @@ class TestMissingElevationIdentification(TestCase):
 
         elevations = self.open_topo_data_api.fetch_open_topo_data()
 
-        expected_elevations = [8, 147]
+        expected_elevations = [-34.074440002441406, 1033.801513671875, 209.28993225097656]
         self.assertEqual(elevations, expected_elevations)
