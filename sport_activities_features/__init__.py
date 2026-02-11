@@ -54,7 +54,6 @@ __all__ = [
     'InterruptionProcessor',
     'area_identification',
     'classes',
-    'data_analysis',
     'data_extraction',
     'data_extraction_from_csv',
     'dead_end_identification',
