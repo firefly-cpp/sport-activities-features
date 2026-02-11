@@ -52,7 +52,6 @@ __all__ = [
     'AverageWeather',
     'ElevationIdentification',
     'InterruptionProcessor',
-    'activity_generator',
     'area_identification',
     'classes',
     'data_analysis',
