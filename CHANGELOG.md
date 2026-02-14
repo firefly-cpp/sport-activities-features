@@ -1,11 +1,160 @@
 # Changelog
 
-## [Unreleased](https://github.com/firefly-cpp/sport-activities-features/tree/HEAD)
+## [0.5.3](https://github.com/firefly-cpp/sport-activities-features/tree/0.5.3) (2026-02-14)
 
-[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.17...HEAD)
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.5.2...0.5.3)
+
+**Implemented enhancements:**
+
+- Segments [\#150](https://github.com/firefly-cpp/sport-activities-features/issues/150)
+- 'activity\_generator' module not finished [\#59](https://github.com/firefly-cpp/sport-activities-features/issues/59)
+
+**Closed issues:**
+
+- Fix building docs when using LaTeX [\#179](https://github.com/firefly-cpp/sport-activities-features/issues/179)
 
 **Merged pull requests:**
 
+- Bump urllib3 from 2.6.0 to 2.6.3 [\#217](https://github.com/firefly-cpp/sport-activities-features/pull/217) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump aiohttp from 3.12.14 to 3.13.3 [\#216](https://github.com/firefly-cpp/sport-activities-features/pull/216) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump fonttools from 4.56.0 to 4.60.2 [\#215](https://github.com/firefly-cpp/sport-activities-features/pull/215) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump urllib3 from 2.3.0 to 2.6.0 [\#214](https://github.com/firefly-cpp/sport-activities-features/pull/214) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump aiohttp from 3.11.13 to 3.12.14 [\#211](https://github.com/firefly-cpp/sport-activities-features/pull/211) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [0.5.2](https://github.com/firefly-cpp/sport-activities-features/tree/0.5.2) (2025-07-17)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.5.1...0.5.2)
+
+**Closed issues:**
+
+- Documentation needs to be more consistent and up to date [\#201](https://github.com/firefly-cpp/sport-activities-features/issues/201)
+
+**Merged pull requests:**
+
+- Fixed tests \(elevation\) [\#213](https://github.com/firefly-cpp/sport-activities-features/pull/213) ([alenrajsp](https://github.com/alenrajsp))
+- Bugfix for Elevation Identification [\#212](https://github.com/firefly-cpp/sport-activities-features/pull/212) ([alenrajsp](https://github.com/alenrajsp))
+- Bump jinja2 from 3.1.5 to 3.1.6 [\#209](https://github.com/firefly-cpp/sport-activities-features/pull/209) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump requests from 2.32.3 to 2.32.4 [\#208](https://github.com/firefly-cpp/sport-activities-features/pull/208) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump setuptools from 75.8.2 to 78.1.1 [\#207](https://github.com/firefly-cpp/sport-activities-features/pull/207) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [0.5.1](https://github.com/firefly-cpp/sport-activities-features/tree/0.5.1) (2025-03-05)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.5.0...0.5.1)
+
+**Merged pull requests:**
+
+- Bump jinja2 from 3.1.4 to 3.1.5 [\#206](https://github.com/firefly-cpp/sport-activities-features/pull/206) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [0.5.0](https://github.com/firefly-cpp/sport-activities-features/tree/0.5.0) (2024-12-18)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.4.5...0.5.0)
+
+**Implemented enhancements:**
+
+- Code refactoring for TCX/GPX Manipulation [\#199](https://github.com/firefly-cpp/sport-activities-features/issues/199)
+
+**Closed issues:**
+
+- Fix naming of methods in Dead End Identification, Plot Data [\#202](https://github.com/firefly-cpp/sport-activities-features/issues/202)
+
+**Merged pull requests:**
+
+- TCX/GPX Manipulation Refactorings [\#205](https://github.com/firefly-cpp/sport-activities-features/pull/205) ([MihaMi27](https://github.com/MihaMi27))
+
+## [0.4.5](https://github.com/firefly-cpp/sport-activities-features/tree/0.4.5) (2024-12-12)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.4.4...0.4.5)
+
+**Merged pull requests:**
+
+- Issue \#202: Fix naming of methods in PlotData, DeadEndIdentification [\#204](https://github.com/firefly-cpp/sport-activities-features/pull/204) ([MihaMi27](https://github.com/MihaMi27))
+- Update documentation [\#203](https://github.com/firefly-cpp/sport-activities-features/pull/203) ([MihaMi27](https://github.com/MihaMi27))
+
+## [0.4.4](https://github.com/firefly-cpp/sport-activities-features/tree/0.4.4) (2024-12-05)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.4.3...0.4.4)
+
+**Implemented enhancements:**
+
+- Functional Threshold Power metric [\#125](https://github.com/firefly-cpp/sport-activities-features/issues/125)
+
+**Closed issues:**
+
+- Training Stress Score metric [\#126](https://github.com/firefly-cpp/sport-activities-features/issues/126)
+
+**Merged pull requests:**
+
+- Add speed average and speed max to TCXFile's extract\_integral\_metrics\(\) [\#200](https://github.com/firefly-cpp/sport-activities-features/pull/200) ([MihaMi27](https://github.com/MihaMi27))
+- Implementation of Training Metrics [\#198](https://github.com/firefly-cpp/sport-activities-features/pull/198) ([MihaMi27](https://github.com/MihaMi27))
+
+## [0.4.3](https://github.com/firefly-cpp/sport-activities-features/tree/0.4.3) (2024-11-26)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.4.2...0.4.3)
+
+**Implemented enhancements:**
+
+- Add cadence and watts to integral metrics \(TCXFile\) [\#196](https://github.com/firefly-cpp/sport-activities-features/pull/196) ([MihaMi27](https://github.com/MihaMi27))
+
+**Merged pull requests:**
+
+- docs: add MihaMi27 as a contributor for code [\#197](https://github.com/firefly-cpp/sport-activities-features/pull/197) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- Bump aiohttp from 3.9.4 to 3.10.11 [\#195](https://github.com/firefly-cpp/sport-activities-features/pull/195) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Tests update elevation identification [\#194](https://github.com/firefly-cpp/sport-activities-features/pull/194) ([alenrajsp](https://github.com/alenrajsp))
+
+## [0.4.2](https://github.com/firefly-cpp/sport-activities-features/tree/0.4.2) (2024-07-30)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.4.1...0.4.2)
+
+**Merged pull requests:**
+
+- OpenTopoData support in ElevationIdentification [\#193](https://github.com/firefly-cpp/sport-activities-features/pull/193) ([alenrajsp](https://github.com/alenrajsp))
+- README [\#192](https://github.com/firefly-cpp/sport-activities-features/pull/192) ([lahovniktadej](https://github.com/lahovniktadej))
+- Bump setuptools from 69.2.0 to 70.0.0 [\#191](https://github.com/firefly-cpp/sport-activities-features/pull/191) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [0.4.1](https://github.com/firefly-cpp/sport-activities-features/tree/0.4.1) (2024-07-03)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.4.0...0.4.1)
+
+**Closed issues:**
+
+- Tests related to hill identification are failing [\#156](https://github.com/firefly-cpp/sport-activities-features/issues/156)
+
+**Merged pull requests:**
+
+- Bump scikit-learn from 1.4.1.post1 to 1.5.0 [\#188](https://github.com/firefly-cpp/sport-activities-features/pull/188) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump urllib3 from 2.2.1 to 2.2.2 [\#187](https://github.com/firefly-cpp/sport-activities-features/pull/187) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump requests from 2.31.0 to 2.32.0 [\#186](https://github.com/firefly-cpp/sport-activities-features/pull/186) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump jinja2 from 3.1.3 to 3.1.4 [\#185](https://github.com/firefly-cpp/sport-activities-features/pull/185) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump aiohttp from 3.9.3 to 3.9.4 [\#184](https://github.com/firefly-cpp/sport-activities-features/pull/184) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump idna from 3.6 to 3.7 [\#183](https://github.com/firefly-cpp/sport-activities-features/pull/183) ([dependabot[bot]](https://github.com/apps/dependabot))
+- docs: add HlisTilen as a contributor for doc [\#182](https://github.com/firefly-cpp/sport-activities-features/pull/182) ([allcontributors[bot]](https://github.com/apps/allcontributors))
+- Update README.md: Add TCXReader.jl to related frameworks [\#181](https://github.com/firefly-cpp/sport-activities-features/pull/181) ([HlisTilen](https://github.com/HlisTilen))
+- Bump pillow from 10.2.0 to 10.3.0 [\#180](https://github.com/firefly-cpp/sport-activities-features/pull/180) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Dependency version [\#178](https://github.com/firefly-cpp/sport-activities-features/pull/178) ([lahovniktadej](https://github.com/lahovniktadej))
+
+## [0.4.0](https://github.com/firefly-cpp/sport-activities-features/tree/0.4.0) (2024-03-29)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.18...0.4.0)
+
+**Closed issues:**
+
+- Docs are not in sync with the README [\#174](https://github.com/firefly-cpp/sport-activities-features/issues/174)
+
+**Merged pull requests:**
+
+- Missing elevation identification bugfix [\#177](https://github.com/firefly-cpp/sport-activities-features/pull/177) ([alenrajsp](https://github.com/alenrajsp))
+- fix: Test pipeline error resolution [\#176](https://github.com/firefly-cpp/sport-activities-features/pull/176) ([zalalahovnik](https://github.com/zalalahovnik))
+- Synchronised documentation [\#175](https://github.com/firefly-cpp/sport-activities-features/pull/175) ([lahovniktadej](https://github.com/lahovniktadej))
+
+## [0.3.18](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.18) (2024-02-16)
+
+[Full Changelog](https://github.com/firefly-cpp/sport-activities-features/compare/0.3.17...0.3.18)
+
+**Merged pull requests:**
+
+- Bump aiohttp from 3.9.0 to 3.9.2 [\#173](https://github.com/firefly-cpp/sport-activities-features/pull/173) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump pillow from 10.0.1 to 10.2.0 [\#172](https://github.com/firefly-cpp/sport-activities-features/pull/172) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump jinja2 from 3.1.2 to 3.1.3 [\#171](https://github.com/firefly-cpp/sport-activities-features/pull/171) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump aiohttp from 3.8.6 to 3.9.0 [\#170](https://github.com/firefly-cpp/sport-activities-features/pull/170) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Version of dependencies [\#169](https://github.com/firefly-cpp/sport-activities-features/pull/169) ([lahovniktadej](https://github.com/lahovniktadej))
 
@@ -67,7 +216,7 @@
 
 - Updated due to seaborn-whitegrid deprecated [\#155](https://github.com/firefly-cpp/sport-activities-features/pull/155) ([alenrajsp](https://github.com/alenrajsp))
 - docs: add zala-lahovnik as a contributor for code [\#154](https://github.com/firefly-cpp/sport-activities-features/pull/154) ([allcontributors[bot]](https://github.com/apps/allcontributors))
-- improve hill identification algorithm, update hill plotting visualization [\#153](https://github.com/firefly-cpp/sport-activities-features/pull/153) ([zala-lahovnik](https://github.com/zala-lahovnik))
+- improve hill identification algorithm, update hill plotting visualization [\#153](https://github.com/firefly-cpp/sport-activities-features/pull/153) ([zalalahovnik](https://github.com/zalalahovnik))
 
 ## [0.3.14](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.14) (2023-07-18)
 
@@ -85,7 +234,7 @@
 - docs: add KukovecRok as a contributor for maintenance [\#149](https://github.com/firefly-cpp/sport-activities-features/pull/149) ([allcontributors[bot]](https://github.com/apps/allcontributors))
 - Fix pipeline [\#148](https://github.com/firefly-cpp/sport-activities-features/pull/148) ([KukovecRok](https://github.com/KukovecRok))
 - docs: add zala-lahovnik as a contributor for doc [\#147](https://github.com/firefly-cpp/sport-activities-features/pull/147) ([allcontributors[bot]](https://github.com/apps/allcontributors))
-- docs: update README [\#146](https://github.com/firefly-cpp/sport-activities-features/pull/146) ([zala-lahovnik](https://github.com/zala-lahovnik))
+- docs: update README [\#146](https://github.com/firefly-cpp/sport-activities-features/pull/146) ([zalalahovnik](https://github.com/zalalahovnik))
 - Fix \#142 , add full ruff settings [\#143](https://github.com/firefly-cpp/sport-activities-features/pull/143) ([KukovecRok](https://github.com/KukovecRok))
 
 ## [0.3.13](https://github.com/firefly-cpp/sport-activities-features/tree/0.3.13) (2023-06-15)
