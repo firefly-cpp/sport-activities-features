@@ -21,11 +21,11 @@ sys.path.insert(0, os.path.abspath('../sport_activities_features/weather_objects
 # -- Project information -----------------------------------------------------
 
 project = 'sport-activities-features'
-copyright = '2020-2024, Iztok Fister Jr. et al.'
+copyright = '2020-2026, Iztok Fister Jr. et al.'
 author = 'Iztok Fister Jr., Luka Lukač, Alen Rajšp, Luka Pečnik, Dušan Fister'
 
 # The full version, including alpha/beta/rc tags
-release = '0.5.2'
+release = '0.5.3'
 
 # -- General configuration ---------------------------------------------------
 
