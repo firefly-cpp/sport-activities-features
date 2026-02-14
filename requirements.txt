@@ -10,3 +10,4 @@ tcx2gpx==0.1.4
 gpxpy >= 1.4.2
 ruff==0.0.292
 pytest>=7.2.2
+setuptools="*"
