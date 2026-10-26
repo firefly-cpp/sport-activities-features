@@ -5,6 +5,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+def _cross_2d(a: np.ndarray, b: np.ndarray) -> float:
+    """Return the z component of the cross product of two 2D vectors.
+
+    np.cross no longer accepts 2D vectors since NumPy 2.0.
+    """
+    return a[0] * b[1] - a[1] * b[0]
+
+
 class AreaIdentification:
 
     """Area identification based by coordinates.\n
@@ -102,9 +110,9 @@ class AreaIdentification:
         v12 = np.array(p2 - p1)
         v34 = np.array(p4 - p3)
         v31 = np.array(p1 - p3)
-        D = np.cross(v12, v34)
-        A = np.cross(v34, v31)
-        B = np.cross(v12, v31)
+        D = _cross_2d(v12, v34)
+        A = _cross_2d(v34, v31)
+        B = _cross_2d(v12, v31)
 
         # If D == 0, the two line segments are parallel
         if self.is_equal(D, 0):
