@@ -453,6 +453,21 @@ elevations = ElevationIdentification(tcx_data['positions'])
 tcx_data.update({'elevations':elevations})
 ```
 
+### Example of a visualization of identified hills
+
+```python
+from sport_activities_features.plot_data import PlotData
+
+fig = PlotData().plot_hills_on_map(
+    activity['altitudes'], activity['distances'], Hill.return_hills(),
+)
+fig.savefig('hills.png', facecolor=fig.get_facecolor())
+```
+
+Hills are drawn on the elevation profile and coloured by grade (per ~500 m); each hill is labelled with its elevation gain, length and average grade.
+
+![Hill Profile Figure](https://raw.githubusercontent.com/firefly-cpp/sport-activities-features/main/docs/_static/hill_profile.png)
+
 ### Example of a visualization of the area detection
 
 ![Area Figure](https://i.imgur.com/Iz8Ga3B.png)

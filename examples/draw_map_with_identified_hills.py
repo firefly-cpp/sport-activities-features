@@ -1,4 +1,7 @@
-"""This example presents how to draw a map with identified hills."""
+"""This example presents how to draw the elevation profile
+with identified hills."""
+import matplotlib.pyplot as plt
+
 from sport_activities_features.hill_identification import HillIdentification
 from sport_activities_features.plot_data import PlotData
 from sport_activities_features.tcx_manipulation import TCXFile
@@ -16,7 +19,9 @@ Hill = HillIdentification(
 Hill.identify_hills()
 all_hills = Hill.return_hills()
 
-# draw detected hills
+# draw detected hills, coloured by grade
 Map = PlotData()
+fig = Map.plot_hills_on_map(data['altitudes'], data['distances'], all_hills)
 
-Map.show_hills_on_map(data['altitudes'], data['distances'], all_hills)
+fig.savefig('hills.png', facecolor=fig.get_facecolor())
+plt.show()
