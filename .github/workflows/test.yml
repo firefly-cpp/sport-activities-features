@@ -2,58 +2,70 @@ name: sport-activities-features
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build:
+  lint:
+    name: Lint (ruff)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
 
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Install ruff
+        run: python -m pip install ruff
+
+      - name: Ruff (errors only)
+        run: ruff check --select E9,F63,F7,F82 --output-format github .
+
+  test:
+    name: Test (${{ matrix.os }}, Python ${{ matrix.python-version }})
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        python-version: ['3.11']
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.10', '3.11', '3.12', '3.13']
     defaults:
       run:
         shell: bash
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Get full Python version
-      id: full-python-version
-      run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
-    - name: Install poetry
-      run: |
-        pipx install "poetry>=1.3.0,<1.4.0"
-    - name: Update path
-      if: ${{ matrix.os != 'windows-latest' }}
-      run: echo "$HOME/.local/bin" >> $GITHUB_PATH
-    - name: Update Windows path
-      if: ${{ matrix.os == 'windows-latest' }}
-      run: echo "$APPDATA\Python\Scripts" >> $GITHUB_PATH
-    - name: Configure poetry
-      run: poetry config virtualenvs.in-project true
-    - name: Set up cache
-      uses: actions/cache@v3
-      id: cache
-      with:
-        path: .venv
-        key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
-    - name: Ensure cache is healthy
-      if: steps.cache.outputs.cache-hit == 'true'
-      run: timeout 10s poetry run pip --version || rm -rf .venv
-    - name: Install dependencies
-      run: poetry install
-    - name: Run tests
-      run: poetry run pytest -k 'not test_overpy_node_manipulation and not test_weather and not test_data_analysis'
-    - name: Windows tests
-      if: ${{ matrix.os == 'windows-latest' }}
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pytest -k 'not test_overpy_node_manipulation and not test_weather and not test_data_analysis'
+      - uses: actions/checkout@v5
+
+      - name: Install Poetry
+        run: pipx install "poetry>=2.0,<3.0"
+
+      - name: Set up Python ${{ matrix.python-version }}
+        id: setup-python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: poetry
+
+      - name: Configure Poetry environment
+        run: poetry env use "${{ steps.setup-python.outputs.python-path }}"
+
+      - name: Check lock file
+        run: poetry check --lock
+
+      - name: Install dependencies
+        run: poetry install --with test --no-interaction
+
+      - name: Run tests
+        run: >
+          poetry run pytest -v
+          -k 'not test_overpy_node_manipulation and not test_weather'
