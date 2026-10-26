@@ -69,6 +69,8 @@ class TCXFile(FileManipulation):
 
         Note:
             In the case of missing value in raw data, we assign None.
+            Every trackpoint is kept, including trackpoints with the same
+            timestamp as the previous one (e.g. planned routes).
         """
         # handling missing data - should be improved in original tcxparser
         try:
@@ -85,28 +87,23 @@ class TCXFile(FileManipulation):
         trackpoint: TCXTrackPoint
 
         for index, trackpoint in enumerate(tcx.trackpoints):
-            if index != 0:
-                delta_distance = trackpoint.distance - distances[-1]
-                delta_time = (trackpoint.time - timestamps[-1]).total_seconds()
-                if delta_time != 0:
-                    heartrates.append(trackpoint.hr_value)
-                    positions.append(
-                        (trackpoint.latitude, trackpoint.longitude),
-                    )
-                    altitudes.append(trackpoint.elevation)
-                    distances.append(trackpoint.distance)
-                    timestamps.append(trackpoint.time)
-                    speeds.append((delta_distance / delta_time) * 3.6)
+            distance = trackpoint.distance
+            if index == 0:
+                if distance is None:
+                    distance = 0
+                speed = 0
             else:
-                heartrates.append(trackpoint.hr_value)
-                positions.append((trackpoint.latitude, trackpoint.longitude))
-                altitudes.append(trackpoint.elevation)
-                if trackpoint.distance is None:
-                    distances.append(0)
-                else:
-                    distances.append(trackpoint.distance)
-                timestamps.append(trackpoint.time)
-                speeds.append(0)
+                speed = self.__speed(
+                    distances[-1], distance, timestamps[-1], trackpoint.time,
+                    speeds[-1],
+                )
+
+            heartrates.append(trackpoint.hr_value)
+            positions.append((trackpoint.latitude, trackpoint.longitude))
+            altitudes.append(trackpoint.elevation)
+            distances.append(distance)
+            timestamps.append(trackpoint.time)
+            speeds.append(speed)
 
         try:
             total_distance = tcx.distance
@@ -134,6 +131,22 @@ class TCXFile(FileManipulation):
         }
         return activity
     
+    @staticmethod
+    def __speed(
+        previous_distance, distance, previous_time, time, previous_speed,
+    ):
+        """Speed in km/h between two consecutive trackpoints.\n
+        If both points have the same timestamp, the speed of the previous
+        point is used (as in GPXFile). If time or distance is missing,
+        the speed is None.
+        """
+        if None in (previous_distance, distance, previous_time, time):
+            return None
+        delta_time = (time - previous_time).total_seconds()
+        if delta_time == 0:
+            return previous_speed
+        return (distance - previous_distance) / delta_time * 3.6
+
     def extract_integral_metrics(self, tcx_exercise: TCXExercise) -> dict:
         """Method for extracting integral metrics from a TCXExercise.\n
         Args:
