@@ -1,15 +1,21 @@
 import math
-from .classes import StoredSegments
-from typing import List
+import warnings
 from enum import Enum
-import numpy
+from typing import List, Optional
+
+from .classes import StoredSegments
+
+# Points of a climb within this many meters of its lowest altitude are
+# treated as flat ground before the climb, so the hill starts at the last
+# of them (prevents long flat sections from being counted as part of it).
+FLAT_TOLERANCE = 1.0
 
 
 class GradeUnit(Enum):
     """
     Enum for selecting the type of data we want returned in
     hill slope calculations.\n
-     - degrees 
+     - degrees
      - radians
      - percents [%] (gradient)
     """
@@ -19,16 +25,34 @@ class GradeUnit(Enum):
     PERCENTS = 3
 
 
+def _is_valid_number(value) -> bool:
+    """Return True if value is a real, finite number (not None or NaN)."""
+    if value is None or isinstance(value, bool):
+        return False
+    try:
+        return math.isfinite(float(value))
+    except (TypeError, ValueError):
+        return False
+
+
 class HillIdentification(object):
     """
     Class for identification of hills from TCX file.\n
+    A hill is a climb from a low point (valley) to a high point (summit)
+    whose elevation gain is at least ``ascent_threshold`` meters. Small
+    dips during the climb are tolerated: the climb ends only when the
+    altitude drops at least ``ascent_threshold`` meters below the summit
+    reached so far (or when the activity ends). Flat ground before the
+    climb (within FLAT_TOLERANCE meters of its lowest point) is not part
+    of the hill.\n
     Args:
         altitudes (list):
             an array of altitude values extracted from TCX file
+        distances (list):
+            optional, cumulative distances in meters; allows calculation
+            of hill grades (steepness)
         ascent_threshold (float):
             parameter that defines the hill (hill >= ascent_threshold)
-        distances (list):
-            optional, allows calculation of hill grades (steepness)
     """
 
     def __init__(
@@ -42,9 +66,22 @@ class HillIdentification(object):
         Args:
             altitudes (list):
                 an array of altitude values extracted from TCX file
+            distances (list):
+                optional, cumulative distances in meters; allows
+                calculation of hill grades (steepness)
             ascent_threshold (float):
                 parameter that defines the hill (hill >= ascent_threshold)
         """
+        if distances is not None and _is_valid_number(distances):
+            warnings.warn(
+                'HillIdentification received a number as `distances`. '
+                'Pass the threshold by keyword: '
+                'HillIdentification(altitudes, distances, '
+                'ascent_threshold=30). Hill grades will not be calculated.',
+                stacklevel=2,
+            )
+            distances = None
+
         self.altitudes: List[float] = altitudes
         self.distances: List[float] = distances
         self.ascent_threshold: float = ascent_threshold
@@ -64,158 +101,139 @@ class HillIdentification(object):
         Returns:
             bool: True if the hill is recognised, False otherwise
         """
-        if ascent >= ascent_threshold:
-            return True
-        else:
-            return False
+        return ascent >= ascent_threshold
 
     def identify_hills(self) -> None:
         """
         Method for identifying hills and extracting
         total ascent and descent from data.\n
-        Note:
-            [WIP]
-            Algorithm is still in its preliminary stage.
+        Missing altitude values (None or NaN) are skipped. Calling the
+        method again recalculates the results from scratch.
         """
-        differences = []
-        for i in range(1, len(self.altitudes)):
-            if (
-                type(self.altitudes[i]) is not float
-                and type(self.altitudes[i]) is float
-            ):
+        self.identified_hills = []
+        self.total_ascent = 0
+        self.total_descent = 0
+
+        valid_indexes = [
+            i for i, altitude in enumerate(self.altitudes)
+            if _is_valid_number(altitude)
+        ]
+        if len(valid_indexes) < 2:
+            return
+
+        altitudes = self.altitudes
+
+        for previous, current in zip(valid_indexes, valid_indexes[1:]):
+            difference = altitudes[current] - altitudes[previous]
+            if difference > 0:
+                self.total_ascent += difference
+            else:
+                self.total_descent -= difference
+
+        valley = valid_indexes[0]
+        summit = None
+
+        for i in valid_indexes[1:]:
+            altitude = altitudes[i]
+
+            if summit is None:
+                # Looking for the start of a climb.
+                if altitude <= altitudes[valley]:
+                    valley = i
+                else:
+                    summit = i
                 continue
-            differences.append(self.altitudes[i] - self.altitudes[i - 1])
-        self.total_ascent = sum(x for x in differences if x > 0)
-        self.total_descent = sum(-x for x in differences if x < 0)
 
-        is_ascent = False
-        is_descent = False
+            if altitude > altitudes[summit]:
+                summit = i
+            elif altitudes[summit] - altitude >= self.ascent_threshold:
+                # Dropped far enough below the summit: the climb is over.
+                self.__store_hill(valley, summit)
+                valley = i
+                summit = None
+            elif altitude <= altitudes[valley]:
+                # Fell back below the start before gaining enough height.
+                valley = i
+                summit = None
 
-        ascentX_start = 0
+        if summit is not None:
+            self.__store_hill(valley, summit)
 
-        array_of_changes_indexes = []
-
-        for i in range(1, len(self.altitudes)):
-            if self.altitudes[i] >= self.altitudes[i - 1]:
-                if not is_descent and not is_ascent:
-                    is_ascent = True
-                    ascentX_start = i - 1
-                elif is_descent:
-                    ascent_height = self.altitudes[i-1] - self.altitudes[ascentX_start]
-                    array_of_changes_indexes.append([ascentX_start, i-1, ascent_height])
-
-                    ascentX_start = i - 1
-                    is_ascent = True
-                    is_descent = False
-
-            else:
-                if not is_ascent and not is_descent:
-                    is_descent = True
-                    ascentX_start = i - 1
-                elif is_ascent:
-                    descent_height = self.altitudes[i-1] - self.altitudes[ascentX_start]
-                    array_of_changes_indexes.append([ascentX_start, i-1, descent_height])
-
-                    ascentX_start = i - 1
-                    is_descent = True
-                    is_ascent = False
-
-        if is_ascent or is_descent:
-            height_change = self.altitudes[-1] - self.altitudes[ascentX_start]
-            array_of_changes_indexes.append([ascentX_start, len(self.altitudes) - 1, height_change])
-
-        is_ascent = False
-        is_descent = False
-
-        current_ascent = 0
-        current_descent = 0
-
-        starting_index = 0
-        start_x = 0
-
-        if array_of_changes_indexes[0][2] < 0:
-            hill_segment_grade = None
-
-            is_a_list = isinstance(
-                self.distances, numpy.ndarray
-            ) or isinstance(self.distances, list)
-
-            if is_a_list and len(self.distances) == len(
-                    self.altitudes
+    def __store_hill(self, start: int, end: int) -> None:
+        """
+        Store the climb from index start to index end if its elevation
+        gain reaches the ascent threshold.\n
+        Args:
+            start (int):
+                index of the lowest point of the climb
+            end (int):
+                index of the highest point of the climb
+        """
+        lowest = self.altitudes[start]
+        for index in range(start + 1, end):
+            altitude = self.altitudes[index]
+            if (
+                _is_valid_number(altitude)
+                and altitude <= lowest + FLAT_TOLERANCE
             ):
+                start = index
 
-                end_distance = self.distances[array_of_changes_indexes[0][1]]
-                start_distance = self.distances[array_of_changes_indexes[0][0]]
-                hill_segment_distance = (
-                        end_distance - start_distance
-                )
-                hill_segment_grade = self.__calculate_hill_grade(
-                    hill_segment_distance, abs(array_of_changes_indexes[0][2])
-                )
+        ascent = self.altitudes[end] - self.altitudes[start]
+        if not self.return_hill(ascent, self.ascent_threshold):
+            return
 
-            self.identified_hills.append(
-                StoredSegments(
-                    [array_of_changes_indexes[0][0], array_of_changes_indexes[0][1]],
-                    array_of_changes_indexes[0][2],
-                    hill_segment_grade,
-                )
-            )
-            starting_index = starting_index + 1
-            start_x = array_of_changes_indexes[0][1]
+        self.identified_hills.append(
+            StoredSegments(
+                [start, end],
+                ascent,
+                self.__hill_grade(start, end, ascent),
+            ),
+        )
 
-        for i in range(starting_index, len(array_of_changes_indexes)):
+    def __hill_grade(
+        self, start: int, end: int, ascent: float,
+    ) -> Optional[float]:
+        """
+        Average grade of the climb in degrees, or None if distances
+        are not available.\n
+        Args:
+            start (int):
+                index of the lowest point of the climb
+            end (int):
+                index of the highest point of the climb
+            ascent (float):
+                elevation gain of the climb in meters
+        Returns:
+            float: hill grade in degrees, or None
+        """
+        if self.distances is None:
+            return None
+        try:
+            if len(self.distances) != len(self.altitudes):
+                return None
+            start_distance = self.distances[start]
+            end_distance = self.distances[end]
+        except TypeError:
+            return None
+        if not (
+            _is_valid_number(start_distance)
+            and _is_valid_number(end_distance)
+        ):
+            return None
 
-            if array_of_changes_indexes[i][2] > 0:
-                current_ascent = current_ascent + array_of_changes_indexes[i][2]
-                if current_ascent >= self.ascent_threshold:
-                    is_ascent = True
-            else:
-                current_descent = current_descent + array_of_changes_indexes[i][2]
-                if abs(current_descent) >= self.ascent_threshold:
-                    is_descent = True
-
-            if (((is_ascent and is_descent) and array_of_changes_indexes[i][2] < 0)
-                    or i == (len(array_of_changes_indexes) - 1)):
-                hill_segment_grade = None
-
-                is_a_list = isinstance(
-                    self.distances, numpy.ndarray
-                ) or isinstance(self.distances, list)
-
-                if is_a_list and len(self.distances) == len(
-                        self.altitudes
-                ):
-                    end_distance = self.distances[array_of_changes_indexes[i][1]]
-                    start_distance = self.distances[start_x]
-                    hill_segment_distance = (
-                            end_distance - start_distance
-                    )
-                    hill_segment_grade = self.__calculate_hill_grade(
-                        hill_segment_distance, current_ascent
-                    )
-
-                self.identified_hills.append(StoredSegments(
-                    [start_x, array_of_changes_indexes[i][1]],
-                    current_ascent,
-                    hill_segment_grade,
-                ))
-
-                start_x = array_of_changes_indexes[i][1]
-                is_ascent = False
-                is_descent = False
-                current_ascent = 0
-                current_descent = 0
+        distance = end_distance - start_distance
+        if distance <= 0:
+            return None
+        return self.__calculate_hill_grade(distance, ascent)
 
     def return_hills(self) -> list:
         """
         Method for returning identified hills.\n
         Returns:
-            list: array of identified hills
+            list: list of [start_index, end_index] pairs, one for each
+            identified hill (from the lowest to the highest point)
         """
-        hills = []
-        for i in range(len(self.identified_hills)):
-            hills.append(self.identified_hills[i].segment)
-        return hills
+        return [hill.segment for hill in self.identified_hills]
 
     def __calculate_hill_grade(
         self,
@@ -242,4 +260,4 @@ class HillIdentification(object):
         elif unit == GradeUnit.PERCENTS:
             return ascent / distance
         else:
-            raise Exception("Invalid GradeUnit")
+            raise ValueError('Invalid GradeUnit')

@@ -26,9 +26,27 @@ class TopographicFeatures:
         """
         return len(self.identified_hills)
 
+    @staticmethod
+    def _hill_indexes(hill: list) -> range:
+        """Return all point indexes of a hill given as [start, end]."""
+        return range(hill[0], hill[-1] + 1)
+
+    @staticmethod
+    def _valid_altitudes(alts: list, indexes: range) -> list:
+        """Return altitudes at the given indexes, skipping missing values."""
+        values = []
+        for index in indexes:
+            altitude = alts[index]
+            if altitude is None or altitude != altitude:  # None or NaN
+                continue
+            values.append(altitude)
+        return values
+
     def avg_altitude_of_hills(self, alts: list) -> float:
         """Method for calculating the average altitude of
         all identified hills in sport activity.\n
+        The average altitude of each hill is calculated over all of its
+        points; the result is the mean of these values.\n
         Args:
             alts (list):
                 list of altitudes
@@ -36,74 +54,60 @@ class TopographicFeatures:
             float: average altitude.
         """
         all_values = []
-        for i in range(len(self.identified_hills)):
-            alt_points = []
-            detected = self.identified_hills[i]
-            for j in range(len(detected)):
-                alt_points.append(alts[detected[j]])
-            all_values.append(sum(alt_points) / float(len(alt_points)))
+        for hill in self.identified_hills:
+            alt_points = self._valid_altitudes(alts, self._hill_indexes(hill))
+            if alt_points:
+                all_values.append(sum(alt_points) / len(alt_points))
         if len(all_values) == 0:
             return 0
-        else:
-            return sum(all_values) / float(len(all_values))
+        return sum(all_values) / len(all_values)
 
     def distance_of_hills(self, positions: list) -> float:
         """Method for calculating the total distance of all
         identified hills in sport activity.\n
         Args:
             positions (list):
-                list of positions
+                list of (latitude, longitude) positions
         Returns:
-            float: distance of hills.
+            float: distance of hills in kilometers.
         """
         total_distance = 0.0
-        for i in range(len(self.identified_hills)):
-            current = self.identified_hills[i]
-
-            index_range = []
-
-            start = current[0] + 1
-            if current[0] == 0:
-                start = 0
-
-            for index in range(start, current[1]):
-                index_range.append(index)
-
-            distance = 0.0
-            if len(positions) < 5:
-                total_distance = 0.0
-            else:
-                for _j in range(len(index_range) - 1):
-                    distance = distance + self.calculate_distance(
-                        positions[i][0],
-                        positions[i + 1][0],
-                        positions[i][1],
-                        positions[i + 1][1],
-                    )
-
-            total_distance = total_distance + distance
-
+        for hill in self.identified_hills:
+            indexes = self._hill_indexes(hill)
+            for index in indexes[:-1]:
+                start = positions[index]
+                end = positions[index + 1]
+                if (
+                    start is None or end is None
+                    or None in (start[0], start[1], end[0], end[1])
+                ):
+                    continue
+                total_distance += self.calculate_distance(
+                    start[0], end[0], start[1], end[1],
+                )
         return total_distance
 
     def share_of_hills(self, hills_dist: float, total_dist: float) -> float:
         """Method for calculating the share of hills
-        in sport activity (percentage).\n
+        in sport activity.\n
         Args:
-            hills_dict (float):
-                distance of all hills
+            hills_dist (float):
+                distance of all hills in kilometers
+                (see distance_of_hills)
             total_dist (float):
-                total distance
+                total distance in meters
         Returns:
-            float: share of hills.
+            float: share of hills as a ratio between 0 and 1.
         """
-        if total_dist == 0:
+        if not total_dist:
             return 0
-        else:
-            return float(hills_dist / (total_dist / 1000))
+        return float(hills_dist / (total_dist / 1000))
 
     def avg_ascent_of_hills(self, alts: list) -> float:
         """Method for calculating the average ascent
         of all hills in sport activity.\n
+        The ascent of each hill is the sum of all positive altitude
+        changes between its consecutive points.\n
         Args:
             alts (list):
                 list of altitudes
@@ -111,18 +115,12 @@ class TopographicFeatures:
             float: average ascent.
         """
         all_values = []
-        for i in range(len(self.identified_hills)):
-            alt_points = []
-            detected = self.identified_hills[i]
-            for j in range(len(detected)):
-                alt_points.append(alts[detected[j]])
-
-            ascent = self.ascent(alt_points)
-            all_values.append(ascent)
+        for hill in self.identified_hills:
+            alt_points = self._valid_altitudes(alts, self._hill_indexes(hill))
+            all_values.append(self.ascent(alt_points))
         if len(all_values) == 0:
             return 0
-        else:
-            return sum(all_values) / float(len(all_values))
+        return sum(all_values) / len(all_values)
 
     def ascent(self, altitude_data: list) -> float:
         """Method for ascent calculation.\n

@@ -116,7 +116,10 @@ class PlotData:
                 )
                 continue
 
-            if (j - 1) == identified_hills[current_hill][0]:
+            if (
+                identified_hills
+                and (j - 1) == identified_hills[current_hill][0]
+            ):
                 plt.plot(
                     [x[j-1], x[j-1]],
                     [0, y[j-1]+20],
