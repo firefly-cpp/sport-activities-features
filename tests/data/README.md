@@ -4,6 +4,9 @@
 
 - 15.tcx: a standard test file for testing the TCXreader and data extraction
 
+- dead_end.tcx: a planned route (copy of datasets/dead_end.tcx) where all trackpoints
+have the same timestamp; used for testing that no trackpoints are dropped
+
 - broken1.gpx, broken2.gpx, broken3.gpx, broken4.gpx, broken5.gpx: test files for
 UTF8 formatted Gpx files testing (Thanks Luka Koprivc for donating these test files)
 
