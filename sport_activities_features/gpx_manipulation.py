@@ -155,68 +155,42 @@ class GPXExercise:
         self.raw_data = raw_data
         self._calculate_values()
         
-    def _calculate_values(self):
-        gpx = self.raw_data
-        try:
-            self.activity_type = gpx.tracks[0].type
-        except BaseException:
-            self.activity_type = None
+    def _calculate_values(self) -> None:
+        """Calculate the summary values of the exercise from its
+        trackpoints. Values that cannot be calculated (e.g. heart rate
+        in a file without heart rate data) are None.
+        """
+        points = self.trackpoints
 
-        try:
-            self.distance = gpx['total_distance']
-        except BaseException:
-            self.distance = None
+        tracks = getattr(self.raw_data, 'tracks', None)
+        self.activity_type = tracks[0].type if tracks else None
 
-        try:
-            self.duration = gpx['timestamps'][-1] - gpx['timestamps'][0]
-        except BaseException:
-            self.duration = None
+        self.distance = points[-1].distance if points else None
 
-        try:
-            self.calories = None
-        except BaseException:
-            self.calories = None
+        times = [p.time for p in points if p.time is not None]
+        self.duration = (
+            (times[-1] - times[0]).total_seconds() if times else None
+        )
 
-        try:
-            self.hr_avg = sum(gpx['heartrates']) / len(gpx['heartrates'])
-        except BaseException:
-            self.hr_avg = None
+        # GPX files do not store calories.
+        self.calories = None
 
-        try:
-            self.hr_max = max(gpx['heartrates'])
-        except BaseException:
-            self.hr_max = None
+        heartrates = [p.hr_value for p in points if p.hr_value is not None]
+        self.hr_avg = (
+            sum(heartrates) / len(heartrates) if heartrates else None
+        )
+        self.hr_max = max(heartrates) if heartrates else None
+        self.hr_min = min(heartrates) if heartrates else None
 
-        try:
-            self.hr_min = min(gpx['heartrates'])
-        except BaseException:
-            self.hr_min = None
+        altitudes = [p.elevation for p in points if p.elevation is not None]
+        self.altitude_avg = (
+            sum(altitudes) / len(altitudes) if altitudes else None
+        )
+        self.altitude_max = max(altitudes) if altitudes else None
+        self.altitude_min = min(altitudes) if altitudes else None
+        self.ascent = self.__ascent(altitudes) if altitudes else None
+        self.descent = self.__descent(altitudes) if altitudes else None
 
-        try:
-            self.altitude_avg = sum(gpx['altitudes']) / len(gpx['altitudes'])
-        except BaseException:
-            self.altitude_avg = None
-
-        try:
-            self.altitude_max = max(gpx['altitudes'])
-        except BaseException:
-            self.altitude_max = None
-
-        try:
-            self.altitude_min = min(gpx['altitudes'])
-        except BaseException:
-            self.altitude_min = None
-
-        try:
-            self.ascent = self.__ascent(gpx['altitudes'])
-        except BaseException:
-            self.ascent = None
-
-        try:
-            self.descent = self.__descent(gpx['altitudes'])
-        except BaseException:
-            self.descent = None
-            
     def __ascent(self, altitudes: list) -> int:
         """Method for calculating the total ascent from a list of altitudes.\n
         Args:
