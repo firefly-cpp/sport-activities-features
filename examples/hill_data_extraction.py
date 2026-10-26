@@ -8,7 +8,9 @@ tcx_exercise = tcx_file.read_one_file('path_to_the_data')
 activity = tcx_file.extract_activity_data(tcx_exercise)
 
 # detect hills in data
-Hill = HillIdentification(activity['altitudes'], 30)
+Hill = HillIdentification(
+    activity['altitudes'], activity['distances'], ascent_threshold=30,
+)
 Hill.identify_hills()
 all_hills = Hill.return_hills()
 

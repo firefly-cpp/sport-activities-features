@@ -21,13 +21,15 @@ for file in all_files:
     activity.update(tcx_file.extract_integral_metrics(tcx_exercise))
 
     # Hills
-    Hill = HillIdentification(activity['altitudes'], 30)
+    Hill = HillIdentification(
+        activity['altitudes'], activity['distances'], ascent_threshold=30,
+    )
     Hill.identify_hills()
     all_hills = Hill.return_hills()
     Top = TopographicFeatures(all_hills)
     num_hills = Top.num_of_hills()
     distance_hills = Top.distance_of_hills(activity['positions'])
-    distance_between_hills = activity['distance'] - distance_hills
+    distance_between_hills = activity['distance'] - distance_hills * 1000
 
     activity.update(
         {'number_of_hills': num_hills,
