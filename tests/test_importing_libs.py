@@ -104,13 +104,13 @@ def test_topographic_features_import():
 def test_training_loads_import():
     try:
         from sport_activities_features.training_loads import (
-            BanisterTRIMPv1,
             BanisterTRIMPv2,
             EdwardsTRIMP,
+            Gender,
             LuciaTRIMP,
         )
 
-        assert BanisterTRIMPv1 is not None
+        assert Gender is not None
         assert BanisterTRIMPv2 is not None
         assert EdwardsTRIMP is not None
         assert LuciaTRIMP is not None

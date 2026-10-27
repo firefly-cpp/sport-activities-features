@@ -1,32 +1,14 @@
+import math
 import os
 from unittest import TestCase
 
 from sport_activities_features import (
-    BanisterTRIMPv1,
     BanisterTRIMPv2,
     EdwardsTRIMP,
+    Gender,
     LuciaTRIMP,
     TCXFile,
 )
-
-
-class BanisterTRIMPv1TestCase(TestCase):
-
-    """Banister's simple TRIMP test."""
-
-    def setUp(self):
-        """Setting up the test."""
-        self.__banister = BanisterTRIMPv1(33.44, 165.22)
-
-    def test_init_banister_trimp_works_fine(self):
-        """Testing class arguments."""
-        assert self.__banister.duration == 33.44
-        assert self.__banister.average_heart_rate == 165.22
-
-    def test_calculate_trimp_works_fine(self):
-        """Testing Banister TRIMP."""
-        val = self.__banister.calculate_TRIMP()
-        assert val == 5524.9568
 
 
 class BanisterTRIMPv2TestCase(TestCase):
@@ -37,7 +19,7 @@ class BanisterTRIMPv2TestCase(TestCase):
         """Setting up the test."""
         self.__banister = BanisterTRIMPv2(duration=3240,
                                           average_heart_rate=117,
-                                          min_heart_rate=77,
+                                          rest_heart_rate=77,
                                           max_heart_rate=173)
 
     def test_init_banister_trimp_v2_works_fine(self):
@@ -46,11 +28,66 @@ class BanisterTRIMPv2TestCase(TestCase):
         assert self.__banister.average_heart_rate == 117
         assert self.__banister.rest_heart_rate == 77
         assert self.__banister.max_heart_rate == 173
+        assert self.__banister.gender is Gender.male
 
     def test_calculate_trimp_v2_works_fine(self):
-        """Testing Banister's v2 TRIMP."""
+        """Testing Banister's v2 TRIMP.
+
+        54 min, dHR = (117 - 77) / (173 - 77) = 0.41667:
+        54 * 0.41667 * 0.64 * e^(1.92 * 0.41667) = 32.0478
+        """
         val = self.__banister.calculate_TRIMP()
-        assert val == 50.074670891080515
+        self.assertAlmostEqual(
+            val, 54 * (40 / 96) * 0.64 * math.exp(1.92 * 40 / 96),
+        )
+        self.assertAlmostEqual(val, 32.0478, places=4)
+
+    def test_female(self):
+        val = BanisterTRIMPv2(
+            3240, 117, 77, 173, gender=Gender.female,
+        ).calculate_TRIMP()
+        self.assertAlmostEqual(
+            val, 54 * (40 / 96) * 0.86 * math.exp(1.67 * 40 / 96),
+        )
+
+    def test_one_hour_at_maximum_heart_rate(self):
+        # dHR = 1: 60 * 0.64 * e^1.92 = 261.92 (men), 60 * 0.86 * e^1.67
+        # = 274.11 (women)
+        male = BanisterTRIMPv2(3600, 190, 50, 190).calculate_TRIMP()
+        female = BanisterTRIMPv2(
+            3600, 190, 50, 190, Gender.female,
+        ).calculate_TRIMP()
+        self.assertAlmostEqual(male, 261.92, places=2)
+        self.assertAlmostEqual(female, 274.11, places=2)
+
+    def test_positional_arguments(self):
+        positional = BanisterTRIMPv2(3240, 117, 77, 173)
+        self.assertEqual(positional.rest_heart_rate, 77)
+        self.assertAlmostEqual(
+            positional.calculate_TRIMP(), self.__banister.calculate_TRIMP(),
+        )
+
+    def test_min_heart_rate_is_deprecated(self):
+        with self.assertWarns(DeprecationWarning):
+            banister = BanisterTRIMPv2(
+                duration=3240, average_heart_rate=117,
+                min_heart_rate=77, max_heart_rate=173,
+            )
+        self.assertEqual(banister.rest_heart_rate, 77)
+        self.assertAlmostEqual(
+            banister.calculate_TRIMP(), self.__banister.calculate_TRIMP(),
+        )
+
+    def test_invalid_arguments(self):
+        with self.assertRaises(TypeError):
+            BanisterTRIMPv2(3240, 117)
+        with self.assertRaises(TypeError):
+            BanisterTRIMPv2(
+                3240, 117, rest_heart_rate=77, max_heart_rate=173,
+                min_heart_rate=77,
+            )
+        with self.assertRaises(ValueError):
+            BanisterTRIMPv2(3240, 117, 173, 173)
 
 
 class EdwardsTRIMPTestCase(TestCase):
