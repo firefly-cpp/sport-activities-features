@@ -1,3 +1,4 @@
+import datetime
 import os
 from unittest import TestCase
 
@@ -8,7 +9,7 @@ from sport_activities_features.interval_identification import (
 from sport_activities_features.tcx_manipulation import TCXFile
 
 
-class TestHillIdentification(TestCase):
+class TestIntervalIdentificationActivity(TestCase):
     def setUp(self):
         filename = os.path.join(os.path.dirname(__file__), 'data', '2.tcx')
         tcx_file = TCXFile()
@@ -38,14 +39,14 @@ class TestHillIdentification(TestCase):
         )
 
     def test_num_intervals_correct(self):
-        self.assertEqual(self.statistics_power['number_of_intervals'], 19)
-        self.assertEqual(self.statistics_heartrate['number_of_intervals'], 4)
+        self.assertEqual(self.statistics_power['number_of_intervals'], 18)
+        self.assertEqual(self.statistics_heartrate['number_of_intervals'], 3)
 
     def test_min_duration_correct(self):
         self.assertAlmostEqual(
-            self.statistics_power['min_duration'], 1.0, places=1)
+            self.statistics_power['min_duration'], 30.0, places=1)
         self.assertAlmostEqual(
-            self.statistics_heartrate['min_duration_interval'], 134.0, places=1
+            self.statistics_heartrate['min_duration_interval'], 184.0, places=1
         )
 
     def test_max_duration_correct(self):
@@ -60,24 +61,24 @@ class TestHillIdentification(TestCase):
     def test_avg_duration_correct(self):
         self.assertAlmostEqual(
             self.statistics_power['avg_duration'],
-            84.2,
-            places=1
+            89.28,
+            places=2
         )
         self.assertAlmostEqual(
             self.statistics_heartrate['avg_duration_interval'],
-            829.75,
+            1169.0,
             places=2
         )
 
     def test_min_distance_correct(self):
         self.assertAlmostEqual(
             self.statistics_power['min_distance'],
-            6.8496,
+            152.8203,
             places=4
         )
         self.assertAlmostEqual(
             self.statistics_heartrate['min_distance_interval'],
-            794.83,
+            1500.90,
             places=2
         )
 
@@ -96,32 +97,159 @@ class TestHillIdentification(TestCase):
     def test_avg_distance_correct(self):
         self.assertAlmostEqual(
             self.statistics_power['avg_distance'],
-            479.67,
+            509.81,
             places=2
         )
         self.assertAlmostEqual(
             self.statistics_heartrate['avg_distance_interval'],
-            5454.8875,
+            7669.2700,
             places=4
         )
 
     def test_min_heartrate_correct(self):
         self.assertAlmostEqual(
             self.statistics_heartrate['min_heartrate_interval'],
-            167.2958,
+            167.4933,
             places=4
         )
 
     def test_max_heartrate_correct(self):
         self.assertAlmostEqual(
             self.statistics_heartrate['max_heartrate_interval'],
-            174.23,
+            171.45,
             places=2
         )
 
     def test_avg_heartrate_correct(self):
         self.assertAlmostEqual(
             self.statistics_heartrate['avg_heartrate_interval'],
-            170.61,
+            169.47,
             places=2
         )
+
+
+START = datetime.datetime(2026, 1, 1, 10, 0, 0)
+
+
+def seconds(n):
+    """Timestamps one second apart."""
+    return [START + datetime.timedelta(seconds=i) for i in range(n)]
+
+
+def heart_rate_intervals(heart_rates, minimum_time=30):
+    n = len(heart_rates)
+    intervals = IntervalIdentificationByHeartRate(
+        list(range(n)), seconds(n), [0] * n, heart_rates,
+        minimum_time=minimum_time,
+    )
+    intervals.identify_intervals()
+    return intervals
+
+
+def power_intervals(speeds, minimum_time=30):
+    """Flat ride with the given speed (m/s) for every second."""
+    distances = [0]
+    for speed in speeds:
+        distances.append(distances[-1] + speed)
+    n = len(distances)
+    intervals = IntervalIdentificationByPower(
+        distances, seconds(n), [0] * n, 70, minimum_time=minimum_time,
+    )
+    intervals.identify_intervals()
+    return intervals
+
+
+def spans(intervals):
+    return [(i[0], i[-1]) for i in intervals.return_intervals()]
+
+
+class TestIntervalIdentificationByHeartRate(TestCase):
+    def test_interval_at_the_end_is_kept(self):
+        intervals = heart_rate_intervals([100] * 100 + [180] * 100)
+        self.assertEqual(spans(intervals), [(100, 199)])
+
+    def test_every_interval_is_long_enough(self):
+        # 60 s interval, then a 20 s interval (too short) as the last one
+        intervals = heart_rate_intervals(
+            [100] * 100 + [180] * 60 + [100] * 100 + [180] * 20 + [100] * 50,
+        )
+        self.assertEqual(spans(intervals), [(100, 159)])
+
+    def test_last_pair_of_intervals_is_merged(self):
+        # Short dip between the last two intervals with a heart rate close
+        # to the average: they become one interval.
+        intervals = heart_rate_intervals(
+            [100] * 100 + [180] * 60 + [100] * 100
+            + [180] * 40 + [139] * 5 + [180] * 40,
+        )
+        self.assertEqual(spans(intervals), [(100, 159), (260, 344)])
+
+    def test_numpy_heart_rates(self):
+        import numpy as np
+        intervals = heart_rate_intervals(
+            list(np.array([100] * 100 + [180] * 100)),
+        )
+        self.assertEqual(spans(intervals), [(100, 199)])
+
+    def test_short_missing_heart_rate_does_not_split_interval(self):
+        intervals = heart_rate_intervals(
+            [100] * 100 + [180] * 30 + [None] * 5 + [180] * 30 + [100] * 35,
+        )
+        self.assertEqual(spans(intervals), [(100, 164)])
+
+    def test_missing_heart_rate_at_the_end(self):
+        intervals = heart_rate_intervals([100] * 100 + [180] * 99 + [None])
+        self.assertEqual(spans(intervals), [(100, 198)])
+
+    def test_long_missing_heart_rate_raises(self):
+        with self.assertRaises(ValueError):
+            heart_rate_intervals([100] * 50 + [None] * 20 + [180] * 50)
+
+    def test_statistics(self):
+        intervals = heart_rate_intervals(
+            [100] * 100 + [180] * 61 + [100] * 100 + [170] * 41,
+        )
+        statistics = intervals.calculate_interval_statistics()
+        self.assertEqual(statistics['number_of_intervals'], 2)
+        self.assertEqual(statistics['min_duration_interval'], 40)
+        self.assertEqual(statistics['max_duration_interval'], 60)
+        self.assertEqual(statistics['avg_distance_interval'], 50)
+        self.assertEqual(statistics['min_heartrate_interval'], 170)
+        self.assertEqual(statistics['max_heartrate_interval'], 180)
+
+    def test_statistics_without_intervals(self):
+        statistics = heart_rate_intervals(
+            [150] * 100,
+        ).calculate_interval_statistics()
+        self.assertEqual(statistics['number_of_intervals'], 0)
+        self.assertIsNone(statistics['avg_duration_interval'])
+        self.assertIsNone(statistics['avg_heartrate_interval'])
+
+
+class TestIntervalIdentificationByPower(TestCase):
+    def test_interval_at_the_end_is_kept(self):
+        intervals = power_intervals([5] * 100 + [12] * 100)
+        self.assertEqual(spans(intervals), [(100, 199)])
+
+    def test_every_interval_is_long_enough(self):
+        # 60 s interval, then a 10 s interval (too short) as the last one
+        intervals = power_intervals(
+            [5] * 100 + [12] * 60 + [5] * 100 + [12] * 10 + [5] * 50,
+        )
+        self.assertEqual(spans(intervals), [(100, 159)])
+
+    def test_close_intervals_are_merged(self):
+        # Last two intervals 10 s apart (< 30 s): merged.
+        intervals = power_intervals(
+            [5] * 100 + [12] * 60 + [5] * 100 + [12] * 40 + [5] * 10
+            + [12] * 40,
+        )
+        self.assertEqual(spans(intervals), [(100, 159), (260, 349)])
+
+    def test_statistics_without_intervals(self):
+        statistics = power_intervals(
+            [8] * 100,
+        ).calculate_interval_statistics()
+        self.assertEqual(statistics['number_of_intervals'], 0)
+        self.assertIsNone(statistics['min_duration'])
+        self.assertIsNone(statistics['avg_distance'])
