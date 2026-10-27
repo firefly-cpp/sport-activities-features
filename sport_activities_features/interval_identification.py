@@ -115,7 +115,9 @@ class IntervalIdentificationByPower(object):
         """
         Method for identifying intervals from given data.\n
         After the call, self.powers holds the estimated power (in W) of
-        every segment between two consecutive points.
+        every segment between two consecutive points. Segments with a
+        missing altitude are treated as flat; segments with a missing
+        distance or time get power 0.
         """
         self.intervals = []
         powers = []
@@ -123,6 +125,17 @@ class IntervalIdentificationByPower(object):
 
         # Loop to go through all segments and to calculate the average power
         for i in range(1, len(self.distances)):
+            # Without distance or time the power cannot be estimated,
+            # the segment gets power 0
+            if not (
+                _is_number(self.distances[i])
+                and _is_number(self.distances[i - 1])
+                and self.timestamps[i] is not None
+                and self.timestamps[i - 1] is not None
+            ):
+                powers.append(0)
+                continue
+
             distance = (
                 self.distances[i] - self.distances[i - 1]
             )  # Calculating the distance between two measures
@@ -136,9 +149,15 @@ class IntervalIdentificationByPower(object):
             speed = (
                 distance / time
             )  # Calculating the average speed between two measures
-            altitude_change = (
-                self.altitudes[i] - self.altitudes[i - 1]
-            )  # Calculating the change of altitude between two measures
+
+            # Calculating the change of altitude between two measures;
+            # without altitudes the segment is treated as flat
+            if _is_number(self.altitudes[i]) and _is_number(
+                self.altitudes[i - 1],
+            ):
+                altitude_change = self.altitudes[i] - self.altitudes[i - 1]
+            else:
+                altitude_change = 0.0
 
             # Typical rolling resistance coefficient is 0.005, if multiplied by
             # mass and speed, the outcome is power to overcome the rolling

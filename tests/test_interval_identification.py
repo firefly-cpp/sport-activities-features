@@ -253,3 +253,31 @@ class TestIntervalIdentificationByPower(TestCase):
         self.assertEqual(statistics['number_of_intervals'], 0)
         self.assertIsNone(statistics['min_duration'])
         self.assertIsNone(statistics['avg_distance'])
+
+    def test_missing_altitudes_are_treated_as_flat(self):
+        n = 201
+        distances = [0]
+        for i in range(n - 1):
+            distances.append(distances[-1] + (12 if i >= 100 else 5))
+        complete = IntervalIdentificationByPower(
+            distances, seconds(n), [0] * n, 70,
+        )
+        complete.identify_intervals()
+        missing = IntervalIdentificationByPower(
+            distances, seconds(n), [None] * n, 70,
+        )
+        missing.identify_intervals()
+        self.assertEqual(missing.powers, complete.powers)
+        self.assertEqual(spans(missing), [(100, 199)])
+
+    def test_missing_distance_gives_zero_power(self):
+        n = 201
+        distances = [i * 5 for i in range(n)]
+        distances[50] = None
+        intervals = IntervalIdentificationByPower(
+            distances, seconds(n), [0] * n, 70,
+        )
+        intervals.identify_intervals()
+        self.assertEqual(intervals.powers[49], 0)
+        self.assertEqual(intervals.powers[50], 0)
+        self.assertGreater(intervals.powers[51], 0)
