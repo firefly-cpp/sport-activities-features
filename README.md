@@ -468,6 +468,22 @@ Hills are drawn on the elevation profile and coloured by grade (per ~500 m); eac
 
 ![Hill Profile Figure](https://raw.githubusercontent.com/firefly-cpp/sport-activities-features/main/docs/_static/hill_profile.png)
 
+### Example of a visualization of identified intervals
+
+```python
+from sport_activities_features.plot_data import PlotData
+
+fig = PlotData().plot_intervals_in_map(
+    activity['timestamps'], Intervals.return_intervals(),
+    values=activity['heartrates'],
+)
+fig.savefig('intervals.png', facecolor=fig.get_facecolor())
+```
+
+Intervals are shown as numbered bands over the heart rate (or over the estimated power: `values=Intervals.powers, value_label='Power', value_unit='W'`), with their duration and average value; the dashed line is the activity average, the threshold used to identify intervals.
+
+![Interval Figure](https://raw.githubusercontent.com/firefly-cpp/sport-activities-features/main/docs/_static/interval_plot.png)
+
 ### Example of a visualization of the area detection
 
 ![Area Figure](https://i.imgur.com/Iz8Ga3B.png)

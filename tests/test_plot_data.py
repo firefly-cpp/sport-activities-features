@@ -1,4 +1,6 @@
+import datetime
 import os
+import re
 from unittest import TestCase
 
 import matplotlib
@@ -10,6 +12,10 @@ from matplotlib.colors import to_hex  # noqa: E402
 from matplotlib.figure import Figure  # noqa: E402
 
 from sport_activities_features import HillIdentification, TCXFile  # noqa: E402
+from sport_activities_features.interval_identification import (  # noqa: E402
+    IntervalIdentificationByHeartRate,
+    IntervalIdentificationByPower,
+)
 from sport_activities_features.plot_data import (  # noqa: E402
     HILL_GRADE_COLORS,
     PlotData,
@@ -124,3 +130,108 @@ class TestPlotHillsOnMap(TestCase):
         )
         self.assertIs(result, fig)
         self.assertEqual(ax.get_title(loc='left'), 'My ride')
+
+
+class TestPlotIntervalsInMap(TestCase):
+    start = datetime.datetime(2026, 1, 1, 10, 0, 0)
+
+    def tearDown(self):
+        plt.close('all')
+
+    def timestamps(self, n):
+        return [self.start + datetime.timedelta(seconds=i) for i in range(n)]
+
+    def test_heart_rate_intervals(self):
+        filename = os.path.join(os.path.dirname(__file__), 'data', '2.tcx')
+        tcx_file = TCXFile()
+        activity = tcx_file.extract_activity_data(
+            tcx_file.read_one_file(filename),
+        )
+        intervals = IntervalIdentificationByHeartRate(
+            activity['distances'], activity['timestamps'],
+            activity['altitudes'], activity['heartrates'],
+        )
+        intervals.identify_intervals()
+
+        fig = PlotData().plot_intervals_in_map(
+            activity['timestamps'], intervals.return_intervals(),
+            values=activity['heartrates'],
+        )
+        ax = fig.axes[0]
+        labels = texts(ax)
+
+        self.assertIsInstance(fig, Figure)
+        self.assertEqual([t for t in labels if t.isdigit()], ['1', '2', '3'])
+        self.assertIn('36:31\n169 bpm', labels)
+        self.assertIn(
+            '3 intervals  ·  58:27 in intervals (90 % of the activity)'
+            '  ·  longest 36:31',
+            labels,
+        )
+        self.assertEqual(ax.get_xlabel(), 'Elapsed time (h:mm)')
+        legend = [t.get_text() for t in ax.get_legend().get_texts()]
+        self.assertIn('average (167 bpm)', legend)
+
+    def test_power_values_per_segment(self):
+        n = 400
+        distances = [0]
+        for i in range(n - 1):
+            distances.append(distances[-1] + (12 if 100 <= i < 200 else 5))
+        intervals = IntervalIdentificationByPower(
+            distances, self.timestamps(n), [0] * n, 70,
+        )
+        intervals.identify_intervals()
+        self.assertEqual(len(intervals.powers), n - 1)
+
+        fig = PlotData().plot_intervals_in_map(
+            self.timestamps(n), intervals.return_intervals(),
+            values=intervals.powers, value_label='Power', value_unit='W',
+            smoothing=30,
+        )
+        labels = texts(fig.axes[0])
+        self.assertIn('1', labels)
+        # The label shows the unsmoothed average power of the interval.
+        expected = sum(intervals.powers[100:200]) / 100
+        self.assertIn(f'1:39\n{expected:.0f} W', labels)
+        self.assertEqual(fig.axes[0].get_xlabel(), 'Elapsed time (min)')
+
+    def test_timeline_without_values(self):
+        fig = PlotData().plot_intervals_in_map(
+            self.timestamps(300), [list(range(50, 120)), list(range(200, 260))],
+        )
+        ax = fig.axes[0]
+        self.assertEqual(len(ax.get_yticks()), 0)
+        bars = [c for c in ax.collections if c.get_paths()]
+        self.assertTrue(bars)
+        self.assertIn('1:09', texts(ax))
+        self.assertIn('0:59', texts(ax))
+
+    def test_many_intervals_show_only_numbers(self):
+        intervals = [list(range(i, i + 40)) for i in range(0, 1300, 100)]
+        fig = PlotData().plot_intervals_in_map(self.timestamps(1300), intervals)
+        labels = texts(fig.axes[0])
+        self.assertEqual(
+            [t for t in labels if t.isdigit()],
+            [str(n) for n in range(1, 14)],
+        )
+        # no durations such as '0:39'
+        self.assertFalse(any(re.fullmatch(r'\d+:\d\d', t) for t in labels))
+
+    def test_no_intervals(self):
+        fig = PlotData().plot_intervals_in_map(
+            self.timestamps(100), [], values=[150] * 100,
+        )
+        self.assertIn('No intervals identified', texts(fig.axes[0]))
+
+    def test_too_few_timestamps(self):
+        with self.assertRaises(ValueError):
+            PlotData().plot_intervals_in_map(self.timestamps(1), [])
+
+    def test_draws_on_given_axes(self):
+        fig, ax = plt.subplots()
+        result = PlotData().plot_intervals_in_map(
+            self.timestamps(100), [list(range(10, 60))], ax=ax,
+            title='Session',
+        )
+        self.assertIs(result, fig)
+        self.assertEqual(ax.get_title(loc='left'), 'Session')

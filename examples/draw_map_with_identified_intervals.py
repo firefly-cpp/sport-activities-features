@@ -1,4 +1,6 @@
-"""This example presents how to draw a map with identified intervals."""
+"""This example presents how to plot identified intervals."""
+import matplotlib.pyplot as plt
+
 from sport_activities_features.interval_identification import (
     IntervalIdentificationByHeartRate,
     IntervalIdentificationByPower,
@@ -15,18 +17,27 @@ distances = activity['distances']
 timestamps = activity['timestamps']
 heartrates = activity['heartrates']
 
-# Identifying the intervals in the activity by power and drawing the map
-Intervals = IntervalIdentificationByPower(distances, timestamps, altitudes, 70)
-Intervals.identify_intervals()
-all_intervals = Intervals.return_intervals()
 Map = PlotData()
-Map.show_intervals_on_map(timestamps, distances, all_intervals)
 
-# Identifying the intervals in the activity by heart rate and drawing the map
+# Identifying the intervals in the activity by heart rate and plotting them
+# over the heart rate
 Intervals = IntervalIdentificationByHeartRate(
     distances, timestamps, altitudes, heartrates,
 )
 Intervals.identify_intervals()
-all_intervals = Intervals.return_intervals()
-Map = PlotData()
-Map.show_intervals_on_map(timestamps, distances, all_intervals)
+fig = Map.plot_intervals_in_map(
+    timestamps, Intervals.return_intervals(), values=heartrates,
+)
+fig.savefig('intervals_heart_rate.png', facecolor=fig.get_facecolor())
+
+# Identifying the intervals in the activity by power and plotting them over
+# the estimated power (smoothed over 30 s)
+Intervals = IntervalIdentificationByPower(distances, timestamps, altitudes, 70)
+Intervals.identify_intervals()
+fig = Map.plot_intervals_in_map(
+    timestamps, Intervals.return_intervals(), values=Intervals.powers,
+    value_label='Power', value_unit='W', smoothing=30,
+)
+fig.savefig('intervals_power.png', facecolor=fig.get_facecolor())
+
+plt.show()

@@ -113,7 +113,9 @@ class IntervalIdentificationByPower(object):
 
     def identify_intervals(self) -> None:
         """
-        Method for identifying intervals from given data.
+        Method for identifying intervals from given data.\n
+        After the call, self.powers holds the estimated power (in W) of
+        every segment between two consecutive points.
         """
         self.intervals = []
         powers = []
@@ -198,6 +200,8 @@ class IntervalIdentificationByPower(object):
         self.intervals = _remove_short(
             intervals, self.timestamps, self.minimum_time,
         )
+        # Estimated power of every segment (point i to point i + 1) in W
+        self.powers = powers
 
     def calculate_interval_statistics(self) -> dict:
         """
