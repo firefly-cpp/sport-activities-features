@@ -9,16 +9,11 @@ from sport_activities_features.tcx_manipulation import TCXFile
 # Reading the TCX file
 tcx_file = TCXFile()
 tcx_exercise = tcx_file.read_one_file('path_to_the_data')
-(
-    activity_type,
-    positions,
-    altitudes,
-    distances,
-    total_distance,
-    timestamps,
-    heartrates,
-    speeds,
-) = tcx_file.extract_activity_data(tcx_exercise).values()
+activity = tcx_file.extract_activity_data(tcx_exercise)
+altitudes = activity['altitudes']
+distances = activity['distances']
+timestamps = activity['timestamps']
+heartrates = activity['heartrates']
 
 # Identifying the intervals in the activity by power and drawing the map
 Intervals = IntervalIdentificationByPower(distances, timestamps, altitudes, 70)
