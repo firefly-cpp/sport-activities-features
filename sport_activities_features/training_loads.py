@@ -1,5 +1,6 @@
 """This class is used for calculation of training loads."""
 
+import warnings
 from enum import Enum
 
 import numpy as np
@@ -17,101 +18,99 @@ class Gender(Enum):
     female = 2
 
 
-class BanisterTRIMPv1:
-
-    """Class for calculation of simple Banister's TRIMP.\n
-    Reference paper:
-        Banister, Eric W. "Modeling elite athletic performance."
-        Physiological testing of elite athletes 347 (1991): 403-422.\n
-    Args:
-        duration (float):
-            total duration in seconds
-        average_heart_rate (float):
-            average heart rate in beats per minute.
-    """
-
-    def __init__(self, duration: float, average_heart_rate: float) -> None:
-        """Initialisation method for BanisterTRIMP class.\n
-        Args:
-            duration (float):
-                total duration in seconds
-            average_heart_rate (float):
-                average heart rate in beats per minute.
-        """
-        self.duration = duration
-        self.average_heart_rate = average_heart_rate
-
-    def calculate_TRIMP(self) -> float:
-        """Method for the calculation of the TRIMP.\n
-        Returns:
-            float: Banister TRIMP value.
-        """
-        return self.duration * self.average_heart_rate
-
-
 class BanisterTRIMPv2:
 
-    """Class for calculation of Banister's TRIMP.\n
-    Reference paper:
+    """Class for calculation of Banister's TRIMP (training impulse).\n
+    TRIMP = duration [min] * dHR * a * e^(b * dHR), where
+    dHR = (average HR - resting HR) / (maximum HR - resting HR),
+    a = 0.64, b = 1.92 for men and a = 0.86, b = 1.67 for women.\n
+    Reference papers:
         Banister, Eric W. "Modeling elite athletic performance."
         Physiological testing of elite athletes 347 (1991): 403-422.\n
-
+        Morton, R. H., Fitz-Clarke, J. R., Banister, E. W. "Modeling human
+        performance in running." Journal of Applied Physiology 69.3
+        (1990): 1171-1177.\n
     Args:
         duration (float):
             total duration in seconds
         average_heart_rate (float):
-            average heart rate in beats per minute
-        min_heart_rate (float):
-            minimum heart rate in beats per minute
+            average heart rate during the exercise in beats per minute
+        rest_heart_rate (float):
+            resting heart rate of the athlete in beats per minute
+            (measured at rest, not the lowest heart rate of the exercise)
         max_heart_rate (float):
-            maximum heart rate in beats per minute
+            maximum heart rate of the athlete in beats per minute
         gender (Gender):
-            gender enum of athlete (default male, female)
+            gender of the athlete (default male)
+        min_heart_rate (float):
+            deprecated, use rest_heart_rate
     """
 
-    def __init__(self: 'BanisterTRIMPv2',
-                 duration: float,
-                 average_heart_rate: float,
-                 min_heart_rate: float,
-                 max_heart_rate: float,
-                 gender: Gender = Gender.male,
-                 ) -> None:
-        """Initialize BanisterTRIMP class."""
+    COEFFICIENTS = {
+        Gender.male: (0.64, 1.92),
+        Gender.female: (0.86, 1.67),
+    }
+
+    def __init__(
+        self: 'BanisterTRIMPv2',
+        duration: float,
+        average_heart_rate: float,
+        rest_heart_rate: float = None,
+        max_heart_rate: float = None,
+        gender: Gender = Gender.male,
+        *,
+        min_heart_rate: float = None,
+    ) -> None:
+        """Initialize BanisterTRIMPv2 class."""
+        if min_heart_rate is not None:
+            if rest_heart_rate is not None:
+                msg = 'Pass rest_heart_rate only (min_heart_rate is deprecated).'
+                raise TypeError(msg)
+            warnings.warn(
+                'min_heart_rate is deprecated, use rest_heart_rate: '
+                "Banister's TRIMP needs the athlete's resting heart rate, "
+                'not the lowest heart rate of the exercise.',
+                DeprecationWarning,
+                stacklevel=2,
+            )
+            rest_heart_rate = min_heart_rate
+        if rest_heart_rate is None or max_heart_rate is None:
+            msg = 'rest_heart_rate and max_heart_rate are required.'
+            raise TypeError(msg)
+        if max_heart_rate <= rest_heart_rate:
+            msg = 'max_heart_rate must be greater than rest_heart_rate.'
+            raise ValueError(msg)
+
         self.duration = duration
-
         self.average_heart_rate = average_heart_rate
+        self.rest_heart_rate = rest_heart_rate
         self.max_heart_rate = max_heart_rate
-        self.rest_heart_rate = min_heart_rate
-
-        self.b_male = 1.92
-        self.b_female = 1.67
-
         self.gender = gender
 
     def calculate_delta_hr_ratio(self: 'BanisterTRIMPv2') -> float:
-        """Calculate the delta heart rate.
+        """Calculate the heart rate reserve ratio (dHR).
 
-        The ratio ranges from a low to a high value (i.e., ~ 0.2 — 1.0)
-        for a low or a high raw heart rate, respectively.
+        The ratio ranges from 0 at the resting heart rate to 1 at the
+        maximum heart rate.
 
         Returns:
-            float: delta heart rate.
+            float: delta heart rate ratio.
         """
         return (self.average_heart_rate - self.rest_heart_rate) / \
             (self.max_heart_rate - self.rest_heart_rate)
 
-    def calculate_weighting_factor(self: 'BanisterTRIMPv2', delta_hr_ratio: float) -> float:
-        """Calculate the weighting factor.\n
+    def calculate_weighting_factor(
+        self: 'BanisterTRIMPv2', delta_hr_ratio: float,
+    ) -> float:
+        """Calculate the weighting factor a * e^(b * dHR).\n
         Args:
             delta_hr_ratio (float):
                 delta heart rate ratio.
         Returns:
             float: weighting factor (Y).
         """
-        # b defaults to b_male since only males contributed to the dataset
-        b = self.b_female if self.gender is Gender.female else self.b_male
-
-        return np.power(np.e, (b * delta_hr_ratio))
+        a, b = self.COEFFICIENTS[self.gender]
+        return a * np.exp(b * delta_hr_ratio)
 
     def calculate_TRIMP(self: 'BanisterTRIMPv2') -> float:
         """Calculate TRIMP.
@@ -123,7 +122,7 @@ class BanisterTRIMPv2:
         delta_hr_ratio = self.calculate_delta_hr_ratio()
         weighting_factor = self.calculate_weighting_factor(delta_hr_ratio)
 
-        return duration_minutes * delta_hr_ratio * weighting_factor
+        return float(duration_minutes * delta_hr_ratio * weighting_factor)
 
 
 class EdwardsTRIMP:

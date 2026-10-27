@@ -2,9 +2,9 @@
 Edwards and Lucia TRIMP (training impulse).
 """
 from sport_activities_features import (
-    BanisterTRIMPv1,
     BanisterTRIMPv2,
     EdwardsTRIMP,
+    Gender,
     LuciaTRIMP,
     TCXFile,
 )
@@ -17,23 +17,19 @@ activity = tcx_file.extract_activity_data(tcx_exercise)
 timestamps = activity['timestamps']
 heart_rates = activity['heartrates']
 
-# Calculating simple Banister TRIMP.
-duration = (timestamps[-1] - timestamps[0]).seconds
-average_heart_rate = sum(filter(None, heart_rates)) / len(heart_rates)
-banister_v1 = BanisterTRIMPv1(duration, average_heart_rate)
-banister_TRIMP = banister_v1.calculate_TRIMP()
-print("Banister's simple TRIMP:", int(banister_TRIMP))
-
 # Calculating Banister TRIMP.
-# Duration and average heart rate are the same as in the previous example.
-min_heart_rate = min(filter(None, heart_rates))
-max_heart_rate = max(filter(None, heart_rates))
-banister_v2 = BanisterTRIMPv2(duration=duration,
-                              average_heart_rate=average_heart_rate,
-                              min_heart_rate=min_heart_rate,
-                              max_heart_rate=max_heart_rate)
-banister_TRIMPv2 = banister_v2.calculate_TRIMP()
-print("Banister's TRIMP: ", str(banister_TRIMPv2))
+# Resting and maximum heart rate are properties of the athlete
+# (measured separately), not values taken from this activity.
+duration = (timestamps[-1] - timestamps[0]).total_seconds()
+recorded_heart_rates = [hr for hr in heart_rates if hr is not None]
+average_heart_rate = sum(recorded_heart_rates) / len(recorded_heart_rates)
+banister = BanisterTRIMPv2(duration=duration,
+                           average_heart_rate=average_heart_rate,
+                           rest_heart_rate=55,
+                           max_heart_rate=190,
+                           gender=Gender.male)
+banister_TRIMP = banister.calculate_TRIMP()
+print("Banister's TRIMP: ", round(banister_TRIMP, 1))
 
 # Calculating Edwards TRIMP.
 edwards = EdwardsTRIMP(heart_rates, timestamps, max_heart_rate=200)
