@@ -19,6 +19,11 @@ _TERRAIN = '#e7e6e1'
 _GRID = '#ebeae6'
 # Above this many hills only the hill numbers are printed.
 _MAX_DETAILED_LABELS = 10
+# Interval plot: band behind an interval and the line inside it.
+_INTERVAL_BAND = '#dbe8f8'
+_INTERVAL_LINE = '#2a78d6'
+# Above this many intervals only the interval numbers are printed.
+_MAX_DETAILED_INTERVAL_LABELS = 12
 
 
 def _to_float_array(values: list) -> np.ndarray:
@@ -38,6 +43,33 @@ def _hill_segment(hill) -> tuple:
 def _grade_color(grade: float) -> str:
     """Colour of the grade class that the grade (in %) belongs to."""
     return HILL_GRADE_COLORS[int(np.digitize(grade, HILL_GRADE_BOUNDS))]
+
+
+def _format_clock(seconds: float) -> str:
+    """Format seconds as m:ss, or h:mm:ss from one hour on."""
+    seconds = int(round(seconds))
+    hours, rest = divmod(seconds, 3600)
+    minutes, secs = divmod(rest, 60)
+    if hours:
+        return f'{hours}:{minutes:02d}:{secs:02d}'
+    return f'{minutes}:{secs:02d}'
+
+
+def _rolling_mean(times: np.ndarray, values: np.ndarray, window: float):
+    """Centred rolling mean over window seconds, ignoring NaN."""
+    if not window:
+        return values
+    finite = ~np.isnan(values)
+    filled = np.where(finite, values, 0.0)
+    total = np.concatenate([[0.0], np.cumsum(filled)])
+    count = np.concatenate([[0], np.cumsum(finite)])
+    start = np.searchsorted(times, times - window / 2)
+    end = np.searchsorted(times, times + window / 2, side='right')
+    counts = count[end] - count[start]
+    with np.errstate(invalid='ignore', divide='ignore'):
+        return np.where(
+            counts > 0, (total[end] - total[start]) / counts, np.nan,
+        )
 
 
 class PlotData:
@@ -101,18 +133,21 @@ class PlotData:
         timestamp: list,
         distance: list,
         identified_intervals: list,
+        **kwargs,
     ) -> None:
-        """Method for rendering all intervals identified in data
-        on topographic map plot.\n
+        """Method for rendering all identified intervals
+        (see plot_intervals_in_map).\n
         Args:
             timestamp (datetime):
                 list of timestamps
             distance (float):
-                list of distances
+                list of distances (not used)
             identified_intervals (list):
                 list of identified intervals.
+            **kwargs:
+                passed to plot_intervals_in_map, e.g. values=heart_rates.
         """
-        plt = self.plot_intervals_in_map(timestamp, identified_intervals)
+        self.plot_intervals_in_map(timestamp, identified_intervals, **kwargs)
         plt.show()
 
     def show_basic_map(self) -> None:
@@ -324,67 +359,256 @@ class PlotData:
         self,
         timestamp: list,
         identified_intervals: list,
-    ) -> plt:
-        """Method for plotting all intervals identified
-        in data on topographic map.\n
+        values: list = None,
+        value_label: str = 'Heart rate',
+        value_unit: str = 'bpm',
+        smoothing: float = 0,
+        title: str = 'Identified intervals',
+        ax=None,
+    ) -> Figure:
+        """Method for plotting identified intervals over the time of an
+        activity.\n
+        Intervals are drawn as numbered bands. If values are given (heart
+        rate, or IntervalIdentificationByPower.powers for power), they are
+        drawn as a line that is highlighted inside the intervals, together
+        with their average, which is the threshold the intervals are
+        identified with. Each interval is labelled with its duration and
+        average value (only the numbers are shown when there are more than
+        twelve intervals).\n
         Args:
             timestamp (list):
-                list of timestamps
+                list of timestamps (datetime)
             identified_intervals (list):
-                list of identified intervals
+                list of identified intervals (lists of indexes)
+            values (list):
+                optional values to plot, one per timestamp (or one per
+                segment between timestamps, as in
+                IntervalIdentificationByPower.powers)
+            value_label (str):
+                name of the values, e.g. 'Heart rate' or 'Power'
+            value_unit (str):
+                unit of the values, e.g. 'bpm' or 'W'
+            smoothing (float):
+                if > 0, the values are smoothed with a rolling mean over
+                this many seconds before plotting (useful for power)
+            title (str):
+                title of the plot
+            ax (matplotlib.axes.Axes):
+                optional axes to draw on; a new figure is created if None
         Returns:
-            plt (matplotlib.pyplot):
-                plot of all intervals identified in data on topographic map.
+            matplotlib.figure.Figure: figure with the plot; use
+            fig.savefig(...) to save it or plt.show() to display it.
         """
-        x_points = []
-        y_points = []
+        if len(timestamp) < 2:
+            msg = 'At least two timestamps are needed to plot intervals.'
+            raise ValueError(msg)
+        start_time = timestamp[0]
+        seconds = np.array(
+            [(t - start_time).total_seconds() for t in timestamp],
+        )
+        minutes = seconds / 60
+        intervals = [
+            (int(item[0]), int(item[-1]))
+            for item in identified_intervals if len(item) > 0
+        ]
 
-        points = self.get_positions_of_intervals(
-            identified_intervals,
-        )  # Getting positions of intervals
+        has_values = values is not None and len(values) > 0
+        if ax is None:
+            height = 4.6 if has_values else 2.6
+            fig, ax = plt.subplots(figsize=(12, height), dpi=110)
+        else:
+            fig = ax.figure
+        fig.patch.set_facecolor(_SURFACE)
+        ax.set_facecolor(_SURFACE)
+        ax.grid(False)
 
-        # Appending points to lists
-        for i in range(len(timestamp)):
-            time = (
-                    timestamp[i] - timestamp[0]
-            ).total_seconds()
-            # Calculation of time between the current and the starting point
+        # Intervals: bands behind the values, or bars on a timeline.
+        if has_values:
+            for first, last in intervals:
+                ax.axvspan(
+                    minutes[first], minutes[last], color=_INTERVAL_BAND,
+                    lw=0, zorder=1,
+                )
+        else:
+            ax.plot(
+                [minutes[0], minutes[-1]], [0.3, 0.3], color=_TERRAIN,
+                lw=6, solid_capstyle='butt', zorder=1,
+            )
+            ax.broken_barh(
+                [(minutes[first], minutes[last] - minutes[first])
+                 for first, last in intervals],
+                (0.12, 0.36), color=_INTERVAL_LINE, zorder=2,
+            )
 
-            x_points.append(float(time))  # Appending the time to the list
+        label_values = None
+        average = None
+        if has_values:
+            raw = _to_float_array(values)
+            line_minutes = minutes[:len(raw)]
+            raw = raw[:len(line_minutes)]
+            shown = _rolling_mean(seconds[:len(raw)], raw, smoothing)
+            average = float(np.nanmean(raw)) if np.isfinite(raw).any() \
+                else None
+            label_values = raw
 
-            # If the current is in the list, it belongs to an interval
-            if i > 0 and i in points:
-                y_points.append(1)
+            ax.plot(line_minutes, shown, color=_TEXT_MUTED, lw=0.9, zorder=2)
+            for first, last in intervals:
+                part = slice(first, min(last, len(shown) - 1) + 1)
+                ax.plot(
+                    line_minutes[part], shown[part], color=_INTERVAL_LINE,
+                    lw=1.5, zorder=3, solid_capstyle='round',
+                )
+            if average is not None:
+                ax.axhline(
+                    average, color=_TEXT_SECONDARY, lw=0.8, ls=(0, (4, 3)),
+                    zorder=4,
+                )
+            finite = shown[np.isfinite(shown)]
+            if finite.size:
+                low, high = finite.min(), finite.max()
+                span = max(high - low, 1.0)
+                ax.set_ylim(low - 0.05 * span, high + 0.35 * span)
+            ax.set_ylabel(
+                f'{value_label} ({value_unit})', color=_TEXT_SECONDARY,
+                fontsize=9.5,
+            )
+            ax.yaxis.grid(True, color=_GRID, lw=0.8)
+            ax.set_axisbelow(True)
+        else:
+            ax.set_ylim(0, 1)
+            ax.set_yticks([])
+            ax.set_ylabel('')
 
-                # If both current and previous point belong to
-                # an interval, they are represented with red
-                if y_points[i - 1] == y_points[i]:
-                    plt.plot(
-                        [x_points[i - 1], x_points[i]],
-                        [y_points[i - 1], y_points[i]],
-                        c='red',
-                        linewidth=3,
-                    )
-            else:
-                y_points.append(0)
 
-                # If both current and previous point don't belong to
-                # an interval, they are represented with blue
-                if y_points[i - 1] == y_points[i]:
-                    plt.plot(
-                        [x_points[i - 1], x_points[i]],
-                        [y_points[i - 1], y_points[i]],
-                        c='blue',
-                        linewidth=3,
-                    )
+        # Axes.
+        ax.set_xlim(minutes[0], minutes[-1])
+        for side in ('top', 'right', 'left'):
+            ax.spines[side].set_visible(False)
+        ax.spines['bottom'].set_color(_TEXT_MUTED)
+        ax.tick_params(colors=_TEXT_SECONDARY, labelsize=9, length=0, pad=6)
+        ax.tick_params(axis='x', length=3, color=_TEXT_MUTED)
+        total_minutes = minutes[-1] - minutes[0]
+        step = next(
+            (step for limit, step in (
+                (20, 2), (45, 5), (100, 10), (200, 20), (400, 30),
+            ) if total_minutes <= limit),
+            60,
+        )
+        ax.xaxis.set_major_locator(plt.MultipleLocator(step))
+        if total_minutes >= 60:
+            ax.xaxis.set_major_formatter(plt.FuncFormatter(
+                lambda m, _: f'{int(m // 60)}:{int(round(m % 60)):02d}',
+            ))
+            x_label = 'Elapsed time (h:mm)'
+        else:
+            ax.xaxis.set_major_formatter(
+                plt.FuncFormatter(lambda m, _: f'{m:.0f}'),
+            )
+            x_label = 'Elapsed time (min)'
+        ax.set_xlabel(x_label, color=_TEXT_SECONDARY, fontsize=9.5)
 
-        # Setting the parameters of the plot
-        plt.xticks(fontsize=14)
-        plt.yticks([0, 1], ['No', 'Yes'])
-        plt.title('Intervals', fontsize=20)
-        plt.xlabel('Time (s)', fontsize=20)
-        plt.ylabel('Interval', fontsize=20)
-        return plt
+        # Header: title, summary and legend.
+        ax.set_title(
+            title, loc='left', fontsize=13, fontweight='bold', color=_TEXT,
+            pad=30,
+        )
+        ax.text(
+            0, 1.035 if has_values else 1.06,
+            self._intervals_summary(seconds, intervals),
+            transform=ax.transAxes, fontsize=9.5, color=_TEXT_SECONDARY,
+            va='bottom',
+        )
+        handles = [Patch(
+            color=_INTERVAL_BAND if has_values else _INTERVAL_LINE,
+            label='interval',
+        )]
+        if has_values:
+            handles = [
+                plt.Line2D([], [], color=_INTERVAL_LINE, lw=1.5,
+                           label=f'{value_label.lower()} in interval'),
+                plt.Line2D([], [], color=_TEXT_MUTED, lw=0.9,
+                           label='outside'),
+                plt.Line2D([], [], color=_TEXT_SECONDARY, lw=0.8,
+                           ls=(0, (4, 3)),
+                           label=f'average ({average:.0f} {value_unit})'
+                           if average is not None else 'average'),
+            ] + handles
+        legend = ax.legend(
+            handles=handles, ncol=len(handles), loc='lower right',
+            bbox_to_anchor=(1, 1.02 if has_values else 1.06), frameon=False,
+            fontsize=8.5, handlelength=1.6, columnspacing=1.2,
+            handletextpad=0.5,
+        )
+        plt.setp(legend.get_texts(), color=_TEXT_SECONDARY)
+
+        fig.tight_layout()
+        self._label_intervals(
+            ax, seconds, minutes, intervals, label_values, value_unit,
+        )
+        return fig
+
+    @staticmethod
+    def _label_intervals(
+        ax, seconds: np.ndarray, minutes: np.ndarray, intervals: list,
+        values: np.ndarray, unit: str,
+    ) -> None:
+        """Number every interval at the top of the plot and, if there are
+        not too many, add its duration and average value below the number.
+        Labels that would overlap are moved to a second row."""
+        detailed = len(intervals) <= _MAX_DETAILED_INTERVAL_LABELS
+        fig = ax.figure
+        axes_px = ax.get_position().width * fig.get_figwidth() * fig.dpi
+        half = (26 if detailed else 7) / axes_px  # half label width
+        row_offset = 40 if detailed else 15  # points
+        first_minute = minutes[0]
+        width = (minutes[-1] - first_minute) or 1.0
+        right_edge = [-1.0, -1.0]  # right edge of the last label per row
+        for number, (first, last) in enumerate(intervals, 1):
+            centre = (minutes[first] + minutes[last]) / 2
+            position = (centre - first_minute) / width
+            row = 0
+            if position - half <= right_edge[0]:
+                row = 1 if position - half > right_edge[1] else 0
+            right_edge[row] = position + half
+            anchor = {
+                'xy': (centre, 1.0),
+                'xycoords': ('data', 'axes fraction'),
+                'textcoords': 'offset points',
+                'ha': 'center',
+                'va': 'top',
+                'zorder': 6,
+            }
+            y = -4 - row * row_offset
+            ax.annotate(
+                str(number), xytext=(0, y), fontsize=10, fontweight='bold',
+                color=_TEXT, **anchor,
+            )
+            if not detailed:
+                continue
+            details = _format_clock(seconds[last] - seconds[first])
+            if values is not None:
+                part = values[first:min(last, len(values) - 1) + 1]
+                if np.isfinite(part).any():
+                    details += f'\n{np.nanmean(part):.0f} {unit}'
+            ax.annotate(
+                details, xytext=(0, y - 13), fontsize=8.5,
+                color=_TEXT_SECONDARY, linespacing=1.2, **anchor,
+            )
+
+    @staticmethod
+    def _intervals_summary(seconds: np.ndarray, intervals: list) -> str:
+        """One-line summary shown under the title."""
+        if not intervals:
+            return 'No intervals identified'
+        durations = [seconds[last] - seconds[first] for first, last in intervals]
+        total = seconds[-1] - seconds[0]
+        share = sum(durations) / total * 100 if total else 0
+        noun = 'interval' if len(intervals) == 1 else 'intervals'
+        return (
+            f'{len(intervals)} {noun}  ·  {_format_clock(sum(durations))} '
+            f'in intervals ({share:.0f} % of the activity)'
+            f'  ·  longest {_format_clock(max(durations))}'
+        )
 
     def plot_basic_map(self, altitude: list, distance: list) -> plt:
         """Method for plotting the whole topographic map.\n
