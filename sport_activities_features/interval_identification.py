@@ -3,10 +3,14 @@ import numbers
 
 # Two power intervals closer than this (in seconds) are merged.
 POWER_MERGE_GAP = 30
-# Two heart rate intervals are merged if the average heart rate between
-# them is less than this many beats per minute below the overall average.
+# Two heart rate intervals are merged if the gap between them is at most
+# HEART_RATE_MERGE_GAP seconds and the average heart rate in the gap is
+# less than HEART_RATE_MERGE_DIFFERENCE beats per minute below the overall
+# average.
+HEART_RATE_MERGE_GAP = 120
 HEART_RATE_MERGE_DIFFERENCE = 10
-# Heart rate may be missing for at most this many seconds in a row.
+# A gap without heart rate data of at most this many seconds (a short
+# sensor dropout) does not split an interval; a longer one does.
 HEART_RATE_MAX_MISSING = 10
 
 
@@ -286,6 +290,12 @@ class IntervalIdentificationByHeartRate(object):
             list of heart rates
         minimum_time (int):
             minimum time of an interval given in seconds
+        max_merge_gap (float):
+            two intervals with a lower heart rate between them are merged
+            only if the gap is at most this many seconds
+        max_missing_gap (float):
+            a gap without heart rate of at most this many seconds does not
+            split an interval
     """
 
     def __init__(
@@ -295,6 +305,8 @@ class IntervalIdentificationByHeartRate(object):
         altitudes: list,
         heart_rates: list,
         minimum_time: int = 30,
+        max_merge_gap: float = HEART_RATE_MERGE_GAP,
+        max_missing_gap: float = HEART_RATE_MAX_MISSING,
     ) -> None:
         """
         Initialisation method for IntervalIdentificationByHeartRate class.\n
@@ -309,25 +321,37 @@ class IntervalIdentificationByHeartRate(object):
             list of heart rates
         minimum_time (int):
             minimum time of an interval given in seconds
+        max_merge_gap (float):
+            two intervals with a lower heart rate between them are merged
+            only if the gap is at most this many seconds
+        max_missing_gap (float):
+            a gap without heart rate of at most this many seconds does not
+            split an interval
         """
         self.distances = distances
         self.timestamps = timestamps
         self.altitudes = altitudes
         self.heart_rates = heart_rates
         self.minimum_time = minimum_time
+        self.max_merge_gap = max_merge_gap
+        self.max_missing_gap = max_missing_gap
 
     def identify_intervals(self) -> None:
         """
         Method for identifying intervals from given data.\n
         An interval is a run of points whose heart rate is above the
-        average heart rate of the activity. Missing heart rate values
-        (None) are ignored, but a heart rate may not be missing for more
-        than HEART_RATE_MAX_MISSING seconds in a row.\n
-        Raises:
-            ValueError: if heart rate is missing for too long.
+        average heart rate of the activity. Two neighbouring intervals are
+        merged if
+        - the gap between them has no heart rate data and lasts at most
+          max_missing_gap seconds (a short sensor dropout), or
+        - the gap lasts at most max_merge_gap seconds and its average
+          heart rate is less than HEART_RATE_MERGE_DIFFERENCE below the
+          overall average.\n
+        Points without heart rate never belong to an interval, so a longer
+        dropout splits an interval. Intervals shorter than minimum_time
+        are removed. Without any heart rate data there are no intervals.
         """
         self.intervals = []
-        self.__check_missing_heart_rates()
 
         recorded = [hr for hr in self.heart_rates if _is_number(hr)]
         if not recorded:
@@ -342,50 +366,31 @@ class IntervalIdentificationByHeartRate(object):
             for hr in self.heart_rates
         ])
 
-        # Combining intervals according to the heart rate between them:
-        # if the average heart rate between two intervals is less than
-        # HEART_RATE_MERGE_DIFFERENCE below the overall average (or the
-        # heart rate between them is missing), they are combined
-        def similar_between(previous: list, current: list) -> bool:
+        def should_merge(previous: list, current: list) -> bool:
+            gap = (
+                self.timestamps[current[0]] - self.timestamps[previous[-1]]
+            ).total_seconds()
             between = [
                 hr for hr in self.heart_rates[previous[-1] + 1: current[0]]
                 if _is_number(hr)
             ]
             if not between:
-                return True
+                return gap <= self.max_missing_gap
+            if gap > self.max_merge_gap:
+                return False
             average_between = sum(between) / len(between)
             return (
                 average_heartrate - average_between
                 < HEART_RATE_MERGE_DIFFERENCE
             )
 
-        intervals = _merge(intervals, similar_between)
+        intervals = _merge(intervals, should_merge)
 
         # Removing intervals that are too short
         # (shorter than minimum_time, given as an argument)
         self.intervals = _remove_short(
             intervals, self.timestamps, self.minimum_time,
         )
-
-    def __check_missing_heart_rates(self) -> None:
-        """Raise ValueError if heart rate is missing for more than
-        HEART_RATE_MAX_MISSING seconds in a row."""
-        last_recorded = None
-        for index, hr in enumerate(self.heart_rates):
-            if not _is_number(hr):
-                continue
-            if last_recorded is not None and index - last_recorded > 1:
-                missing = (
-                    self.timestamps[index] - self.timestamps[last_recorded]
-                ).total_seconds()
-                if missing > HEART_RATE_MAX_MISSING:
-                    msg = (
-                        'Input heart rates are not complete '
-                        f'({missing:.0f} s without heart rate), '
-                        'thus intervals cannot be identified.'
-                    )
-                    raise ValueError(msg)
-            last_recorded = index
 
     def calculate_interval_statistics(self) -> dict:
         """

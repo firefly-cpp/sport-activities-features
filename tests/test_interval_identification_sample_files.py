@@ -61,12 +61,7 @@ def by_heart_rate(activity):
         activity['distances'], activity['timestamps'],
         activity['altitudes'], activity['heartrates'],
     )
-    try:
-        intervals.identify_intervals()
-    except ValueError as error:
-        # The only accepted failure: heart rate missing for too long.
-        assert 'not complete' in str(error)
-        pytest.skip(str(error))
+    intervals.identify_intervals()
     return intervals
 
 

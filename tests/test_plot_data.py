@@ -164,7 +164,7 @@ class TestPlotIntervalsInMap(TestCase):
         self.assertEqual([t for t in labels if t.isdigit()], ['1', '2', '3'])
         self.assertIn('36:31\n169 bpm', labels)
         self.assertIn(
-            '3 intervals  ·  58:27 in intervals (90 % of the activity)'
+            '3 intervals  ·  53:20 in intervals (83 % of the activity)'
             '  ·  longest 36:31',
             labels,
         )

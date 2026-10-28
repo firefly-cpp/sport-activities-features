@@ -66,7 +66,7 @@ class TestIntervalIdentificationActivity(TestCase):
         )
         self.assertAlmostEqual(
             self.statistics_heartrate['avg_duration_interval'],
-            1169.0,
+            1066.67,
             places=2
         )
 
@@ -102,14 +102,14 @@ class TestIntervalIdentificationActivity(TestCase):
         )
         self.assertAlmostEqual(
             self.statistics_heartrate['avg_distance_interval'],
-            7669.2700,
+            6968.8103,
             places=4
         )
 
     def test_min_heartrate_correct(self):
         self.assertAlmostEqual(
             self.statistics_heartrate['min_heartrate_interval'],
-            167.4933,
+            169.4700,
             places=4
         )
 
@@ -123,7 +123,7 @@ class TestIntervalIdentificationActivity(TestCase):
     def test_avg_heartrate_correct(self):
         self.assertAlmostEqual(
             self.statistics_heartrate['avg_heartrate_interval'],
-            169.47,
+            170.15,
             places=2
         )
 
@@ -141,6 +141,15 @@ def heart_rate_intervals(heart_rates, minimum_time=30):
     intervals = IntervalIdentificationByHeartRate(
         list(range(n)), seconds(n), [0] * n, heart_rates,
         minimum_time=minimum_time,
+    )
+    intervals.identify_intervals()
+    return intervals
+
+
+def heart_rate_intervals_with(heart_rates, **kwargs):
+    n = len(heart_rates)
+    intervals = IntervalIdentificationByHeartRate(
+        list(range(n)), seconds(n), [0] * n, heart_rates, **kwargs,
     )
     intervals.identify_intervals()
     return intervals
@@ -201,9 +210,47 @@ class TestIntervalIdentificationByHeartRate(TestCase):
         intervals = heart_rate_intervals([100] * 100 + [180] * 99 + [None])
         self.assertEqual(spans(intervals), [(100, 198)])
 
-    def test_long_missing_heart_rate_raises(self):
-        with self.assertRaises(ValueError):
-            heart_rate_intervals([100] * 50 + [None] * 20 + [180] * 50)
+    def test_long_missing_heart_rate_splits_interval(self):
+        # 20 s without heart rate inside an effort: two intervals, no error
+        intervals = heart_rate_intervals(
+            [100] * 100 + [180] * 40 + [None] * 20 + [180] * 40 + [100] * 50,
+        )
+        self.assertEqual(spans(intervals), [(100, 139), (160, 199)])
+
+    def test_max_missing_gap(self):
+        heart_rates = (
+            [100] * 100 + [180] * 40 + [None] * 20 + [180] * 40 + [100] * 50
+        )
+        intervals = heart_rate_intervals_with(
+            heart_rates, max_missing_gap=30,
+        )
+        self.assertEqual(spans(intervals), [(100, 199)])
+
+    def test_no_heart_rate(self):
+        intervals = heart_rate_intervals([None] * 100)
+        self.assertEqual(spans(intervals), [])
+
+    def test_long_recovery_splits_intervals(self):
+        # 3 min at 156 bpm between two efforts (average 161 bpm): within
+        # 10 bpm of the average, but longer than max_merge_gap (120 s).
+        heart_rates = [100] * 60 + [180] * 120 + [156] * 180 + [180] * 120
+        self.assertEqual(sum(heart_rates) / len(heart_rates), 161)
+        self.assertEqual(
+            spans(heart_rate_intervals(heart_rates)),
+            [(60, 179), (360, 479)],
+        )
+        self.assertEqual(
+            spans(heart_rate_intervals_with(heart_rates, max_merge_gap=200)),
+            [(60, 479)],
+        )
+
+    def test_short_recovery_merges_intervals(self):
+        # 1 min at 158 bpm between two efforts (average 163 bpm)
+        heart_rates = [100] * 60 + [180] * 120 + [158] * 60 + [180] * 120
+        self.assertEqual(sum(heart_rates) / len(heart_rates), 163)
+        self.assertEqual(
+            spans(heart_rate_intervals(heart_rates)), [(60, 359)],
+        )
 
     def test_statistics(self):
         intervals = heart_rate_intervals(
