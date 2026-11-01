@@ -102,12 +102,14 @@ class TestTrainingMetricsWindow(TestCase):
             50.5,
         )
 
-    def test_missing_power_is_skipped_and_zero_power_kept(self):
-        # The window starts at the first power above 0 W; zero power
-        # (coasting) inside the window is part of the data.
+    def test_missing_power_holds_and_zero_power_is_kept(self):
+        # The window starts at the first power above 0 W (third second).
+        # Seconds without a power value keep the last value (200 W);
+        # zero power (coasting) is part of the data.
         tcx = exercise([None, ..., 0, 200, None, ..., 0, 300])
         self.assertEqual(
-            self.tm.prepare_normalized_power_data(tcx, 60), [200, 0, 300],
+            self.tm.prepare_normalized_power_data(tcx, 60),
+            [200, 200, 200, 0, 300],
         )
 
     def test_default_ftp_window_is_20_minutes(self):
@@ -230,3 +232,66 @@ class TestBestAveragePower(TestCase):
         tcx = TCXFile().read_one_file(os.path.join(DATA_DIR, '15.tcx'))
         self.assertIsNone(self.tm.best_average_power(tcx))
         self.assertIsNone(self.tm.estimate_functional_threshold_power(tcx))
+
+
+def reference_normalized_power(watts_per_second):
+    """Normalized power straight from the definition."""
+    rolling = [
+        sum(watts_per_second[i:i + 30]) / 30
+        for i in range(len(watts_per_second) - 29)
+    ]
+    return (sum(r ** 4 for r in rolling) / len(rolling)) ** 0.25
+
+
+class TestNormalizedPowerOfActivity(TestCase):
+    def setUp(self):
+        self.tm = TrainingMetrics()
+
+    def test_activity(self):
+        tcx = TCXFile().read_one_file(os.path.join(DATA_DIR, '11.tcx'))
+        watts = [tp.tpx_ext['Watts'] for tp in tcx.trackpoints]
+        first = next(i for i, w in enumerate(watts) if w > 0)
+        # 11.tcx is recorded every second without gaps.
+        expected = reference_normalized_power(watts[first:])
+
+        power_data = self.tm.prepare_normalized_power_data(tcx)
+        self.assertEqual(len(power_data), len(watts) - first)
+        np_value = self.tm.normalized_power_of_activity(tcx)
+        self.assertAlmostEqual(np_value, round(expected, 2), places=2)
+        self.assertEqual(np_value, self.tm.normalized_power(power_data))
+        # NP is never below the average power.
+        self.assertGreaterEqual(np_value, sum(watts[first:]) / len(watts[first:]))
+
+    def test_window_is_in_seconds_not_samples(self):
+        # The same ride recorded every second and every 2 seconds:
+        # 1 min at 100 W / 1 min at 300 W, five times.
+        profile = ([100] * 60 + [300] * 60) * 5
+        every_second = exercise(profile)
+        every_2_seconds = exercise_at(
+            [(s, w) for s, w in enumerate(profile) if s % 2 == 0],
+        )
+        expected = round(reference_normalized_power(profile), 2)
+        self.assertEqual(
+            self.tm.normalized_power_of_activity(every_second), expected,
+        )
+        self.assertEqual(
+            self.tm.normalized_power_of_activity(every_2_seconds), expected,
+        )
+
+    def test_constant_power(self):
+        self.assertEqual(
+            self.tm.normalized_power_of_activity(exercise([220] * 600)), 220,
+        )
+
+    def test_not_enough_data(self):
+        self.assertIsNone(
+            self.tm.normalized_power_of_activity(exercise([220] * 29)),
+        )
+        tcx = TCXFile().read_one_file(os.path.join(DATA_DIR, '15.tcx'))
+        self.assertIsNone(self.tm.normalized_power_of_activity(tcx))
+
+    def test_training_stress_score_of_activity(self):
+        tcx = exercise([250] * 3600)
+        ftp = 250
+        np_value = self.tm.normalized_power_of_activity(tcx)
+        self.assertEqual(self.tm.training_stress_score(3600, np_value, ftp), 100)

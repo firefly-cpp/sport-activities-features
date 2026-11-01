@@ -1,4 +1,4 @@
-from datetime import timedelta
+import math
 
 import numpy as np
 from tcxreader.tcxreader import TCXExercise
@@ -8,6 +8,8 @@ from tcxreader.tcxreader import TCXExercise
 # over 20 minutes.
 FTP_TEST_DURATION = 1200
 FTP_FACTOR = 0.95
+# Normalized power uses a 30 s rolling average of power (Coggan).
+NP_ROLLING_WINDOW = 30
 # A power sample holds until the next sample, but at most this many
 # seconds; a longer gap (e.g. auto-pause) counts as 0 W.
 MAX_POWER_HOLD = 10
@@ -29,35 +31,46 @@ def _power_points(tcx: TCXExercise) -> list:
 def _power_per_second(points: list) -> np.ndarray:
     """Power resampled to one value per second from the first sample on.
     Each sample holds until the next one, at most MAX_POWER_HOLD seconds;
-    seconds not covered count as 0 W."""
+    seconds not covered count as 0 W. The last sample holds for the usual
+    sampling interval (the median gap between samples)."""
     first_time = points[0][0]
     starts = [
         int(round((time - first_time).total_seconds())) for time, _ in points
     ]
-    series = np.zeros(starts[-1] + 1)
+    gaps = [b - a for a, b in zip(starts, starts[1:]) if b > a]
+    last_hold = min(int(np.median(gaps)) if gaps else 1, MAX_POWER_HOLD)
+    series = np.zeros(starts[-1] + last_hold)
     for index, (start, (_, watts)) in enumerate(zip(starts, points)):
-        following = starts[index + 1] if index + 1 < len(starts) else start + 1
+        if index + 1 < len(starts):
+            following = starts[index + 1]
+        else:
+            following = start + last_hold
         series[start:min(following, start + MAX_POWER_HOLD)] = watts
     return series
 
 
-def _power_in_window(
-    tcx: TCXExercise, window_size: float, offset: float,
-) -> list:
-    """Power values (W) of the trackpoints between start + offset and
-    start + offset + window_size seconds, where start is the time of the
-    first trackpoint with power above 0 W. Trackpoints without power data
-    are skipped, 0 W values are kept; an activity without power data
-    gives [].
+def _power_window(
+    tcx: TCXExercise, window_size: float = None, offset: float = 0,
+) -> np.ndarray:
+    """Power per second (see _power_per_second) from start + offset to
+    start + offset + window_size seconds (both included), where start is
+    the time of the first trackpoint with power above 0 W. Without
+    window_size the window lasts until the end of the activity. An
+    activity without power data gives an empty array.
     """
     points = _power_points(tcx)
     started = [time for time, watts in points if watts > 0]
     if not started:
-        return []
+        return np.array([])
 
-    start_time = started[0] + timedelta(seconds=float(offset))
-    end_time = start_time + timedelta(seconds=float(window_size))
-    return [power for time, power in points if start_time <= time <= end_time]
+    series = _power_per_second(points)
+    start = (started[0] - points[0][0]).total_seconds() + float(offset)
+    first_second = max(math.ceil(start - 1e-9), 0)
+    if window_size is None:
+        last_second = len(series) - 1
+    else:
+        last_second = math.floor(start + float(window_size) + 1e-9)
+    return series[first_second:last_second + 1]
 
 
 class TrainingMetrics():
@@ -88,8 +101,8 @@ class TrainingMetrics():
                 average value of watts/power during a test / training session [W];
                 0 if the activity has no power data
         """
-        power_data = _power_in_window(tcx, window_size, offset)
-        return float(np.mean(power_data)) if power_data else 0
+        power_data = _power_window(tcx, window_size, offset)
+        return float(np.mean(power_data)) if power_data.size else 0
 
     def functional_threshold_power(self,avg_watts:float) -> float:        
         """Method for calculating functional threshold power (FTP) from the
@@ -172,35 +185,41 @@ class TrainingMetrics():
             return None
         return self.functional_threshold_power(best)
 
-    def prepare_normalized_power_data(self,tcx: TCXExercise, window_size:float = 30, offset: float = 0) -> list:
-        """Method for extracting timestamps and power from trackpoints.\n
+    def prepare_normalized_power_data(self, tcx: TCXExercise, window_size: float = None, offset: float = 0) -> list:
+        """Method for extracting power, one value per second, for
+        normalized power.\n
+        Power is resampled to one value per second: every sample holds
+        until the next one (at most MAX_POWER_HOLD seconds, a longer gap
+        counts as 0 W). The data starts *offset* seconds after the first
+        trackpoint with power and lasts *window_size* seconds, or until the
+        end of the activity if *window_size* is None (the default).\n
         Args:
             tcx (TCXExercise):
-                TCXExercise object which contains data for one session   
+                TCXExercise object which contains data for one session
             window_size (float):
-                number of seconds to use for sampling data
+                number of seconds to use, None for the whole activity [s]
             offset (float):
-                number of seconds to skip from the start time
+                number of seconds to skip from the start time [s]
         Returns:
             power_data (list):
-                list of power values within *window_size* seconds from the start time + offset;
-                empty if the activity has no power data.
+                power for every second [W]; empty if the activity has no
+                power data.
         """
-        return _power_in_window(tcx, window_size, offset)
+        return _power_window(tcx, window_size, offset).tolist()
 
-    def normalized_power(self, power_data: list, window_size: int) -> float:
-        """Method for calculating normalized power (NP).\n
+    def normalized_power(self, power_data: list, window_size: int = NP_ROLLING_WINDOW) -> float:
+        """Method for calculating normalized power (NP) (Coggan).\n
         Args:
             power_data (list):
-                List of power values within *window_size* seconds from the start time + offset\n
-                Use prepare_normalized_power_data method to get the data from a TCXExercise object.
+                power for every second [W]; use prepare_normalized_power_data
+                to get it from a TCXExercise object
             window_size (int):
-                Number of trackpoints to use for sampling data
+                length of the rolling average in seconds (30 by default)
         Returns:
             float: value of normalized power [W]; None if there are fewer
             than *window_size* power values.
-        Function:            
-            1. Calculate the rolling average of the power data.
+        Function:
+            1. Calculate the 30 s rolling average of the power data.
             2. Calculate the fourth power of the values from the previous step.
             3. Calculate the average of the values from the previous step.
             4. Take the fourth root of the average from the previous step.
@@ -226,6 +245,22 @@ class TrainingMetrics():
         normalized_power = avg_powered_values ** 0.25
 
         return round(float(normalized_power), 2)
+
+    def normalized_power_of_activity(self, tcx: TCXExercise, window_size: int = NP_ROLLING_WINDOW) -> float:
+        """Method for calculating normalized power (NP) of a whole activity:
+        normalized_power(prepare_normalized_power_data(tcx)).\n
+        Args:
+            tcx (TCXExercise):
+                TCXExercise object which contains data for one session
+            window_size (int):
+                length of the rolling average in seconds (30 by default)
+        Returns:
+            float: normalized power [W]; None if the activity has no power
+            data or is shorter than *window_size*.
+        """
+        return self.normalized_power(
+            self.prepare_normalized_power_data(tcx), window_size,
+        )
 
     def calculate_intensity_factor(self, normalized_power: float, ftp: float) -> float:
         """Calculate the intensity factor of a training session.\n
