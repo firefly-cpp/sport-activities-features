@@ -102,10 +102,19 @@ class TestTrainingMetricsWindow(TestCase):
             50.5,
         )
 
-    def test_missing_and_zero_power_are_skipped(self):
+    def test_missing_power_is_skipped_and_zero_power_kept(self):
+        # The window starts at the first power above 0 W; zero power
+        # (coasting) inside the window is part of the data.
         tcx = exercise([None, ..., 0, 200, None, ..., 0, 300])
         self.assertEqual(
-            self.tm.prepare_normalized_power_data(tcx, 60), [200, 300],
+            self.tm.prepare_normalized_power_data(tcx, 60), [200, 0, 300],
+        )
+
+    def test_default_ftp_window_is_20_minutes(self):
+        tcx = exercise([100] * 1200 + [400] * 600)
+        self.assertEqual(
+            self.tm.prepare_functional_threshold_power_data(tcx),
+            (1200 * 100 + 400) / 1201,  # 0 s to 1200 s inclusive
         )
 
     def test_float_window_on_activity(self):
@@ -146,3 +155,78 @@ class TestTrainingMetricsFormulas(TestCase):
                 self.tm.calculate_intensity_factor(200, ftp)
             with self.assertRaises(ValueError):
                 self.tm.training_stress_score(3600, 200, ftp)
+
+
+def exercise_at(samples):
+    """Exercise from (second, watts) samples."""
+    return TCXExercise(trackpoints=[
+        TCXTrackPoint(
+            time=START + timedelta(seconds=second), tpx_ext={'Watts': watts},
+        )
+        for second, watts in samples
+    ])
+
+
+class TestBestAveragePower(TestCase):
+    def setUp(self):
+        self.tm = TrainingMetrics()
+
+    def test_activity(self):
+        tcx = TCXFile().read_one_file(os.path.join(DATA_DIR, '11.tcx'))
+        # 11.tcx is recorded every second without gaps, so the best
+        # 20 minutes is the best average of 1200 consecutive samples.
+        watts = [tp.tpx_ext['Watts'] for tp in tcx.trackpoints]
+        expected = max(
+            sum(watts[i:i + 1200]) / 1200 for i in range(len(watts) - 1199)
+        )
+        best = self.tm.best_average_power(tcx)
+        self.assertAlmostEqual(best, expected, places=2)
+        self.assertAlmostEqual(best, 332.57, places=2)
+        self.assertAlmostEqual(
+            self.tm.estimate_functional_threshold_power(tcx),
+            round(0.95 * best, 2),
+        )
+        # Power curve: shorter efforts are at least as hard.
+        self.assertGreaterEqual(
+            self.tm.best_average_power(tcx, 60),
+            self.tm.best_average_power(tcx, 300),
+        )
+        self.assertGreaterEqual(self.tm.best_average_power(tcx, 300), best)
+
+    def test_best_block(self):
+        # 30 min at 200 W with 5 min at 300 W in the middle
+        tcx = exercise([200] * 900 + [300] * 300 + [200] * 600)
+        self.assertEqual(self.tm.best_average_power(tcx), 225)
+        self.assertEqual(self.tm.best_average_power(tcx, 300), 300)
+        self.assertEqual(self.tm.estimate_functional_threshold_power(tcx), 213.75)
+
+    def test_zero_power_counts(self):
+        tcx = exercise([0, 400] * 900)
+        self.assertEqual(self.tm.best_average_power(tcx), 200)
+
+    def test_irregular_sampling(self):
+        # One sample every 5 s gives the same result as every second.
+        every_second = exercise([250] * 1500)
+        every_5_seconds = exercise_at([(s, 250) for s in range(0, 1500, 5)])
+        self.assertEqual(self.tm.best_average_power(every_second), 250)
+        self.assertEqual(self.tm.best_average_power(every_5_seconds), 250)
+
+    def test_long_gap_counts_as_zero(self):
+        # 10 min at 300 W (samples at 0-599 s), no samples until 660 s
+        # (auto-pause), 10 min at 300 W (660-1259 s). The sample at 599 s
+        # covers 10 s (599-608 s), the remaining 51 s count as 0 W, so
+        # 1209 of the 1260 seconds are at 300 W. The best 20 minutes
+        # leaves out 60 s at 300 W: (1209 - 60) * 300 / 1200 = 287.25.
+        samples = [(s, 300) for s in range(600)]
+        samples += [(s, 300) for s in range(660, 1260)]
+        tcx = exercise_at(samples)
+        self.assertEqual(self.tm.best_average_power(tcx), 287.25)
+
+    def test_not_enough_data(self):
+        self.assertIsNone(self.tm.best_average_power(exercise([300] * 1199)))
+        self.assertIsNone(
+            self.tm.estimate_functional_threshold_power(exercise([300] * 600)),
+        )
+        tcx = TCXFile().read_one_file(os.path.join(DATA_DIR, '15.tcx'))
+        self.assertIsNone(self.tm.best_average_power(tcx))
+        self.assertIsNone(self.tm.estimate_functional_threshold_power(tcx))
