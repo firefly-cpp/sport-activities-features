@@ -25,7 +25,7 @@ pandas = ">=2.0"
 tcx2gpx = "0.1.4"
 gpxpy = "^1.4.2"
 # geotiler 0.15.1 imports pkg_resources, which setuptools 82 removed.
-setuptools = "<82"
+setuptools = "<85"
 
 [tool.poetry.group.dev.dependencies]
 ruff = ">=0.6"
