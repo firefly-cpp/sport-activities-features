@@ -1,10 +1,12 @@
 import os
+import shutil
+import tempfile
 from datetime import datetime, timedelta
 from unittest import TestCase
 
 from tcxreader.tcxreader import TCXExercise, TCXTrackPoint
 
-from sport_activities_features import TCXFile
+from sport_activities_features import GPXFile, TCXFile
 
 
 class TestTCXFile(TestCase):
@@ -111,3 +113,27 @@ class TestTCXFileSpeeds(TestCase):
         data = self.extract([])
         self.assertEqual(data['positions'], [])
         self.assertEqual(data['speeds'], [])
+
+
+class TestConvertTCXToGPX(TestCase):
+    def test_convert(self):
+        source = os.path.join(os.path.dirname(__file__), 'data', '2.tcx')
+        with tempfile.TemporaryDirectory() as directory:
+            tcx_path = os.path.join(directory, '2.tcx')
+            shutil.copy(source, tcx_path)
+
+            TCXFile().convert_tcx_to_gpx(tcx_path)
+
+            gpx_path = os.path.join(directory, '2.gpx')
+            self.assertTrue(os.path.exists(gpx_path))
+            gpx_file = GPXFile()
+            gpx = gpx_file.extract_activity_data(
+                gpx_file.read_one_file(gpx_path),
+            )
+            tcx_file = TCXFile()
+            tcx = tcx_file.extract_activity_data(
+                tcx_file.read_one_file(tcx_path),
+            )
+            self.assertEqual(len(gpx['positions']), len(tcx['positions']))
+            self.assertEqual(gpx['positions'][0], tcx['positions'][0])
+            self.assertEqual(gpx['positions'][-1], tcx['positions'][-1])
