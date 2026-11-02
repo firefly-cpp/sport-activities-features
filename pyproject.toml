@@ -14,25 +14,28 @@ readme = "README.md"
 python = ">= 3.10.0, < 4.0.0"
 matplotlib = "^3.3.3"
 geopy = "^2.0.0"
-overpy = "^0.6"
+overpy = ">=0.6,<0.8"
 geotiler = "^0.15.1"
 numpy = ">=1.26.4"
 tcxreader = "^0.4.11"
-pandas = "*"
+pandas = ">=2.0"
+# tcx2gpx >= 0.1.5 cannot parse TCX times such as "...T09:58:50Z" on
+# Python 3.10 (datetime.fromisoformat); 0.1.4 works on all supported
+# versions with the fallback in TCXFile.convert_tcx_to_gpx.
 tcx2gpx = "0.1.4"
-gpxpy = "1.4.2"
-setuptools = "<70"
+gpxpy = "^1.4.2"
+# geotiler 0.15.1 imports pkg_resources, which setuptools 82 removed.
+setuptools = "<82"
 
 [tool.poetry.group.dev.dependencies]
-ruff = "^0.0.292"
+ruff = ">=0.6"
 
 [tool.poetry.group.test.dependencies]
-pytest = "^7.2.2"
-coveralls = "^2.2.0"
+pytest = ">=7.2.2"
 
 [tool.poetry.group.docs.dependencies]
-Sphinx = "^5.0.0"
-sphinx-rtd-theme = "^1.0.0"
+Sphinx = ">=5.0.0"
+sphinx-rtd-theme = ">=1.0.0"
 sphinxcontrib-bibtex = "^2.4.1"
 
 [build-system]
